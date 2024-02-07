@@ -1,3 +1,2 @@
 # zenSync-client
-Client Repo for ZenSync
-bootstaped using next js
+zenSync is a collaborative workspace designed for multiple users to collaboratively edit documents in real-time. It offers a dedicated meeting room with audio connectivity and a shared whiteboard canvas for collaborative brainstorming. Additionally, it features AI-powered auto-complete for text input and allows users to publish documents by generating public links. This SaaS application facilitates seamless collaboration and document management.
