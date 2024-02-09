@@ -13,6 +13,7 @@ import Calender_L from "../../../public/featureLogo/lightMode/Calendar.png";
 import Ai_L from "../../../public/featureLogo/lightMode/Edit 1.png";
 import Publish_L from "../../../public/featureLogo/lightMode/Link 2.png";
 import Meeting_L from "../../../public/featureLogo/lightMode/Users.png";
+import Logo from "../../../public/logo-black/zenSync-onlyLogo.png"
 import Image from "next/image";
 import { useEffect, useState } from "react";
 export default function Home() {
@@ -32,7 +33,8 @@ export default function Home() {
   
   return (
     <section>
-      <div className=" overflow-hidden px-4 sm:px-6 mt-10 sm:flex sm:flex-col gap-4 md:justify-center md:items-center">
+      <div className=" overflow-hidden px-4 sm:px-6 mt-4 sm:flex sm:flex-col gap-4 md:justify-center md:items-center">
+        <Image className="mb-2" src={Logo} alt="ZensyncLogo" width={70} />
         <div className="sm:w-3/5">
           <TitleSection
             pill="✨Your workspace perfected"
@@ -56,7 +58,8 @@ export default function Home() {
             Get ZenSync Free
           </Button>
         </div>
-        <div className="w-[30%]
+        <div
+          className="w-[30%]
         blur-[100px]
         rounded-full
         h-36
@@ -65,7 +68,8 @@ export default function Home() {
         dark:bg-brand/brand-
         -z-10
         top-[62vh]
-        left-"/>
+        left-"
+        />
         <div
           className="sm:flex sm:flex-wrap justify-center sm:gap-5 w-full
         "
@@ -94,8 +98,9 @@ export default function Home() {
         <div
           className="
           mt-5
-        sm:w-full
-        w-[750px]
+        sm:w-fit
+        max-w-[750px]
+      sm:max-w-[1000px]
         flex
         justify-center
         items-center
@@ -103,7 +108,7 @@ export default function Home() {
         sm:ml-0
         ml-[-50]"
         >
-          <Image src={Banner} width={"1000"} alt="App banner"></Image>
+          <Image src={Banner} alt="App banner"></Image>
           <div
             className="bottom-0
           top-[40%]

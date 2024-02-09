@@ -44,17 +44,17 @@ const TitleSection: React.FC<TitleSectionProps> = ({
             <h2
               className="text-left
             text-3xl
-            sm:text-5xl
-            sm:max-w-[750]
+            sm:text-7xl
             md:text-center
-            font-semibold"
+            font-black"
             >
               {title}
             </h2>
             <p
               className="dark:text-Washed-purple/washed-purple-50
             sm:max-w-[450px]
-            md:text-center"
+            md:text-center
+            text-xl font-semibold"
             >
               {subheading}
             </p>
@@ -66,7 +66,7 @@ const TitleSection: React.FC<TitleSectionProps> = ({
         sm:text-6xl
         sm:max-w-[850px]
         md:text-center
-        font-semibold"
+        font-bold"
           >
             {" "}
             {title}

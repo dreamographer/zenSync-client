@@ -74,7 +74,7 @@ const Header = () => {
     }
   const Logo = theme === "light" ? LogoLight : LogoDark;
   return (
-    <header className=" flex justify-center h-16 items-center">
+    <header className=" flex justify-center h-16 items-center sticky  backdrop-blur-sm z-40 top-0 w-full px-5">
       <Link
         className="w-full flex
       justify-start items-center"
@@ -82,7 +82,7 @@ const Header = () => {
       >
         <Image src={Logo} width={160} alt="zensync"></Image>
       </Link>
-     <div>
+     <div className="md:flex gap-6 hidden  border px-20 rounded-full outline outline-brand/brand-Dark dark:outline-Washed-purple/washed-purple-50 outline-[.1px] py-1">
         <Link href={'/'}>Home</Link>
         <Link href={'/'}>Pricing</Link>
         <Link href={'/'}>About</Link>
@@ -90,7 +90,7 @@ const Header = () => {
       <aside className="flex w-full gap-2 justify-end">
         <ThemeSwitcher />
         <Link href={"/login"}>
-          <Button variant={"secondary"} className="p-1">
+          <Button variant={"ghost"} className="p-1">
             Login
           </Button>
         </Link>
