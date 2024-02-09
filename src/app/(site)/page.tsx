@@ -14,10 +14,17 @@ import Ai_L from "../../../public/featureLogo/lightMode/Edit 1.png";
 import Publish_L from "../../../public/featureLogo/lightMode/Link 2.png";
 import Meeting_L from "../../../public/featureLogo/lightMode/Users.png";
 import Image from "next/image";
+import { useEffect, useState } from "react";
 export default function Home() {
   const { theme,setTheme } = useTheme();
-  // setTheme('dar')
-  console.log(theme)
+    const [mounted, setMounted] = useState(false);
+    useEffect(() => {
+      setMounted(true);
+    }, []);
+
+    if (!mounted) {
+      return null;
+    }
   const Calender = theme == "light" ? Calender_L : Calender_D;
   const Ai = theme =="light" ? Ai_L : Ai_D;
   const Publish = theme == "light" ? Publish_L : Publish_D;
@@ -49,15 +56,16 @@ export default function Home() {
             Get ZenSync Free
           </Button>
         </div>
-        <div className="w-[40%]
+        <div className="w-[30%]
         blur-[100px]
         rounded-full
-        h-44
+        h-36
         absolute
-        bg-brand/brand-PrimaryPurple
+        dark:bg-brand/brand-PrimaryPurple
+        dark:bg-brand/brand-
         -z-10
-        top-96
-        left-11"/>
+        top-[62vh]
+        left-"/>
         <div
           className="sm:flex sm:flex-wrap justify-center sm:gap-5 w-full
         "

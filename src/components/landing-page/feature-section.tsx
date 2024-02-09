@@ -19,7 +19,7 @@ const FeatureSection: React.FC<FeatureSectionProps> = ({logo,heading,description
   return (
     <>
       <section className="mt-5">
-        <Card className=" sm:w-64 sm:h-52">
+        <Card className=" sm:w-56 sm:h-52 rounded-xl bg-brand/brand-Dark/5 backdrop-blur-xl">
           <CardHeader>
             <Image src={logo} alt="featureLogo" width={30} />
             <CardTitle>{heading}</CardTitle>

@@ -23,16 +23,18 @@ const TitleSection: React.FC<TitleSectionProps> = ({
           className="rounded-full
             p-[1px]
             text-sm
-            dark:bg-gradient-to-r
-            dark:from-brand/brand-primaryBlue
-            dark:to-brand/brand-PrimaryPurple"
+            bg-gradient-to-r
+            from-brand/brand-primaryBlue
+            to-brand/brand-PrimaryPurple"
         >
           <div
             className="rounded-full
             px-3
             py-1
+            bg-Washed-purple/washed-purple-50     
             dark:bg-black
             dark:text-Washed-purple/washed-purple-50"
+            
           >
             {pill}
           </div>
