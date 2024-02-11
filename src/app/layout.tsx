@@ -17,8 +17,8 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en">
-      <body className={twMerge("bg-background p-2", montserrat.className)}>
+    <html lang="en" >
+      <body className={twMerge("bg-background", montserrat.className)}>
         <ThemeProvider attribute="class" defaultTheme="dark" enableSystem>
           {children}
         </ThemeProvider>

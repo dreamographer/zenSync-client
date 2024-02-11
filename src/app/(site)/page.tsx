@@ -16,6 +16,7 @@ import Meeting_L from "../../../public/featureLogo/lightMode/Users.png";
 import Logo from "../../../public/logo-black/zenSync-onlyLogo.png"
 import Image from "next/image";
 import { useEffect, useState } from "react";
+import Link from "next/link";
 export default function Home() {
   const { theme,setTheme } = useTheme();
     const [mounted, setMounted] = useState(false);
@@ -51,12 +52,14 @@ export default function Home() {
         to-brand/brand-primaryBlue
         sm:w-[300px]"
         >
-          <Button
-            variant="secondary"
-            className="w-full rounded-[10px] p-6 text-2xl bg-background"
-          >
-            Get ZenSync Free
-          </Button>
+          <Link href={"/signup"}>
+            <Button
+              variant="secondary"
+              className="w-full rounded-[10px] p-6 text-2xl bg-background"
+            >
+              Get ZenSync Free
+            </Button>
+          </Link>
         </div>
         <div
           className="w-[30%]

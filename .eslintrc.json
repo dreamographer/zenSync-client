@@ -3,7 +3,7 @@
      "plugins": ["tailwindcss"],
      "rules": {
        "tailwindcss/no-custom-classname": "off",
-       "tailwindcss/no-unused-classes": "warn",
+       "tailwindcss/no-unused-classes": "error",
        "tailwindcss/no-arbitrary-value": "error"
      }
    }
