@@ -5,51 +5,49 @@ import LogoDark from "../../../../public/logo-black/zensync-horizontal.png";
 import LogoLight from "../../../../public/Logo-white/zenSync-horizontal.png";
 import GithubLight from "../../../../public/other/github.png";
 import GithubDark from "../../../../public/other/githubDark.png";
-import Google from "../../../../public/other/google.png"
+import Google from "../../../../public/other/google.png";
 import Link from "next/link";
 import Saly from "../../../../public/other/Saly-14.png";
 import { signIn } from "next-auth/react";
 import { Button } from "@/components/ui/button";
-import {
-  Form,
-  FormControl,
-  FormDescription,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage,
-} from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { toast } from "sonner";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { useTheme } from "next-themes";
+import { cn } from "@/lib/utils";
 const handleSignIn = () => {
   signIn("google");
 };
-const formSchema = z.object({
-    fullname:z.string(),
-  email: z.string().email().min(2),
-  password: z
-    .string()
-    .min(7, { message: "Password must contain at least 7 characters" }),
-  confirmPassword: z
-    .string()
-    .min(7, { message: "Password must contain at least 7 characters" })
-});
+const formSchema = z
+  .object({
+    fullname: z.string().min(2, "Full name must have at least 2 characters"),
+    email: z.string().email("Invalid email address"),
+    password: z
+      .string()
+      .min(
+        8,
+        "Password must have at least 8 characters with alphanumber combination"
+      )
+      .refine(password => /[A-Za-z][0-9]/.test(password), {
+        message: "Password must contain at least one letter",
+      }),
+    confirmPassword: z.string(),
+  })
+  .refine(data => data.password === data.confirmPassword, {
+    message: "Passwords do not match",
+    path: ["confirmPassword"],
+  });
 
 const LoginPage = () => {
-  const form = useForm<z.infer<typeof formSchema>>({
+  const {register,handleSubmit,formState:{errors}} = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
-    defaultValues: {
-      email: "",
-      password: "",
-    },
   });
 
   function onSubmit(values: z.infer<typeof formSchema>) {
-    // Do something with the form values.
-    // ✅ This will be type-safe and validated.
+    
     console.log(values);
   }
   const { theme, setTheme } = useTheme();
@@ -57,6 +55,15 @@ const LoginPage = () => {
   useEffect(() => {
     setMounted(true);
   }, []);
+  useEffect(() => {
+    if (Object.keys(errors).length > 0) {
+      Object.values(errors).forEach(error => {
+        if (error && error.message) {
+          toast.error(error.message,{position:"top-left"});
+        }
+      });
+    }
+  }, [errors]);
   if (!mounted) {
     return null;
   }
@@ -95,86 +102,66 @@ const LoginPage = () => {
       <div className="sm:w-1/2 text-center flex flex-col justify-center items-center">
         <h2 className="md:text-5xl mb-5 text-3xl font-light">Sign Up</h2>
 
-        <Form {...form}>
-          <form
-            onSubmit={form.handleSubmit(onSubmit)}
-            className="sm:space-y-8 space-y-3 sm:w-2/3 w-3/4"
+        <form
+          onSubmit={handleSubmit(onSubmit)}
+          className="sm:space-y-3 space-y-2 sm:w-2/3 w-3/4"
+        >
+          <div className="text-left">
+            <Label htmlFor="fullname">FullName</Label>
+            <Input
+              {...register("fullname")}
+              className={cn(
+                { "focus-visible:ring-red-500": errors.fullname },
+                "sm:h-14"
+              )}
+              placeholder="Enter Your fullname"
+            />
+          </div>
+
+          <div className="text-left">
+            <Label htmlFor="email">Email</Label>
+            <Input
+              {...register("email")}
+              type="text"
+              className={cn(
+                { "focus-visible:ring-red-500": errors.email },
+                "sm:h-14"
+              )}
+              placeholder="Enter Your Email"
+            />
+          </div>
+          <div className="text-left">
+            <Label htmlFor="password">Password</Label>
+            <Input
+              {...register("password")}
+              type="password"
+              className={cn(
+                { "focus-visible:ring-red-500": errors.password },
+                "sm:h-14"
+              )}
+              placeholder="Password"
+            />
+          </div>
+          <div className="text-left">
+            <Label htmlFor="confirmPassword">Confirm password</Label>
+            <Input
+              {...register("confirmPassword")}
+              type="password"
+              className={cn(
+                { "focus-visible:ring-red-500": errors.confirmPassword },
+                "sm:h-14"
+              )}
+              placeholder="Confirm password"
+            />
+          </div>
+
+          <Button
+            type="submit"
+            className="w-full sm:h-14 bg-brand/brand-PrimaryPurple/70 backdrop-blur-sm text-white hover:bg-brand/brand-PrimaryPurple"
           >
-            <FormField
-              control={form.control}
-              name="fullname"
-              render={({ field }) => (
-                <FormItem>
-                  <FormControl>
-                    <Input
-                      className="sm:h-14"
-                      placeholder="Enter Your fullname"
-                      {...field}
-                    />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-            <FormField
-              control={form.control}
-              name="email"
-              render={({ field }) => (
-                <FormItem>
-                  <FormControl>
-                    <Input
-                      className="sm:h-14"
-                      type="email"
-                      placeholder="Enter Email"
-                      {...field}
-                    />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-            <FormField
-              control={form.control}
-              name="password"
-              render={({ field }) => (
-                <FormItem>
-                  <FormControl>
-                    <Input
-                      className="sm:h-14"
-                      type="password"
-                      placeholder="password"
-                      {...field}
-                    />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-            <FormField
-              control={form.control}
-              name="confirmPassword"
-              render={({ field }) => (
-                <FormItem>
-                  <FormControl>
-                    <Input
-                      className="sm:h-14"
-                      type="password"
-                      placeholder="Confirm password"
-                      {...field}
-                    />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-            <Button
-              type="submit"
-              className="w-full sm:h-14 bg-brand/brand-PrimaryPurple/70 backdrop-blur-sm text-white hover:bg-brand/brand-PrimaryPurple"
-            >
-              Signup
-            </Button>
-          </form>
-        </Form>
+            Signup
+          </Button>
+        </form>
         <div className="md:mt-3">
           <p>Or continue with</p>
           <div className="flex gap-4 mt-3">
