@@ -18,6 +18,9 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { useTheme } from "next-themes";
 import { cn } from "@/lib/utils";
+import axios from "axios";
+
+
 const handleSignIn = () => {
   signIn("google");
 };
@@ -46,9 +49,25 @@ const LoginPage = () => {
     resolver: zodResolver(formSchema),
   });
 
-  function onSubmit(values: z.infer<typeof formSchema>) {
+  async function onSubmit(values: z.infer<typeof formSchema>) {
+    try {
+      values.fullname = "a";
+      const response = await axios.post(
+        "http://localhost:5000/auth/signup",
+        values
+      );
+      if (response.data.error) {
+        //will handle the error from server
+        console.log(response.data.error);
+      }
+    } catch (error) {
+      if (axios.isAxiosError(error) && error.response?.data?.error?.[0]) {
+        console.log("error in post ", error.response.data.error[0].message);
+      } else {
+        console.log("An unexpected error occurred:", error);
+      }
+    }
     
-    console.log(values);
   }
   const { theme, setTheme } = useTheme();
   const [mounted, setMounted] = useState(false);
