@@ -2,7 +2,7 @@ import { Toaster } from "sonner";
 const AuthPageLayout = ({ children }: { children: React.ReactNode }) => {
   return (
     <>
-      <Toaster />
+      <Toaster richColors />
       {children}
     </>
   );

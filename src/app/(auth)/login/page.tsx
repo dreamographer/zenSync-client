@@ -1,8 +1,14 @@
 "use client"
 import React, { useEffect, useState } from "react";
+import { useRouter } from "next/navigation";
+import { toast } from "sonner";
 import Image from "next/image";
 import LogoDark from "../../../../public/logo-black/zensync-horizontal.png";
 import LogoLight from "../../../../public/Logo-white/zenSync-horizontal.png";
+import GithubLight from "../../../../public/other/github.png";
+import GithubDark from "../../../../public/other/githubDark.png";
+import Google from "../../../../public/other/google.png";
+import axios from "axios";
 import Link from "next/link";
 import Saly from "../../../../public/other/Saly-14.png"
 import { Button } from "@/components/ui/button";
@@ -20,13 +26,26 @@ import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { useTheme } from "next-themes";
-
+import { useStore } from "../../../store/store";
+const BASE_URL = process.env.NEXT_PUBLIC_SERVER_URL;
+const handleGoogleSignIn = () => {
+  window.open(`${BASE_URL}/auth/google/callback`, "_self");
+};
+const handleGithubSignIn = () => {
+  window.open(`${BASE_URL}/auth/github/callback`, "_self");
+};
 const formSchema = z.object({
-  email: z.string().email().min(2),
-  password:z.string().min(7,{message:"Password must contain at least 7 characters"})
+  email: z.string(),
+  password:z.string()
 });
 
 const LoginPage = () => {
+  const router = useRouter();
+  const setUser = useStore(state => state.setUser);
+  const storeUser = useStore(state => state.user);
+  console.log(storeUser);
+  console.log("store USEr",storeUser);
+  
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -35,10 +54,40 @@ const LoginPage = () => {
     },
   });
 
-  function onSubmit(values: z.infer<typeof formSchema>) {
-    // Do something with the form values.
-    // ✅ This will be type-safe and validated.
-    console.log(values);
+  async  function onSubmit(values: z.infer<typeof formSchema>) {
+    try {
+      
+      const response = await axios.post(`${BASE_URL}/auth/login`, values, {
+        withCredentials: true,
+      });
+      console.log(response.data.user);
+      const user = {
+        id: response.data.user.id,
+      fullname: response.data.user.fullname,
+      email: response.data.user.email,
+      profile: response.data.user.profile??null,
+      verified: response.data.user.verified,
+      };
+      setUser(user)
+      console.log("user",user);
+      
+      if (response) {
+        toast.success("Login successful!", {
+          position:"top-center"
+        });
+        setTimeout(() => {
+          router.push("/dashboard");
+        }, 2000);
+      }
+      
+      
+    } catch (error) {
+      if (axios.isAxiosError(error) && error.response?.data) {
+        toast.error(error.response.data.error, { position: "top-left" });
+      } else {
+        console.log("An unexpected error occurred:", error);
+      }
+    }
   }
     const { theme, setTheme } = useTheme();
     const [mounted, setMounted] = useState(false);
@@ -49,6 +98,8 @@ const LoginPage = () => {
       return null;
     }
     const Logo = theme === "light" ? LogoLight : LogoDark;
+      const Github = theme === "light" ? GithubLight : GithubDark;
+
 
   return (
     <section className="sm:flex justify-center fixed h-screen  overflow-hidden w-full">
@@ -65,7 +116,9 @@ const LoginPage = () => {
         -left-36"
       />
       <div className="sm:w-1/2 sm:text-center gap-5 flex flex-col  sm:justify-center sm:items-center p-5">
-        <Image className="mb-2 w-52  sm:w-80 " src={Logo} alt="ZensyncLogo" />
+        <Link href={"/"}>
+          <Image className="mb-2 w-52  sm:w-80 " src={Logo} alt="ZensyncLogo" />
+        </Link>
         <div className="text-2xl font-light">
           <p>Sign in to</p>
           <p>Your Workspace</p>
@@ -111,9 +164,29 @@ const LoginPage = () => {
                 </FormItem>
               )}
             />
-            <Button type="submit" className="w-full bg-brand/brand-PrimaryPurple/70 backdrop-blur-sm text-white hover:bg-brand/brand-PrimaryPurple">
+            <Button
+              type="submit"
+              className="w-full bg-brand/brand-PrimaryPurple/70 backdrop-blur-sm text-white hover:bg-brand/brand-PrimaryPurple"
+            >
               Login
             </Button>
+            <div className="md:mt-3 ">
+              <p>Or continue with</p>
+              <div className="flex gap-4 mt-3 justify-center">
+                <Image
+                  onClick={handleGoogleSignIn}
+                  src={Google}
+                  alt="Google"
+                  className="cursor-pointer w-9 h-9"
+                />
+                <Image
+                  onClick={handleGithubSignIn}
+                  src={Github}
+                  alt="GitHUb"
+                  className="cursor-pointer w-9 h-9"
+                />
+              </div>
+            </div>
           </form>
         </Form>
       </div>

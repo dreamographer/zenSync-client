@@ -1,6 +1,7 @@
 "use client";
 import React, { useEffect, useState } from "react";
 import Image from "next/image";
+import { useRouter } from "next/navigation";
 import LogoDark from "../../../../public/logo-black/zensync-horizontal.png";
 import LogoLight from "../../../../public/Logo-white/zenSync-horizontal.png";
 import GithubLight from "../../../../public/other/github.png";
@@ -20,13 +21,23 @@ import { useTheme } from "next-themes";
 import { cn } from "@/lib/utils";
 import axios from "axios";
 
-
-const handleSignIn = () => {
-  signIn("google");
+const BASE_URL = process.env.NEXT_PUBLIC_SERVER_URL;
+const handleGoogleSignIn = () => {
+  window.open(`${BASE_URL}/auth/google/callback`, "_self");
+  
 };
 const formSchema = z
   .object({
-    fullname: z.string().min(2, "Full name must have at least 2 characters"),
+    fullname: z
+      .string()
+      .transform(fullname => fullname.trim())
+      .refine(fullname => fullname.length >= 2, {
+        message:
+          "Full name must have at least  2 characters after removing spaces",
+      })
+      .refine(fullname => /^[a-zA-Z\s]*$/.test(fullname), {
+        message: "Full name must not contain numbers",
+      }),
     email: z.string().email("Invalid email address"),
     password: z
       .string()
@@ -45,24 +56,35 @@ const formSchema = z
   });
 
 const LoginPage = () => {
+    const router = useRouter();
   const {register,handleSubmit,formState:{errors}} = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
   });
 
   async function onSubmit(values: z.infer<typeof formSchema>) {
     try {
-      values.fullname = "a";
       const response = await axios.post(
-        "http://localhost:5000/auth/signup",
+        `${BASE_URL}/auth/signup`,
         values
       );
-      if (response.data.error) {
-        //will handle the error from server
-        console.log(response.data.error);
+      if(response){
+        console.log(response);
+        
+        toast.success(response.data.message, {
+          position: "top-center",
+        });
+        router.replace('/verify-email')
+
       }
+    
+      
+    
     } catch (error) {
-      if (axios.isAxiosError(error) && error.response?.data?.error?.[0]) {
-        console.log("error in post ", error.response.data.error[0].message);
+      if (axios.isAxiosError(error) && error.response?.data?.error) {
+        toast.error(error.response.data.error, {
+          position: "top-left"
+        });
+        console.log("error in post ", error.response.data.error);
       } else {
         console.log("An unexpected error occurred:", error);
       }
@@ -184,8 +206,17 @@ const LoginPage = () => {
         <div className="md:mt-3">
           <p>Or continue with</p>
           <div className="flex gap-4 mt-3">
-            <Image onClick={handleSignIn} src={Google} alt="Google" />
-            <Image src={Github} alt="GitHUb" />
+            <Image
+              onClick={handleGoogleSignIn}
+              src={Google}
+              alt="Google"
+              className="cursor-pointer w-9 h-9"
+            />
+            <Image
+              src={Github}
+              alt="GitHUb"
+              className="cursor-pointer w-9 h-9"
+            />
           </div>
         </div>
       </div>
