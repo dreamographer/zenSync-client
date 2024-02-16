@@ -42,9 +42,6 @@ const formSchema = z.object({
 const LoginPage = () => {
   const router = useRouter();
   const setUser = useStore(state => state.setUser);
-  const storeUser = useStore(state => state.user);
-  console.log(storeUser);
-  console.log("store USEr",storeUser);
   
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -68,13 +65,16 @@ const LoginPage = () => {
       profile: response.data.user.profile??null,
       verified: response.data.user.verified,
       };
-      setUser(user)
+      
       console.log("user",user);
       
       if (response) {
         toast.success("Login successful!", {
           position:"top-center"
         });
+        setTimeout(() => {
+          setUser(user)
+        }, 1000);
         setTimeout(() => {
           router.push("/dashboard");
         }, 2000);

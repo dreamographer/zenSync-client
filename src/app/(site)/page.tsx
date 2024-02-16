@@ -15,7 +15,6 @@ import Publish_L from "../../../public/featureLogo/lightMode/Link 2.png";
 import Meeting_L from "../../../public/featureLogo/lightMode/Users.png";
 import Logo from "../../../public/logo-black/zenSync-onlyLogo.png"
 import Image from "next/image";
-
 import { useEffect, useState } from "react";
 import Link from "next/link";
 export default function Home() {

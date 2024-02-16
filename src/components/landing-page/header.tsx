@@ -14,9 +14,6 @@ import { Button } from "../ui/button";
 
 const Header = () => {
   const user = useStore(state => state.user);
-  
-  console.log(user);
-  
   const { theme, setTheme } = useTheme();
     const [mounted, setMounted] = useState(false);
     useEffect(() => {
@@ -42,7 +39,7 @@ const Header = () => {
       </div>
       <aside className="flex w-full gap-2 justify-end">
         <ThemeSwitcher />
-        {user ==null? (
+        {!user ? (
           <div className="flex gap-3">
             <Link href={"/login"}>
               <Button variant={"ghost"} className="p-1">

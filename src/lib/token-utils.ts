@@ -1,44 +1,37 @@
-import axios from "axios";
 import { ReadonlyRequestCookies } from "next/dist/server/web/spec-extension/adapters/request-cookies";
 import { NextRequest } from "next/server";
 interface User {
-  id?: string;
+  id: string;
   fullname: string;
   email: string; 
-  password: string;
   profile?: string;
-  verify_token?: string;
-  verified?: boolean;
 }
-
 export const getServerSideUser = async (
-  cookies: NextRequest["cookies"] | ReadonlyRequestCookies
+  token: string 
 ) => {
-    try {
-        const token = cookies.get("jwt")?.value;
+  try {
+    const response = await fetch(
+      `${process.env.NEXT_PUBLIC_SERVER_URL}/auth/users/me`,
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+        //  cache: 'force-cache' 
+      },
+    );
 
-        const { data } = await axios.get(
-          `${process.env.NEXT_PUBLIC_SERVER_URL}/auth/users/me`,
-          {
-            headers: {
-              Authorization: `Bearer ${token}`,
-            },
-          }
-        );
-
-        const user = data as { user: User | null };
-
-        return { user };
-    } catch (error) {
-          if (axios.isAxiosError(error) && error.response?.data) {
-              if(error.response.status==403){
-                return  null
-              }
-            
-          } else {
-            console.log("An unexpected error occurred:", error);
-          }
-        
+    if (!response.ok) {
+      if (response.status === 403) {
+        return null;
+      }
+      throw new Error(`HTTP error! status: ${response.status}`);
     }
-  
+
+    const data = await response.json();
+    const user = data as { user: User | null };
+
+    return { user };
+  } catch (error) {
+    console.log("An unexpected error occurred:", error);
+  }
 };

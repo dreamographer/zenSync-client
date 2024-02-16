@@ -20,9 +20,9 @@ const EmailVerifiedPage = ({ searchParams }: PageProps) => {
               <Image src="/other/Confirmed-pana.png" alt="Email Send" fill />
             </div>
             <h3 className="font-semibold text-2xl"> {error}</h3>
-            {/* <p className="text-muted-foreground text-center">
-            
-            </p> */}
+            <p className="text-muted-foreground text-center">
+            Try Sigining UP again
+            </p>
           </div>
         </div>
       ) : (

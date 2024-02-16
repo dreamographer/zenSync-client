@@ -26,6 +26,9 @@ const handleGoogleSignIn = () => {
   window.open(`${BASE_URL}/auth/google/callback`, "_self");
   
 };
+const handleGithubSignIn = () => {
+  window.open(`${BASE_URL}/auth/github/callback`, "_self");
+};
 const formSchema = z
   .object({
     fullname: z
@@ -70,7 +73,7 @@ const LoginPage = () => {
       if(response){
         console.log(response);
         
-        toast.success(response.data.message, {
+        toast.success("Verificaiton Mail Send", {
           position: "top-center",
         });
         router.replace('/verify-email')
@@ -152,7 +155,7 @@ const LoginPage = () => {
             <Input
               {...register("fullname")}
               className={cn(
-                { "focus-visible:ring-red-500": errors.fullname },
+                { "focus-visible:ring-red-500 outline outline-red-500": errors.fullname },
                 "sm:h-14"
               )}
               placeholder="Enter Your fullname"
@@ -165,7 +168,7 @@ const LoginPage = () => {
               {...register("email")}
               type="text"
               className={cn(
-                { "focus-visible:ring-red-500": errors.email },
+                { "focus-visible:ring-red-500 outline outline-red-500": errors.email },
                 "sm:h-14"
               )}
               placeholder="Enter Your Email"
@@ -177,7 +180,7 @@ const LoginPage = () => {
               {...register("password")}
               type="password"
               className={cn(
-                { "focus-visible:ring-red-500": errors.password },
+                { "focus-visible:ring-red-500 outline outline-red-500 ": errors.password },
                 "sm:h-14"
               )}
               placeholder="Password"
@@ -189,7 +192,7 @@ const LoginPage = () => {
               {...register("confirmPassword")}
               type="password"
               className={cn(
-                { "focus-visible:ring-red-500": errors.confirmPassword },
+                { "focus-visible:ring-red-500 outline outline-red-500": errors.confirmPassword },
                 "sm:h-14"
               )}
               placeholder="Confirm password"
@@ -205,7 +208,7 @@ const LoginPage = () => {
         </form>
         <div className="md:mt-3">
           <p>Or continue with</p>
-          <div className="flex gap-4 mt-3">
+          <div className="flex gap-4 mt-3 justify-center">
             <Image
               onClick={handleGoogleSignIn}
               src={Google}
@@ -213,6 +216,7 @@ const LoginPage = () => {
               className="cursor-pointer w-9 h-9"
             />
             <Image
+              onClick={handleGithubSignIn}
               src={Github}
               alt="GitHUb"
               className="cursor-pointer w-9 h-9"
