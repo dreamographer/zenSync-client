@@ -26,7 +26,7 @@ import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { useTheme } from "next-themes";
-import { useStore } from "../../../store/store";
+import { useUserStore } from "../../../store/store";
 import { formSchema } from "@/app/Types/Schema";
 const BASE_URL = process.env.NEXT_PUBLIC_SERVER_URL;
 const handleGoogleSignIn = () => {
@@ -38,7 +38,7 @@ const handleGithubSignIn = () => {
 
 const LoginPage = () => {
   const router = useRouter();
-  const setUser = useStore(state => state.setUser);
+  const setUser = useUserStore(state => state.setUser);
   
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),

@@ -1,14 +1,14 @@
-import { User } from "@/app/Types/userInterface";
+import { User } from "@/app/Types/userType";
 import { persistNSync } from "persist-and-sync";
 import { create } from "zustand";
-
-type State = {
+import { Workspace } from "@/app/Types/workspaceType";
+type userState = {
   user: User | null;
   expiry: string | null;
   setUser: (user: User | null, expiryMinutes?: number) => void;
 };
 
-export const useStore = create<State>(
+export const useUserStore = create<userState>(
   persistNSync(
     set => ({
       user: null,
@@ -21,6 +21,24 @@ export const useStore = create<State>(
       },
     }),
     { name: "userInfo", storage: "localStorage" }
+  )
+);
+
+
+type workspaceState = {
+  workspace: Workspace | null;
+  setWorkspace: (workspace: Workspace|null) => void;
+};
+
+export const useWorkspaceStore = create<workspaceState>(
+  persistNSync(
+    set => ({
+      workspace: null, 
+      setWorkspace: workspace => {
+        set({ workspace });
+      },
+    }),
+    { name: "workspaceInfo", storage: "localStorage" }
   )
 );
 

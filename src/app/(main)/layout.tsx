@@ -3,6 +3,7 @@ import React from "react";
 import { getServerSideUser } from "@/lib/token-utils";
 import { cookies } from "next/headers";
 import Link from "next/link";
+import { Toaster } from "sonner";
 const DashBoardLayout = async ({ children }: { children: React.ReactNode }) => {
   const nextCookies = cookies();
   const token = nextCookies.get("jwt")?.value;
@@ -11,7 +12,12 @@ const DashBoardLayout = async ({ children }: { children: React.ReactNode }) => {
     console.log("The user", user);
 
     if (user) {
-      return <main>{children}</main>;
+      return (
+        <main>
+          <Toaster richColors />
+          {children}
+        </main>
+      );
     } else {
       return (
         <main>

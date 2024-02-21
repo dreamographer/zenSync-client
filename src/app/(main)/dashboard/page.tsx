@@ -4,13 +4,15 @@ import React, { useEffect, useRef } from "react";
 import { redirect, useRouter } from "next/navigation";
 import axios from "axios";
 import { clearStorage } from "persist-and-sync";
-import { useStore } from "@/store/store";
+import { useUserStore, useWorkspaceStore } from "@/store/store";
 import { useCookies } from "next-client-cookies";
 import DashboardSetup from "@/components/dashboard/dashboardSetup";
 const Dashboard = () => {
-  const user = useStore(state => state.user);
-  const setUser = useStore(state => state.setUser);
-  const workspace = false; //workspace of the user
+  const user = useUserStore(state => state.user);
+  const setUser = useUserStore(state => state.setUser);
+  const workspace = useWorkspaceStore(state => state.workspace); 
+  const setWorkspace = useWorkspaceStore(state => state.setWorkspace);
+    // const setWorkspace = useWorkspaceStore(state => state.setWorkspace);
   // subscription DAta
   useEffect(() => {
     const fetchUserData = async () => {
@@ -19,64 +21,50 @@ const Dashboard = () => {
           `${process.env.NEXT_PUBLIC_SERVER_URL}/auth/users/me`,
           {
             credentials: "include",
-            // cache: 'force-cache'
           }
         );
 
         if (!response.ok) {
           throw new Error("Network response was not ok");
         }
-
         const userData = await response.json();
-      
+        console.log("The User",userData);
         
+
         setUser(userData); // Set the user data in the store
       } catch (error) {
         console.error("Error fetching user data:", error);
       }
     };
+    const fetchWorkspaceData = async () => {
+      try {
+        const response = await fetch(
+          `${process.env.NEXT_PUBLIC_SERVER_URL}/workspace`,
+          {
+            credentials: "include",
+          }
+        );
+        const workSpace=await response.json()
+        setWorkspace(workSpace)
+      }
+       catch (error) {}
+    };
     fetchUserData();
+    fetchWorkspaceData();
   }, []);
   const router = useRouter();
-  const logout = async () => {
-    const response = await axios.get(
-      `${process.env.NEXT_PUBLIC_SERVER_URL}/auth/logout`,
-      {
-        withCredentials: true,
-      }
-    );
-    if (response) {
-      clearStorage("userInfo", "localStorage");
-      setUser(null);
-      router.replace("/login");
-    }
-  };
     if (!user) {
-      return; //no user
+      return
     }
   if (!workspace) {
     return(
       <div className="w-full h-screen flex justify-center items-center">
-
         <DashboardSetup subscription={""} user={user} />
       </div>
     )
   }else{
-    return (
-      <div
-        className="bg-background 
-      h-screen
-       w-screen
-        flex 
-        justify-center
-         items-center "
-      >
-        WELCOME {user?.fullname}
-        <Button onClick={logout}>LOGOUT</Button>
-      </div>
-    );
-  }
-  // redirect(`/dashboard/`); //id of the workdspace
+  redirect(`/dashboard/${workspace.id}`)
+  } 
 };
 
 export default Dashboard;

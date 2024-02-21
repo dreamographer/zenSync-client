@@ -1,11 +1,10 @@
 import { ReadonlyRequestCookies } from "next/dist/server/web/spec-extension/adapters/request-cookies";
 import { NextRequest } from "next/server";
-import { User } from "@/app/Types/userInterface";
+import { User } from "@/app/Types/userType";
 export const getServerSideUser = async (
   token: string 
 ) => {
   try {
-    
     const response = await fetch(
       `${process.env.NEXT_PUBLIC_SERVER_URL}/auth/users/me`,
       {

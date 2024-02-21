@@ -17,7 +17,7 @@ const Layout: React.FC<LayoutProps> = ({ children, params }) => {
     >
       <Sidebar params={params} />
       {/* <MobileSidebar> */}
-        <Sidebar params={params} className="w-screen inline-block sm:hidden" />
+        {/* <Sidebar params={params} className="w-screen inline-block sm:hidden" /> */}
       {/* </MobileSidebar> */}
       <div
         className="dark:border-neutral/neutral-12/70

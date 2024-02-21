@@ -1,6 +1,6 @@
 'use client'
 import React, { useState } from "react";
-import { User } from "@/app/Types/userInterface";
+import { User } from "@/app/Types/userType";
 import {
   Card,
   CardContent,
@@ -20,6 +20,7 @@ import { useRouter } from "next/navigation";
 import { v4 } from "uuid";
 import axios from "axios";
 import { toast } from "sonner";
+import { useWorkspaceStore } from "@/store/store";
 const BASE_URL = process.env.NEXT_PUBLIC_SERVER_URL;
 interface DashboardSetupProps {
   user: User;
@@ -30,6 +31,9 @@ const DashboardSetup: React.FC<DashboardSetupProps> = ({
   subscription,
   user,
 }) => {
+  const workspace = useWorkspaceStore(state => state.workspace);
+
+  const setWorkspace = useWorkspaceStore(state => state.setWorkspace);
   const router = useRouter();
   const [selectedEmoji, setSelectedEmoji] = useState("💼");
 
@@ -49,41 +53,34 @@ const DashboardSetup: React.FC<DashboardSetupProps> = ({
   const onSubmit: SubmitHandler<
     z.infer<typeof CreateWorkspaceFormSchema>
   > = async value => {
-    // const file = value.logo?.[0];
-    // let filePath = null;
-    // const workspaceUUID = v4();
-    // console.log(file);
-
-    // validate file input
+  
+    // 
     console.log(value)
     try {
       const response = await axios.post(`${BASE_URL}/workspace/`, value, {
         withCredentials: true,
       });
-      console.log(response.data);
-      
-
-      // if (response) {
-      //   toast.success("Login successful!", {
-      //     position: "top-center",
-      //   });
-      //   setTimeout(() => {
-      //     setUser(user);
-      //   }, 1000);
-      //   setTimeout(() => {
-      //     router.push("/dashboard");
-      //   }, 2000);
-      // }
+      if (response) {
+        toast.success("Workspace Created", {
+          position: "top-center",
+        });
+         setTimeout(() => {
+           useWorkspaceStore.getState().setWorkspace(response.data);
+           const workspace = useWorkspaceStore.getState().workspace;
+           console.log(workspace);
+           router.push(`/dashboard/${workspace?.id}`);
+         }, 1000);
+      }
     } catch (error) {
       console.log(error, "Error");
-
-      //   Error toast
-      //   toast({
-      //     variant: "destructive",
-      //     title: "Could not create your workspace",
-      //     description:
-      //       "Oops! Something went wrong, and we couldn't create your workspace. Try again or come back later.",
-      //   });
+        if (axios.isAxiosError(error) && error.response?.data?.message) {
+          toast.error(error.response.data.message, {
+            position: "top-left",
+          });
+          console.log("error in Workspace creation", error.response.data.message);
+        } else {
+          console.log("An unexpected error occurred:", error);
+        }
     } finally {
       reset();
     }
@@ -138,7 +135,8 @@ const DashboardSetup: React.FC<DashboardSetupProps> = ({
                 </small>
               </div>
             </div>
-            <div>
+            {/* Logo for workspace */}
+            {/* <div>
               <Label
                 htmlFor="logo"
                 className="text-sm
@@ -160,7 +158,7 @@ const DashboardSetup: React.FC<DashboardSetupProps> = ({
               <small className="text-red-600">
                 {errors?.logo?.message?.toString()}
               </small>
-              {/* {subscription?.status !== "active" && (
+              {subscription?.status !== "active" && (
                 <small
                   className="
                   text-muted-foreground
@@ -169,8 +167,8 @@ const DashboardSetup: React.FC<DashboardSetupProps> = ({
                 >
                   To customize your workspace, you need to be on a Pro Plan
                 </small>
-              )} */}
-            </div>
+              )}
+            </div> */}
             <div className="self-end">
               <button
                 disabled={isLoading}

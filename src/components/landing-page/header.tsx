@@ -4,7 +4,7 @@ import Image from "next/image";
 import React, { useEffect, useState } from "react";
 import LogoDark from "../../../public/logo-black/zensync-horizontal.png";
 import LogoLight from "../../../public/Logo-white/zenSync-horizontal.png";
-import { useStore } from "../../store/store";
+import { useUserStore } from "../../store/store";
 import { ThemeSwitcher } from "../global/ThemeSwitcher";
 import { useTheme } from "next-themes";
 import { Button } from "../ui/button";
@@ -13,7 +13,7 @@ import { Button } from "../ui/button";
 
 
 const Header = () => {
-  const user = useStore(state => state.user);
+  const user = useUserStore(state => state.user);
   const { theme, setTheme } = useTheme();
     const [mounted, setMounted] = useState(false);
     useEffect(() => {
