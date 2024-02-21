@@ -1,5 +1,6 @@
-import React, { useState } from 'react'
-import { User } from '@/app/Types/userInterface'
+'use client'
+import React, { useState } from "react";
+import { User } from "@/app/Types/userInterface";
 import {
   Card,
   CardContent,
@@ -7,117 +8,82 @@ import {
   CardHeader,
   CardTitle,
 } from "../ui/card";
-import { EmojiPicker } from '../global/Emoji-picker';
-import { Label } from '../ui/label';
-import { Input } from '../ui/input';
-import { FieldValue, SubmitHandler, useForm } from 'react-hook-form';
-import { z } from 'zod';
-import { CreateWorkspaceFormSchema } from '@/app/Types/Schema';
-import { Button } from '../ui/button';
-import Loader from '../global/Loader';
-import { useRouter } from 'next/navigation';
+import { EmojiPicker } from "../global/Emoji-picker";
+import { Label } from "../ui/label";
+import { Input } from "../ui/input";
+import { FieldValue, SubmitHandler, useForm } from "react-hook-form";
+import { z } from "zod";
+import { CreateWorkspaceFormSchema } from "@/app/Types/Schema";
+import { Button } from "../ui/button";
+import Loader from "../global/Loader";
+import { useRouter } from "next/navigation";
 import { v4 } from "uuid";
-interface DashboardSetupProps{
-    user:User;
-    subscription:{}|null; //type of the subscription
+import axios from "axios";
+import { toast } from "sonner";
+const BASE_URL = process.env.NEXT_PUBLIC_SERVER_URL;
+interface DashboardSetupProps {
+  user: User;
+  subscription: {} | null; //type of the subscription
 }
 
 const DashboardSetup: React.FC<DashboardSetupProps> = ({
   subscription,
   user,
 }) => {
-    const router=useRouter()
-    const [selectedEmoji,setSelectedEmoji]=useState('💼')
-    
-     const {
+  const router = useRouter();
+  const [selectedEmoji, setSelectedEmoji] = useState("💼");
+
+  const {
     register,
     handleSubmit,
     reset,
     formState: { isSubmitting: isLoading, errors },
   } = useForm<z.infer<typeof CreateWorkspaceFormSchema>>({
-    mode: 'onChange',
+    mode: "onChange",
     defaultValues: {
-      logo: '',
-      workspaceName: '',
+      logo: "",
+      title: "",
     },
   });
 
   const onSubmit: SubmitHandler<
     z.infer<typeof CreateWorkspaceFormSchema>
   > = async value => {
-    const file = value.logo?.[0];
-    let filePath = null;
-    const workspaceUUID = v4();
-    console.log(file);
+    // const file = value.logo?.[0];
+    // let filePath = null;
+    // const workspaceUUID = v4();
+    // console.log(file);
 
-    if (file) {
-
-        // upload file logo
-    //   try {
-    //     const { data, error } = await supabase.storage
-    //       .from("workspace-logos")
-    //       .upload(`workspaceLogo.${workspaceUUID}`, file, {
-    //         cacheControl: "3600",
-    //         upsert: true,
-    //       });
-    //     if (error) throw new Error("");
-    //     filePath = data.path;
-    //   } catch (error) {
-    //     console.log("Error", error);
-    //     // Error toast
-    //     // toast({
-    //     //   variant: "destructive",
-    //     //   title: "Error! Could not upload your workspace logo",
-    //     // });
-    //   }
-    }
+    // validate file input
+    console.log(value)
     try {
+      const response = await axios.post(`${BASE_URL}/workspace/`, value, {
+        withCredentials: true,
+      });
+      console.log(response.data);
+      
 
-
-// Creation of new workspace
-
-    //   const newWorkspace: workspace = {
-    //     data: null,
-    //     createdAt: new Date().toISOString(),
-    //     iconId: selectedEmoji,
-    //     id: workspaceUUID,
-    //     inTrash: "",
-    //     title: value.workspaceName,
-    //     workspaceOwner: user.id,
-    //     logo: filePath || null,
-    //     bannerUrl: "",
-    //   };
-    //   const { data, error: createError } = await createWorkspace(newWorkspace);
-    //   if (createError) {
-    //     throw new Error();
-    //   }
-
-      // Add workspace to the State
-      // dispatch({
-      //   type: "ADD_WORKSPACE",
-      //   payload: { ...newWorkspace, folders: [] },
-      // });
-
-      // Toaser for workspace creation
-      // toast({
-      //   title: "Workspace Created",
-      //   description: `${newWorkspace.title} has been created successfully.`,
-      // });
-
-
-
-    //   replace with the id of workspace
-    //   router.replace(`/dashboard/${newWorkspace.id}`);  
+      // if (response) {
+      //   toast.success("Login successful!", {
+      //     position: "top-center",
+      //   });
+      //   setTimeout(() => {
+      //     setUser(user);
+      //   }, 1000);
+      //   setTimeout(() => {
+      //     router.push("/dashboard");
+      //   }, 2000);
+      // }
     } catch (error) {
       console.log(error, "Error");
 
-    //   Error toast
-    //   toast({
-    //     variant: "destructive",
-    //     title: "Could not create your workspace",
-    //     description:
-    //       "Oops! Something went wrong, and we couldn't create your workspace. Try again or come back later.",
-    //   });
+      //   Error toast
+      //   toast({
+      //     variant: "destructive",
+      //     title: "Could not create your workspace",
+      //     description:
+      //       "Oops! Something went wrong, and we couldn't create your workspace. Try again or come back later.",
+      //   });
     } finally {
       reset();
     }
@@ -163,12 +129,12 @@ const DashboardSetup: React.FC<DashboardSetupProps> = ({
                   type="text"
                   placeholder="Workspace Name"
                   disabled={isLoading}
-                  {...register("workspaceName", {
+                  {...register("title", {
                     required: "Workspace name is required",
                   })}
                 />
                 <small className="text-red-600">
-                  {errors?.workspaceName?.message?.toString()}
+                  {errors?.title?.message?.toString()}
                 </small>
               </div>
             </div>
@@ -216,7 +182,6 @@ const DashboardSetup: React.FC<DashboardSetupProps> = ({
                   {!isLoading ? "Create Workspace" : <Loader />}
                 </span>
               </button>
-              
             </div>
           </div>
         </form>
@@ -225,4 +190,4 @@ const DashboardSetup: React.FC<DashboardSetupProps> = ({
   );
 };
 
-export default DashboardSetup
+export default DashboardSetup;

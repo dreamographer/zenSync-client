@@ -37,6 +37,7 @@ const LoginPage = () => {
   const {
     register,
     handleSubmit,
+    reset,
     formState: { errors },
   } = useForm<z.infer<typeof signUpSchema>>({
     resolver: zodResolver(signUpSchema),
@@ -62,6 +63,8 @@ const LoginPage = () => {
       } else {
         console.log("An unexpected error occurred:", error);
       }
+    } finally {
+      reset();
     }
   }
   const { theme, setTheme } = useTheme();

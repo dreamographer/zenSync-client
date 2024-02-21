@@ -8,7 +8,7 @@ export const formSchema = z.object({
 
 
 export const CreateWorkspaceFormSchema = z.object({
-  workspaceName: z
+  title: z
     .string()
     .describe("Workspace Name")
     .min(1, "Workspace name must be min of 1 character"),
