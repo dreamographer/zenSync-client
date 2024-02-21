@@ -27,6 +27,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { useTheme } from "next-themes";
 import { useStore } from "../../../store/store";
+import { formSchema } from "@/app/Types/Schema";
 const BASE_URL = process.env.NEXT_PUBLIC_SERVER_URL;
 const handleGoogleSignIn = () => {
   window.open(`${BASE_URL}/auth/google/callback`, "_self");
@@ -34,10 +35,6 @@ const handleGoogleSignIn = () => {
 const handleGithubSignIn = () => {
   window.open(`${BASE_URL}/auth/github/callback`, "_self");
 };
-const formSchema = z.object({
-  email: z.string(),
-  password:z.string()
-});
 
 const LoginPage = () => {
   const router = useRouter();

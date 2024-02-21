@@ -1,15 +1,11 @@
 import { ReadonlyRequestCookies } from "next/dist/server/web/spec-extension/adapters/request-cookies";
 import { NextRequest } from "next/server";
-interface User {
-  id: string;
-  fullname: string;
-  email: string; 
-  profile?: string;
-}
+import { User } from "@/app/Types/userInterface";
 export const getServerSideUser = async (
   token: string 
 ) => {
   try {
+    
     const response = await fetch(
       `${process.env.NEXT_PUBLIC_SERVER_URL}/auth/users/me`,
       {
@@ -19,7 +15,7 @@ export const getServerSideUser = async (
         //  cache: 'force-cache' 
       },
     );
-
+      
     if (!response.ok) {
       if (response.status === 403) {
         return null;
@@ -29,9 +25,9 @@ export const getServerSideUser = async (
 
     const data = await response.json();
     const user = data as { user: User | null };
-
+   
     return { user };
   } catch (error) {
     console.log("An unexpected error occurred:", error);
   }
-};
+}; 

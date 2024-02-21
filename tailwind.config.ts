@@ -100,7 +100,7 @@ const config = {
         "neutral/neutral-6": "#c0bfc4",
         "neutral/neutral-7": "#8e8c95",
         "neutral/neutral-8": "#5b5966",
-        "neutral/neutral-9": "#474553", 
+        "neutral/neutral-9": "#474553",
         "neutral/neutral-10": "#292636",
         "neutral/neutral-11": "#211f2f",
         "neutral/neutral-12": "#171426",
@@ -117,6 +117,14 @@ const config = {
         sm: "calc(var(--radius) - 4px)",
       },
       keyframes: {
+        shimmer: {
+          from: {
+            backgroundPosition: "0 0",
+          },
+          to: {
+            backgroundPosition: "-200% 0",
+          },
+        },
         "accordion-down": {
           from: { height: "0" },
           to: { height: "var(--radix-accordion-content-height)" },
@@ -129,6 +137,7 @@ const config = {
       animation: {
         "accordion-down": "accordion-down 0.2s ease-out",
         "accordion-up": "accordion-up 0.2s ease-out",
+        shimmer: "shimmer 2s linear infinite",
       },
     },
   },

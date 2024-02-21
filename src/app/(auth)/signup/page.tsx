@@ -20,6 +20,7 @@ import { useForm } from "react-hook-form";
 import { useTheme } from "next-themes";
 import { cn } from "@/lib/utils";
 import axios from "axios";
+import { signUpSchema } from "@/app/Types/Schema";
 
 const BASE_URL = process.env.NEXT_PUBLIC_SERVER_URL;
 const handleGoogleSignIn = () => {
@@ -29,70 +30,39 @@ const handleGoogleSignIn = () => {
 const handleGithubSignIn = () => {
   window.open(`${BASE_URL}/auth/github/callback`, "_self");
 };
-const formSchema = z
-  .object({
-    fullname: z
-      .string()
-      .transform(fullname => fullname.trim())
-      .refine(fullname => fullname.length >= 2, {
-        message:
-          "Full name must have at least  2 characters after removing spaces",
-      })
-      .refine(fullname => /^[a-zA-Z\s]*$/.test(fullname), {
-        message: "Full name must not contain numbers",
-      }),
-    email: z.string().email("Invalid email address"),
-    password: z
-      .string()
-      .min(
-        8,
-        "Password must have at least 8 characters with alphanumber combination"
-      )
-      .refine(password => /[A-Za-z][0-9]/.test(password), {
-        message: "Password must contain at least one letter",
-      }),
-    confirmPassword: z.string(),
-  })
-  .refine(data => data.password === data.confirmPassword, {
-    message: "Passwords do not match",
-    path: ["confirmPassword"],
-  });
+
 
 const LoginPage = () => {
     const router = useRouter();
-  const {register,handleSubmit,formState:{errors}} = useForm<z.infer<typeof formSchema>>({
-    resolver: zodResolver(formSchema),
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<z.infer<typeof signUpSchema>>({
+    resolver: zodResolver(signUpSchema),
   });
 
-  async function onSubmit(values: z.infer<typeof formSchema>) {
+  async function onSubmit(values: z.infer<typeof signUpSchema>) {
     try {
-      const response = await axios.post(
-        `${BASE_URL}/auth/signup`,
-        values
-      );
-      if(response){
+      const response = await axios.post(`${BASE_URL}/auth/signup`, values);
+      if (response) {
         console.log(response);
-        
+
         toast.success("Verificaiton Mail Send", {
           position: "top-center",
         });
-        router.replace('/verify-email')
-
+        router.replace("/verify-email");
       }
-    
-      
-    
     } catch (error) {
       if (axios.isAxiosError(error) && error.response?.data?.error) {
         toast.error(error.response.data.error, {
-          position: "top-left"
+          position: "top-left",
         });
         console.log("error in post ", error.response.data.error);
       } else {
         console.log("An unexpected error occurred:", error);
       }
     }
-    
   }
   const { theme, setTheme } = useTheme();
   const [mounted, setMounted] = useState(false);

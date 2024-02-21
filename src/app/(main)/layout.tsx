@@ -8,16 +8,23 @@ const DashBoardLayout = async ({ children }: { children: React.ReactNode }) => {
   const token = nextCookies.get("jwt")?.value;
   if (token) {
     const user = await getServerSideUser(token);
+    console.log("The user", user);
 
     if (user) {
       return <main>{children}</main>;
     } else {
       return (
         <main>
-          LOGIN TO CONTINUE <Link href={"/login"}>LOGIN</Link>{" "}
+          USER Authenticaiton Failed Please <Link href={"/login"}>LOGIN</Link>{" "}
         </main>
       );
     }
+  } else {
+    return (
+      <main>
+        LOGIN TO CONTINUE <Link href={"/login"}>LOGIN</Link>{" "}
+      </main>
+    );
   }
 };
 

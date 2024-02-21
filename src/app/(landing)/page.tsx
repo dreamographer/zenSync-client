@@ -1,7 +1,8 @@
 "use client"
-import { ThemeSwitcher } from "@/components/ThemeSwitcher";
+import { ThemeSwitcher } from "@/components/global/ThemeSwitcher";
 import TitleSection from "@/components/landing-page/title-section";
 import FeatureSection from "@/components/landing-page/feature-section";
+import Footer from "@/components/landing-page/Footer";
 import { Button } from "@/components/ui/button";
 import Banner from "../../../public/banner/Cover (2).png";
 import { useTheme } from "next-themes";
@@ -125,6 +126,7 @@ export default function Home() {
           ></div>
         </div>
       </div>
+      <Footer />
     </section>
   );
 }

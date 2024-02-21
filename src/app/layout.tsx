@@ -1,12 +1,12 @@
 import type { Metadata } from "next";
-import { Montserrat } from "next/font/google";
+import { Plus_Jakarta_Sans } from "next/font/google";
 import { getServerSideUser } from "@/lib/token-utils";
 import { cookies } from "next/headers";
 import "./globals.css"
 import { ThemeProvider } from "@/lib/providers/next-theme-provider";
 import { twMerge } from "tailwind-merge";
 import { CookiesProvider } from "next-client-cookies/server";
-const montserrat = Montserrat({ subsets: ["latin"] });
+const JakarthaSans = Plus_Jakarta_Sans({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
   title: "zenSync",
@@ -19,7 +19,7 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body className={twMerge("bg-background", montserrat.className)}>
+      <body className={twMerge("bg-background", JakarthaSans.className)}>
         <ThemeProvider attribute="class" defaultTheme="dark" enableSystem>
           <CookiesProvider>{children}</CookiesProvider>
         </ThemeProvider>
