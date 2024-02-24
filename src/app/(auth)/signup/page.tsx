@@ -20,7 +20,7 @@ import { useForm } from "react-hook-form";
 import { useTheme } from "next-themes";
 import { cn } from "@/lib/utils";
 import axios from "axios";
-import { signUpSchema } from "@/app/Types/Schema";
+import { signUpSchema } from "@/Types/Schema";
 
 const BASE_URL = process.env.NEXT_PUBLIC_SERVER_URL;
 const handleGoogleSignIn = () => {
@@ -47,7 +47,6 @@ const LoginPage = () => {
     try {
       const response = await axios.post(`${BASE_URL}/auth/signup`, values);
       if (response) {
-        console.log(response);
 
         toast.success("Verificaiton Mail Send", {
           position: "top-center",

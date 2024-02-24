@@ -4,7 +4,7 @@ import React, { useEffect, useRef } from "react";
 import { redirect, useRouter } from "next/navigation";
 import axios from "axios";
 import { clearStorage } from "persist-and-sync";
-import { useUserStore, useWorkspaceStore } from "@/store/store";
+import { useFolderStore, useUserStore, useWorkspaceStore } from "@/store/store";
 import { useCookies } from "next-client-cookies";
 import DashboardSetup from "@/components/dashboard/dashboardSetup";
 const Dashboard = () => {
@@ -12,6 +12,7 @@ const Dashboard = () => {
   const setUser = useUserStore(state => state.setUser);
   const workspace = useWorkspaceStore(state => state.workspace); 
   const setWorkspace = useWorkspaceStore(state => state.setWorkspace);
+  const setFolders = useFolderStore(state => state.setFolder);
     // const setWorkspace = useWorkspaceStore(state => state.setWorkspace);
   // subscription DAta
   useEffect(() => {
@@ -28,8 +29,6 @@ const Dashboard = () => {
           throw new Error("Network response was not ok");
         }
         const userData = await response.json();
-        console.log("The User",userData);
-        
 
         setUser(userData); // Set the user data in the store
       } catch (error) {
@@ -45,17 +44,30 @@ const Dashboard = () => {
           }
         );
         const workSpace=await response.json()
-        setWorkspace(workSpace)
+        if(!workSpace.error){
+
+          setWorkspace(workSpace[0])
+        }
+        
       }
-       catch (error) {}
+       catch (error) {
+        console.log(error);
+        
+       }
     };
+    
     fetchUserData();
     fetchWorkspaceData();
+
+      if (!user) {
+         redirect(`/login`);
+      }
   }, []);
-  const router = useRouter();
+
     if (!user) {
-      return
+      return 
     }
+    
   if (!workspace) {
     return(
       <div className="w-full h-screen flex justify-center items-center">

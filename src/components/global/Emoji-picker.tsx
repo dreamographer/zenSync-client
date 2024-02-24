@@ -16,20 +16,20 @@ interface EmojiPickerProps {
 
 export const EmojiPicker: React.FC<EmojiPickerProps> = ({ children, getValue }) => {
   const route = useRouter();
-  const Picker = dynamic(() => import("emoji-picker-react"));
+  const  Picker = dynamic(() => import("emoji-picker-react"));
   const onClick = (selectedEmoji: any) => {
     if (getValue) getValue(selectedEmoji.emoji);
   };
   return (
-    <div className="flex items-center">
+    <div className="flex items-center ">
       <Popover>
         <PopoverTrigger className="cursor-pointer">{children}</PopoverTrigger>
         <PopoverContent
-          className="p-0
-          border-none
+          className=" p-0 
+          border-none  z-[99999]
         "
         >
-          <Picker onEmojiClick={onClick} />
+          <Picker  onEmojiClick={onClick} />
         </PopoverContent>
       </Popover>
     </div>

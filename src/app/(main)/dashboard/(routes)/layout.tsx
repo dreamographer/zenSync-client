@@ -1,30 +1,27 @@
-import "server-only";
 import React from "react";
 import { getServerSideUser } from "@/lib/token-utils";
 import { cookies } from "next/headers";
 import Link from "next/link";
-import { Toaster } from "sonner";
+import { Navigation } from "@/components/dashboard/Naviagation";
+import { redirect } from "next/navigation";
 const DashBoardLayout = async ({ children }: { children: React.ReactNode }) => {
   const nextCookies = cookies();
   const token = nextCookies.get("jwt")?.value;
   if (token) {
     const user = await getServerSideUser(token);
-    console.log("The user", user);
-
-    if (user) {
+    if(user){
       return (
-        <main>
-          <Toaster richColors />
-          {children}
-        </main>
+        <div className="h-full flex dark:bg-[#1F1F1F]">
+          <Navigation />
+          <main className="flex-1 h-full overflow-y-auto">{children}</main>
+        </div>
       );
-    } else {
-      return (
-        <main>
-          USER Authenticaiton Failed Please <Link href={"/login"}>LOGIN</Link>{" "}
-        </main>
-      );
+    }else{
+      redirect('/')
     }
+
+
+  
   } else {
     return (
       <main>

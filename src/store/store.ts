@@ -1,7 +1,8 @@
-import { User } from "@/app/Types/userType";
+import { User } from "@/Types/userInterface";
 import { persistNSync } from "persist-and-sync";
 import { create } from "zustand";
-import { Workspace } from "@/app/Types/workspaceType";
+import { Workspace } from "@/Types/workspaceType";
+import { Folder } from "@/Types/folderType";
 type userState = {
   user: User | null;
   expiry: string | null;
@@ -42,3 +43,42 @@ export const useWorkspaceStore = create<workspaceState>(
   )
 );
 
+
+type FolderState = {
+  folder: Folder[];
+  setFolder: (folder: Folder | Folder[]|null) => void;
+};
+
+export const useFolderStore = create<FolderState>(
+
+    set => ({
+      folder: [],
+      setFolder: folder => {
+        set(state => {
+          if (Array.isArray(folder)) {
+            // If folder is an array, spread it into the state
+            const newFolders = folder.filter(
+              f =>
+                !state.folder.some(existingFolder => existingFolder.id === f.id)
+            );
+            return {
+              folder: [...state.folder, ...newFolders],
+            };
+          } else if (folder !== null) {
+
+            if (
+              !state.folder.some(
+                existingFolder => existingFolder.id === folder.id
+              )
+            ) {
+              return {
+                folder: [...state.folder, folder],
+              };
+            }
+          }
+          return state; 
+        });
+      },
+    }),
+  
+);

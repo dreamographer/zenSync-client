@@ -27,7 +27,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { useTheme } from "next-themes";
 import { useUserStore } from "../../../store/store";
-import { formSchema } from "@/app/Types/Schema";
+import { formSchema } from "@/Types/Schema";
 const BASE_URL = process.env.NEXT_PUBLIC_SERVER_URL;
 const handleGoogleSignIn = () => {
   window.open(`${BASE_URL}/auth/google/callback`, "_self");
@@ -54,7 +54,6 @@ const LoginPage = () => {
       const response = await axios.post(`${BASE_URL}/auth/login`, values, {
         withCredentials: true,
       });
-      console.log(response.data.user);
       const user = {
         id: response.data.user.id,
       fullname: response.data.user.fullname,
@@ -63,7 +62,6 @@ const LoginPage = () => {
       verified: response.data.user.verified,
       };
       
-      console.log("user",user);
       
       if (response) {
         toast.success("Login successful!", {

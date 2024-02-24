@@ -1,6 +1,6 @@
 'use client'
-import React, { useState } from "react";
-import { User } from "@/app/Types/userType";
+import React, { useEffect, useState } from "react";
+import { User } from "@/Types/userInterface";
 import {
   Card,
   CardContent,
@@ -13,18 +13,18 @@ import { Label } from "../ui/label";
 import { Input } from "../ui/input";
 import { FieldValue, SubmitHandler, useForm } from "react-hook-form";
 import { z } from "zod";
-import { CreateWorkspaceFormSchema } from "@/app/Types/Schema";
+import { CreateWorkspaceFormSchema } from "@/Types/Schema";
 import { Button } from "../ui/button";
 import Loader from "../global/Loader";
 import { useRouter } from "next/navigation";
 import { v4 } from "uuid";
 import axios from "axios";
 import { toast } from "sonner";
-import { useWorkspaceStore } from "@/store/store";
+import {  useWorkspaceStore } from "@/store/store";
 const BASE_URL = process.env.NEXT_PUBLIC_SERVER_URL;
 interface DashboardSetupProps {
   user: User;
-  subscription: {} | null; //type of the subscription
+  subscription: {} | null; 
 }
 
 const DashboardSetup: React.FC<DashboardSetupProps> = ({
@@ -32,6 +32,7 @@ const DashboardSetup: React.FC<DashboardSetupProps> = ({
   user,
 }) => {
   const workspace = useWorkspaceStore(state => state.workspace);
+  const [workspaceData,setWorkspaceData]=useState(null)
 
   const setWorkspace = useWorkspaceStore(state => state.setWorkspace);
   const router = useRouter();
@@ -50,26 +51,25 @@ const DashboardSetup: React.FC<DashboardSetupProps> = ({
     },
   });
 
+  useEffect(()=>{
+      setWorkspace(workspaceData);
+      if (workspace?.id) router.replace(`/dashboard/${workspace?.id}`);
+  },[workspaceData])
   const onSubmit: SubmitHandler<
     z.infer<typeof CreateWorkspaceFormSchema>
   > = async value => {
   
-    // 
-    console.log(value)
     try {
       const response = await axios.post(`${BASE_URL}/workspace/`, value, {
         withCredentials: true,
       });
       if (response) {
+        
         toast.success("Workspace Created", {
           position: "top-center",
         });
-         setTimeout(() => {
-           useWorkspaceStore.getState().setWorkspace(response.data);
-           const workspace = useWorkspaceStore.getState().workspace;
-           console.log(workspace);
-           router.push(`/dashboard/${workspace?.id}`);
-         }, 1000);
+
+        setWorkspaceData(response.data);
       }
     } catch (error) {
       console.log(error, "Error");
@@ -90,6 +90,7 @@ const DashboardSetup: React.FC<DashboardSetupProps> = ({
       className=" md:w-2/3
       h-screen
       sm:h-auto
+      relative
   "
     >
       <CardHeader>
@@ -107,8 +108,8 @@ const DashboardSetup: React.FC<DashboardSetupProps> = ({
             items-center
             gap-4"
             >
-              <div className="text-5xl">
-                <EmojiPicker getValue={emoji => setSelectedEmoji(emoji)}>
+              <div className="text-5xl  ">
+                <EmojiPicker  getValue={emoji => setSelectedEmoji(emoji)}>
                   {selectedEmoji}
                 </EmojiPicker>
               </div>
@@ -135,40 +136,7 @@ const DashboardSetup: React.FC<DashboardSetupProps> = ({
                 </small>
               </div>
             </div>
-            {/* Logo for workspace */}
-            {/* <div>
-              <Label
-                htmlFor="logo"
-                className="text-sm
-                  text-muted-foreground
-                "
-              >
-                Workspace Logo
-              </Label>
-              <Input
-                id="logo"
-                type="file"
-                accept="image/*"
-                placeholder="Workspace Name"
-                // disabled={isLoading || subscription?.status !== 'active'}
-                {...register("logo", {
-                  required: false,
-                })}
-              />
-              <small className="text-red-600">
-                {errors?.logo?.message?.toString()}
-              </small>
-              {subscription?.status !== "active" && (
-                <small
-                  className="
-                  text-muted-foreground
-                  block
-              "
-                >
-                  To customize your workspace, you need to be on a Pro Plan
-                </small>
-              )}
-            </div> */}
+          {/* logo update */}
             <div className="self-end">
               <button
                 disabled={isLoading}
