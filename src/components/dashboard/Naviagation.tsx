@@ -32,12 +32,13 @@ import { Item } from "./item";
 import { SubmitHandler } from "react-hook-form";
 import { CreateWorkspaceFormSchema } from "@/Types/Schema";
 import { z } from "zod";
+import { DocumentList } from "./documentList";
 const BASE_URL = process.env.NEXT_PUBLIC_SERVER_URL;
 
 export const Navigation = () => {
   const workspace = useWorkspaceStore(state => state.workspace);
   const user = useUserStore(state => state.user);
-  const folder = useFolderStore(state => state.folder);
+  const folder = useFolderStore(state => state.folder); 
   const params = useParams();
   const pathname = usePathname();
   const isMobile = useMediaQuery("(max-width: 768px)");
@@ -59,18 +60,19 @@ export const Navigation = () => {
   useEffect(() => {
     const fetchFolderData = async () => {
       try {
-        console.log(workspace?.id);
+      
 
         const response = await fetch(
           `${process.env.NEXT_PUBLIC_SERVER_URL}/folder/${workspace?.id}`,
           {
             credentials: "include",
+            
           }
         );
         const Folders = await response.json();
-        console.log(Folders);
+      
 
-        if (!Folders.error) {
+        if (!Folders.message) {
           setFolder(Folders);
         }
       } catch (error) {
@@ -219,17 +221,15 @@ export const Navigation = () => {
 
         <div>
           <UserItem />
-          {folder?.map((ele, i) => (
-            <h1 key={i} >{ele?.title}</h1>
-          ))}
           <Item
             onClick={handleFolderCreate}
-            label="New page"
+            label="New Folder"
             icon={PlusCircle}
           />
+          <Item label="Settings" icon={Settings} onClick={()=>{}} />
         </div>
         <div className="mt-4">
-          {/* <DocumentList /> */}
+          <DocumentList />
           <Item onClick={handleFolderCreate} icon={Plus} label="Add a page" />
         </div>
         <div
