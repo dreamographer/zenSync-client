@@ -20,6 +20,8 @@ const LogoutButton = () => {
     if (response) {
       clearStorage("userInfo", "localStorage");
       clearStorage("workspaceInfo", "localStorage");
+
+
       setFolder(null);
       setUser(null);
       setWorkspace(null);

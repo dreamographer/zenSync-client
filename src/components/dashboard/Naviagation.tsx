@@ -41,7 +41,7 @@ const BASE_URL = process.env.NEXT_PUBLIC_SERVER_URL;
 
 export const Navigation = () => {
   const user = useUserStore(state => state.user);
-  const folder = useFolderStore(state => state.folder); 
+
   const params = useParams();
   const pathname = usePathname();
   const isMobile = useMediaQuery("(max-width: 768px)");
@@ -66,13 +66,12 @@ export const Navigation = () => {
     privateWorkspaces = allWorkspaces?.filter(
       ele => ele.workspaceType == "private"
     );
-    let sharedWorkspaces = allWorkspaces?.filter(
-      ele => ele.workspaceType == "shared"
+    sharedWorkspaces = allWorkspaces?.filter(
+      ele => ele.workspaceType == "shared" 
     );
   }, [workspaceId]);
 
   useEffect(() => {
-    setFolder(folderData);
     setFolder(folderData);
   }, [folderData]);
 
@@ -235,6 +234,7 @@ export const Navigation = () => {
         </div>
 
         <WorkspaceDropdown
+          close={collapse}
           defaultValue={workspace as Workspace}
           privateWorkspaces={privateWorkspaces as Workspace[]}
           sharedWorkspaces={sharedWorkspaces as Workspace[]}
@@ -249,7 +249,7 @@ export const Navigation = () => {
           <Item label="Settings" icon={Settings} onClick={() => {}} />
         </div>
         <div className="mt-4">
-          <DocumentList workspaceId={workspaceId}/>
+          <DocumentList workspaceId={workspaceId} />
         </div>
         <div
           onMouseDown={handleMouseDown}

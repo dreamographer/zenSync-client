@@ -24,14 +24,17 @@ import { useUserStore, useWorkspaceStore } from "@/store/store";
 import axios from "axios";
 import { Workspace } from "@/Types/workspaceType";
 const BASE_URL = process.env.NEXT_PUBLIC_SERVER_URL;
-const WorkspaceCreator = () => {
-  const  user  = useUserStore(state=>state.user);
+interface WorkspaceCreatorProps{
+  close:()=>void
+}
+const WorkspaceCreator: React.FC<WorkspaceCreatorProps> = ({close}) => {
+  const user = useUserStore(state => state.user);
   const router = useRouter();
   const [permissions, setPermissions] = useState("private");
   const [title, setTitle] = useState("");
   const [collaborators, setCollaborators] = useState<User[]>([]);
   const [isLoading, setIsLoading] = useState(false);
-const setWorkspace=useWorkspaceStore(state=>state.setWorkspace)
+  const setWorkspace = useWorkspaceStore(state => state.setWorkspace);
   const addCollaborator = (user: User) => {
     setCollaborators([...collaborators, user]);
   };
@@ -46,7 +49,7 @@ const setWorkspace=useWorkspaceStore(state=>state.setWorkspace)
         withCredentials: true,
       });
       if (response) {
-        return response.data
+        return response.data;
       }
     } catch (error) {
       console.log(error, "Error");
@@ -61,12 +64,14 @@ const setWorkspace=useWorkspaceStore(state=>state.setWorkspace)
     }
   };
 
-
-  const addCollaborators = async (collaborators: User[],workspaceId:string) => {
+  const addCollaborators = async (
+    collaborators: User[],
+    workspaceId: string
+  ) => {
     try {
-         const data = {
-           collaborators:collaborators
-         };
+      const data = {
+        collaborators: collaborators,
+      };
       const response = await axios.post(
         `${BASE_URL}/workspace/collaborators/${workspaceId}`,
         data,
@@ -90,8 +95,6 @@ const setWorkspace=useWorkspaceStore(state=>state.setWorkspace)
     }
   };
 
-
-
   const createItem = async () => {
     setIsLoading(true);
     if (user?.id) {
@@ -102,22 +105,24 @@ const setWorkspace=useWorkspaceStore(state=>state.setWorkspace)
       };
       if (permissions === "private") {
         const workspace = await createWorkspace(newWorkspace);
-        setWorkspace(workspace)
+        setWorkspace(workspace);
         toast.success("Workspace Created", {
-            position: "top-center",
+          position: "top-center",
         });
         if (workspace?.id) router.replace(`/dashboard/${workspace?.id}`);
       }
       if (permissions === "shared") {
-        const workspace=await createWorkspace(newWorkspace);
+        const workspace = await createWorkspace(newWorkspace);
+        setWorkspace(workspace);
         await addCollaborators(collaborators, workspace.id);
         if (workspace?.id) router.replace(`/dashboard/${workspace?.id}`);
-    
+
         toast.success("Workspace Created", {
           position: "top-center",
         });
       }
     }
+    close()
     setIsLoading(false);
   };
 

@@ -56,24 +56,7 @@ export const Item = ({
     onExpand?.();
   };
 
-  const onCreate = (event: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
-    event.stopPropagation();
-    if (!id) return;
-    // const promise = create({ title: "Untitled", parentDocument: id }).then(
-    //   documentId => {
-    //     if (!expanded) {
-    //       onExpand?.();
-    //     }
-    //     router.push(`/documents/${documentId}`);
-    //   }
-    // );
 
-    // toast.promise(promise, {
-    //   loading: "Creating a new note...",
-    //   success: "New note created!",
-    //   error: "Failed to create a new note.",
-    // });
-  };
 
 
   return (

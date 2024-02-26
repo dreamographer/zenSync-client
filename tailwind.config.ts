@@ -18,6 +18,10 @@ const config = {
       },
     },
     extend: {
+      scrollBehavior: {
+        'smooth': 'smooth',
+        'auto': 'auto',
+      },
       colors: {
         border: "hsl(var(--border))",
         input: "hsl(var(--input))",

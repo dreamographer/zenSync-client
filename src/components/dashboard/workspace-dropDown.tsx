@@ -8,33 +8,28 @@ import { Workspace } from "@/Types/workspaceType";
 import CustomDialogTrigger from "../global/custom-dialog-trigger";
 
 interface WorkspaceDropdownProps {
+  close:()=>void
   privateWorkspaces: Workspace[] | [];
   sharedWorkspaces: Workspace[] | [];
-  defaultValue: Workspace | undefined;
+  defaultValue: Workspace ;
 }
 
 const WorkspaceDropdown: React.FC<WorkspaceDropdownProps> = ({
+  close,
   privateWorkspaces,
   sharedWorkspaces,
   defaultValue,
 }) => {
-    
   const [selectedOption, setSelectedOption] = useState(defaultValue);
   const [isOpen, setIsOpen] = useState(false);
-
-  
+  useEffect(() => {
+    setSelectedOption(defaultValue);
+  }, [defaultValue]);
 
   const handleSelect = (option: Workspace) => {
     setSelectedOption(option);
     setIsOpen(false);
   };
-
-//   useEffect(() => {
-//     const findSelectedWorkspace = state.workspaces.find(
-//       workspace => workspace.id === defaultValue?.id
-//     );
-//     if (findSelectedWorkspace) setSelectedOption(findSelectedWorkspace);
-//   }, [state, defaultValue]);
 
   return (
     <div
@@ -99,10 +94,13 @@ const WorkspaceDropdown: React.FC<WorkspaceDropdownProps> = ({
             </div>
             <CustomDialogTrigger
               header="Create A Workspace"
-              content={<WorkspaceCreator />}
+              content={<WorkspaceCreator close={()=>setIsOpen(!isOpen)} />}
               description="Workspaces give you the power to collaborate with others. You can change your workspace privacy settings after creating the workspace too."
             >
               <div
+                onClick={() => {
+                  close();
+                }}
                 className="flex 
               transition-all 
               hover:bg-muted 

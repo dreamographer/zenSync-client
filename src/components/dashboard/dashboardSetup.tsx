@@ -53,7 +53,7 @@ const DashboardSetup: React.FC<DashboardSetupProps> = ({
 
   useEffect(()=>{
       setWorkspace(workspaceData);
-      if (workspace) router.replace(`/dashboard/${workspace[0]?.id}`);
+      if (workspace.length!=0) router.replace(`/dashboard/${workspace[0]?.id}`);
   },[workspaceData])
   const onSubmit: SubmitHandler<
     z.infer<typeof CreateWorkspaceFormSchema>

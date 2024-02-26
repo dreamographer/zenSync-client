@@ -15,7 +15,7 @@ import {
 
 import { useUserStore, useWorkspaceStore } from "@/store/store";
 import { useRouter } from "next/navigation";
-import Logout from "./Logout";
+import Logout from "../global/Logout";
 
 export const UserItem = () => {
 

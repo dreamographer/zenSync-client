@@ -68,14 +68,14 @@ const Dashboard = () => {
       return 
     }
     
-  if (!workspace) {
-    return(
+  if (workspace.length == 0 || !workspace[0].id) {
+    return (
       <div className="w-full h-screen flex justify-center items-center">
         <DashboardSetup subscription={""} user={user} />
       </div>
-    )
-  }else{
-  redirect(`/dashboard/${workspace[0].id}`)
+    );
+  } else {
+    redirect(`/dashboard/${workspace[0].id}`);
   } 
 };
 
