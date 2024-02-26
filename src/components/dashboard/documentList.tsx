@@ -12,13 +12,13 @@ import { cn } from "@/lib/utils";
 import { Item } from "./item";
 import { useFolderStore } from "@/store/store";
 
-interface DocumentListProps {
-  parentFolderId?: string;
+interface DocumentListProps { 
+  workspaceId: string;
   level?: number;
   data?: string; //cocument data of the file
 }
 
-export const DocumentList = ({ parentFolderId, level = 0 }: DocumentListProps) => {
+export const DocumentList = ({ workspaceId, level = 0 }: DocumentListProps) => {
   const params = useParams();
   const router = useRouter();
   const [expanded, setExpanded] = useState<Record<string, boolean>>({});
@@ -29,8 +29,9 @@ export const DocumentList = ({ parentFolderId, level = 0 }: DocumentListProps) =
       [documentId]: !prevExpanded[documentId],
     }));
   };
-  const documents = useFolderStore(state => state.folder);
-  
+  const allDocuments = useFolderStore(state => state.folder);
+  const documents = allDocuments.filter(ele => ele.workspaceId == workspaceId);
+
   const onRedirect = (documentId: string) => {
     router.push(`/documents/${documentId}`);
   };
@@ -51,18 +52,6 @@ export const DocumentList = ({ parentFolderId, level = 0 }: DocumentListProps) =
 
   return (
     <>
-      <p
-        style={{
-          paddingLeft: level ? `${level * 12 + 25}px` : undefined,
-        }}
-        className={cn(
-          "hidden text-sm font-medium text-muted-foreground/80",
-          expanded && "last:block",
-          level === 0 && "hidden"
-        )}
-      >
-        No Files inside
-      </p>
       {documents.map(document => (
         <div key={document.id}>
           <Item
@@ -70,10 +59,8 @@ export const DocumentList = ({ parentFolderId, level = 0 }: DocumentListProps) =
             onClick={() => onRedirect(document.id)}
             label={document.title}
             icon={Folder}
-            // documentIcon={document.icon}
             active={params.documentId === document.id}
             onExpand={() => onExpand(document.id)}
-            expanded={expanded[document.id]}
           />
           {expanded[document.id] && (
             <Item

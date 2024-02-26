@@ -46,7 +46,7 @@ const Dashboard = () => {
         const workSpace=await response.json()
         if(!workSpace.error){
 
-          setWorkspace(workSpace[0])
+          setWorkspace(workSpace)
         }
         
       }
@@ -75,7 +75,7 @@ const Dashboard = () => {
       </div>
     )
   }else{
-  redirect(`/dashboard/${workspace.id}`)
+  redirect(`/dashboard/${workspace[0].id}`)
   } 
 };
 

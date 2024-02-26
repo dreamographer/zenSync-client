@@ -29,20 +29,22 @@ import { toast } from "sonner";
 import DashboardSetup from "./dashboardSetup";
 import { User } from "@/Types/userInterface";
 import { Item } from "./item";
+
 import { SubmitHandler } from "react-hook-form";
 import { CreateWorkspaceFormSchema } from "@/Types/Schema";
 import { z } from "zod";
 import { DocumentList } from "./documentList";
+import WorkspaceCreator from "./workspace-creator";
+import WorkspaceDropdown from "./workspace-dropDown";
+import { Workspace } from "@/Types/workspaceType";
 const BASE_URL = process.env.NEXT_PUBLIC_SERVER_URL;
 
 export const Navigation = () => {
-  const workspace = useWorkspaceStore(state => state.workspace);
   const user = useUserStore(state => state.user);
   const folder = useFolderStore(state => state.folder); 
   const params = useParams();
   const pathname = usePathname();
   const isMobile = useMediaQuery("(max-width: 768px)");
-
   const isResizingRef = useRef(false);
   const sidebarRef = useRef<ElementRef<"aside">>(null);
   const navbarRef = useRef<ElementRef<"div">>(null);
@@ -51,6 +53,24 @@ export const Navigation = () => {
   const router = useRouter();
   const [folderData, setFolderData] = useState(null);
   const setFolder = useFolderStore(state => state.setFolder);
+  let workspaceId = params?.workspaceId as string;
+  let allWorkspaces= useWorkspaceStore(state => state.workspace); 
+  let workspace =allWorkspaces?.find(ele=>ele.id==workspaceId)
+  let privateWorkspaces=allWorkspaces?.filter(ele=>ele.workspaceType=='private')
+  let sharedWorkspaces = allWorkspaces?.filter(
+    ele => ele.workspaceType == "shared"
+  );
+
+  useEffect(() => {
+    workspace = allWorkspaces?.find(ele => ele.id == workspaceId);
+    privateWorkspaces = allWorkspaces?.filter(
+      ele => ele.workspaceType == "private"
+    );
+    let sharedWorkspaces = allWorkspaces?.filter(
+      ele => ele.workspaceType == "shared"
+    );
+  }, [workspaceId]);
+
   useEffect(() => {
     setFolder(folderData);
     setFolder(folderData);
@@ -60,17 +80,13 @@ export const Navigation = () => {
   useEffect(() => {
     const fetchFolderData = async () => {
       try {
-      
-
         const response = await fetch(
-          `${process.env.NEXT_PUBLIC_SERVER_URL}/folder/${workspace?.id}`,
+          `${process.env.NEXT_PUBLIC_SERVER_URL}/folder/${workspaceId}`,
           {
             credentials: "include",
-            
           }
         );
         const Folders = await response.json();
-      
 
         if (!Folders.message) {
           setFolder(Folders);
@@ -80,13 +96,13 @@ export const Navigation = () => {
       }
     };
     fetchFolderData();
-  }, [workspace]);
+  }, [workspaceId]);
 
 
 
   useEffect(() => {
-    if (workspace?.id) router.replace(`/dashboard/${workspace?.id}`);
-  }, [workspace]);
+    router.replace(`/dashboard/${workspaceId}`);
+  }, [workspaceId]);
   useEffect(() => {
     if (isMobile) {
       collapse();
@@ -149,12 +165,11 @@ export const Navigation = () => {
       setTimeout(() => setIsResetting(false), 300);
     }
   };
-
+ 
   const collapse = () => {
     if (sidebarRef.current && navbarRef.current) {
       setIsCollapsed(true);
       setIsResetting(true);
-
       sidebarRef.current.style.width = "0";
       navbarRef.current.style.setProperty("width", "100%");
       navbarRef.current.style.setProperty("left", "0");
@@ -212,13 +227,18 @@ export const Navigation = () => {
           onClick={collapse}
           role="button"
           className={cn(
-            "h-6 w-6 text-muted-foreground rounded-sm hover:bg-neutral-300 dark:hover:bg-neutral-600 absolute top-3 right-2 opacity-0 group-hover/sidebar:opacity-100 transition",
+            "h-6 w-6 z-50 text-muted-foreground rounded-sm hover:bg-neutral-300 dark:hover:bg-neutral-600 absolute top-3 right-2 opacity-0 group-hover/sidebar:opacity-100 transition",
             isMobile && "opacity-100"
           )}
         >
-          <ChevronsLeft className="h-6 w-6" />
+          <ChevronsLeft className="h-6 w-6 " />
         </div>
 
+        <WorkspaceDropdown
+          defaultValue={workspace as Workspace}
+          privateWorkspaces={privateWorkspaces as Workspace[]}
+          sharedWorkspaces={sharedWorkspaces as Workspace[]}
+        />
         <div>
           <UserItem />
           <Item
@@ -226,11 +246,10 @@ export const Navigation = () => {
             label="New Folder"
             icon={PlusCircle}
           />
-          <Item label="Settings" icon={Settings} onClick={()=>{}} />
+          <Item label="Settings" icon={Settings} onClick={() => {}} />
         </div>
         <div className="mt-4">
-          <DocumentList />
-          <Item onClick={handleFolderCreate} icon={Plus} label="Add a page" />
+          <DocumentList workspaceId={workspaceId}/>
         </div>
         <div
           onMouseDown={handleMouseDown}
@@ -260,19 +279,6 @@ export const Navigation = () => {
           )}
         </nav>
       </div>
-      {/* {CreateModal && (
-        <div className="w-full h-full bg-black/30 backdrop-blur-sm absolute z-[99999]  flex justify-center items-center">
-          <div className="relative   flex justify-center items-center">
-            <DashboardSetup subscription={""} user={user as User} />
-            <p
-              onClick={() => setCreateModal(false)}
-              className="absolute top-0 cursor-pointer  right-36"
-            >
-              X
-            </p>
-          </div>
-        </div>
-      )} */}
     </>
   );
 };

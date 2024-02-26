@@ -27,16 +27,39 @@ export const useUserStore = create<userState>(
 
 
 type workspaceState = {
-  workspace: Workspace | null;
-  setWorkspace: (workspace: Workspace|null) => void;
+  workspace: Workspace[] | [];
+  setWorkspace: (workspace: Workspace[] | null | Workspace) => void;
 };
 
 export const useWorkspaceStore = create<workspaceState>(
   persistNSync(
     set => ({
-      workspace: null, 
+      workspace: [], 
       setWorkspace: workspace => {
-        set({ workspace });
+      set(state => {
+        if (Array.isArray(workspace)) {
+          const newFolders = workspace.filter(
+            f =>
+              !state.workspace.some(
+                existingFolder => existingFolder.id === f.id
+              )
+          );
+          return {
+            workspace: [...state.workspace, ...newFolders],
+          };
+        } else if (workspace !== null) {
+          if (
+            !state.workspace.some(
+              existingFolder => existingFolder.id === workspace.id
+            )
+          ) {
+            return {
+              workspace: [...state.workspace, workspace],
+          };
+          }
+        }
+        return state;
+      });
       },
     }),
     { name: "workspaceInfo", storage: "localStorage" }
@@ -56,7 +79,6 @@ export const useFolderStore = create<FolderState>(
       setFolder: folder => {
         set(state => {
           if (Array.isArray(folder)) {
-            // If folder is an array, spread it into the state
             const newFolders = folder.filter(
               f =>
                 !state.folder.some(existingFolder => existingFolder.id === f.id)

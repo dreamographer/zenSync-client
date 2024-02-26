@@ -32,9 +32,9 @@ const DashboardSetup: React.FC<DashboardSetupProps> = ({
   user,
 }) => {
   const workspace = useWorkspaceStore(state => state.workspace);
+  const setWorkspace = useWorkspaceStore(state => state.setWorkspace);
   const [workspaceData,setWorkspaceData]=useState(null)
 
-  const setWorkspace = useWorkspaceStore(state => state.setWorkspace);
   const router = useRouter();
   const [selectedEmoji, setSelectedEmoji] = useState("💼");
 
@@ -53,7 +53,7 @@ const DashboardSetup: React.FC<DashboardSetupProps> = ({
 
   useEffect(()=>{
       setWorkspace(workspaceData);
-      if (workspace?.id) router.replace(`/dashboard/${workspace?.id}`);
+      if (workspace) router.replace(`/dashboard/${workspace[0]?.id}`);
   },[workspaceData])
   const onSubmit: SubmitHandler<
     z.infer<typeof CreateWorkspaceFormSchema>
