@@ -51,7 +51,6 @@ export const Navigation = () => {
   const [isResetting, setIsResetting] = useState(false);
   const [isCollapsed, setIsCollapsed] = useState(isMobile);
   const router = useRouter();
-  const [folderData, setFolderData] = useState(null);
   const setFolder = useFolderStore(state => state.setFolder);
   let workspaceId = params?.workspaceId as string;
   let allWorkspaces= useWorkspaceStore(state => state.workspace); 
@@ -71,9 +70,6 @@ export const Navigation = () => {
     );
   }, [workspaceId]);
 
-  useEffect(() => {
-    setFolder(folderData);
-  }, [folderData]);
 
   
   useEffect(() => {
@@ -191,8 +187,7 @@ export const Navigation = () => {
           toast.success("Folder Created", {
             position: "top-center",
           });
-
-          setFolderData(response.data);
+            setFolder(response.data);
         }
       } catch (error) {
         console.log(error, "Error");

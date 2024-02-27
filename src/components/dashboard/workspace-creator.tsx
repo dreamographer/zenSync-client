@@ -65,7 +65,7 @@ const WorkspaceCreator: React.FC<WorkspaceCreatorProps> = ({close}) => {
   };
 
   const addCollaborators = async (
-    collaborators: User[],
+    collaborators: string[],
     workspaceId: string
   ) => {
     try {
@@ -114,7 +114,8 @@ const WorkspaceCreator: React.FC<WorkspaceCreatorProps> = ({close}) => {
       if (permissions === "shared") {
         const workspace = await createWorkspace(newWorkspace);
         setWorkspace(workspace);
-        await addCollaborators(collaborators, workspace.id);
+        const ids=collaborators.map(user=>user.id)
+        await addCollaborators(ids, workspace.id);
         if (workspace?.id) router.replace(`/dashboard/${workspace?.id}`);
 
         toast.success("Workspace Created", {

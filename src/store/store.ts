@@ -3,6 +3,7 @@ import { persistNSync } from "persist-and-sync";
 import { create } from "zustand";
 import { Workspace } from "@/Types/workspaceType";
 import { Folder } from "@/Types/folderType";
+import { File } from "@/Types/fileType";
 type userState = {
   user: User | null;
   expiry: string | null;
@@ -73,7 +74,6 @@ type FolderState = {
 };
 
 export const useFolderStore = create<FolderState>(
-
     set => ({
       folder: [],
       setFolder: folder => {
@@ -104,3 +104,15 @@ export const useFolderStore = create<FolderState>(
     }),
   
 );
+
+type FileState = {
+  file: File[];
+  setFile: (folder: File[]) => void;
+};
+
+export const useFileStore = create<FileState>(set => ({
+  file: [],
+  setFile: file => {
+    set({file});
+  },
+}));

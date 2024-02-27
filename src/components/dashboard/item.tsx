@@ -6,6 +6,8 @@ import {
   LucideIcon,
   MoreHorizontal,
   Plus,
+  PlusIcon,
+  File,
   Trash,
 } from "lucide-react";
 import { useRouter } from "next/navigation";
@@ -20,10 +22,15 @@ import {
   DropdownMenuItem,
   DropdownMenuSeparator,
 } from "@/components/ui/dropdown-menu";
-import { useUserStore } from "@/store/store";
+import { useFileStore, useUserStore } from "@/store/store";
+import TooltipComponent from "../global/tool-tip";
 
+import { useEffect, useState } from "react";
+import axios from "axios";
+import { File as fileType } from "@/Types/fileType";
+const BASE_URL = process.env.NEXT_PUBLIC_SERVER_URL;
 interface ItemProps {
-  id?:string;
+  id?: string;
   documentIcon?: string;
   active?: boolean;
   expanded?: boolean;
@@ -41,13 +48,37 @@ export const Item = ({
   icon: Icon,
   active,
   documentIcon,
-  type = 'Folder',
+  type,
   onExpand,
   expanded,
 }: ItemProps) => {
-  
+  const [files, setFiles] = useState<fileType[] | []>([]);
+  const [isEditing, setIsEditing] = useState(false);
   const ChevronIcon = expanded ? ChevronDown : ChevronRight;
 
+  useEffect(() => {
+    const fetchFolderData = async () => {
+      try {
+        const response = await fetch(
+          `${process.env.NEXT_PUBLIC_SERVER_URL}/file/folder/${id}`,
+          {
+            credentials: "include",
+          }
+        );
+        const Files = await response.json();
+        
+
+        if (!Files.message) {
+          setFiles(Files);
+        }
+      } catch (error) {
+        console.log(error);
+      }
+    };
+    if (id) {
+      fetchFolderData();
+    }
+  }, [id]);
 
   const handleExpand = (
     event: React.MouseEvent<HTMLDivElement, MouseEvent>
@@ -56,50 +87,94 @@ export const Item = ({
     onExpand?.();
   };
 
+  const addNewFile = async () => {
+    try {
+      const data = {
+        title: "Untitled",
+        folderId: id,
+      };
 
+      const response = await axios.post(`${BASE_URL}/file/`, data, {
+        withCredentials: true,
+      });
+      if (response) {
+        toast.success("File Created", {
+          position: "top-center",
+        });
 
+        setFiles(state => [...state, response.data]);
+      }
+    } catch (error) {
+      console.log(error, "Error");
+      if (axios.isAxiosError(error) && error.response?.data?.message) {
+        toast.error(error.response.data.message, {
+          position: "top-left",
+        });
+        console.log("error in Workspace creation", error.response.data.message);
+      } else {
+        console.log("An unexpected error occurred:", error);
+      }
+    }
+  };
 
   return (
-    <div
-      onClick={onClick}
-      role="button"
-      style={{
-        paddingLeft: type === "File" ? `40px` : "12px",
-      }}
-      className={cn(
-        "group min-h-[27px] text-sm py-1 pr-3 w-full hover:bg-primary/5 flex items-center text-muted-foreground font-medium",
-        active && "bg-primary/5 text-primary"
-      )}
-    >
-      {type === "Folder" && (
-        <div
-          role="button"
-          className="h-full rounded-sm hover:bg-neutral-300 dark:hover:bg-neutral-600 mr-1"
-          onClick={handleExpand}
-        >
-          <ChevronIcon className="h-4 w-4 shrink-0 text-muted-foreground/50" />
-        </div>
-      )}
-      {documentIcon ? (
-        <div className="shrink-0 mr-2 text-[18px]">{documentIcon}</div>
-      ) : (
-        <Icon className="shrink-0 h-[18px] w-[18px] mr-2 text-muted-foreground" />
-      )}
-      <span className="truncate">{label}</span>
-    </div>
-  );
-};
-
-Item.Skeleton = function ItemSkeleton({ level }: { level?: number }) {
-  return (
-    <div
-      style={{
-        paddingLeft: level ? `${level * 12 + 25}px` : "12px",
-      }}
-      className="flex gap-x-2 py-[3px]"
-    >
-      <Skeleton className="h-4 w-4" />
-      <Skeleton className="h-4 w-[30%]" />
-    </div>
+    <>
+      <div
+        role="button"
+        style={{
+          paddingLeft: type === "File" ? `40px` : "12px",
+        }}
+        className={cn(
+          "group group/delete min-h-[27px] text-sm py-1 pr-3 w-full hover:bg-primary/5 flex items-center  text-muted-foreground font-medium",
+          active && "bg-primary/5 text-primary"
+        )}
+      >
+        {type === "Folder" && (
+          <div
+            role="button"
+            className="h-full rounded-sm hover:bg-neutral-300 dark:hover:bg-neutral-600 mr-1"
+            onClick={handleExpand}
+          >
+            <ChevronIcon className="h-4 w-4 shrink-0 text-muted-foreground/50" />
+          </div>
+        )}
+        {documentIcon ? (
+          <div className="shrink-0 mr-2 text-[18px]">{documentIcon}</div>
+        ) : (
+          <Icon className="shrink-0 h-[18px] w-[18px] mr-2 text-muted-foreground" />
+        )}
+        <span className="truncate">{label}</span>
+        {type === "Folder" && (
+          <div className="ml-auto ">
+            <TooltipComponent message="Delete Folder">
+              <Trash
+                // onClick={moveToTrash}
+                size={15}
+                className="hover:dark:text-white hidden   group-hover/delete:block hover dark:text-Neutrals/neutrals-7 transition-colors"
+              />
+            </TooltipComponent>
+            {type === "Folder" && !isEditing && (
+              <TooltipComponent message="Add File">
+                <PlusIcon
+                  onClick={addNewFile}
+                  size={15}
+                  className="hover:dark:text-white dark:text-Neutrals/neutrals-7 transition-colors"
+                />
+              </TooltipComponent>
+            )}
+          </div>
+        )}
+      </div>
+      {expanded &&
+        type === "Folder" &&
+        files.length > 0 &&
+        files.map(ele => {
+          return (
+            <div className="w-full">
+              <Item label={ele.title} icon={File} type="File" />
+            </div>
+          );
+        })}
+    </>
   );
 };

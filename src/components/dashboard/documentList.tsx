@@ -79,19 +79,7 @@ export const DocumentList = ({ workspaceId, level = 0 }: DocumentListProps) => {
     createfolder();
   };
 
-  if (documents.length === 0) {
-    return (
-      <>
-        <Item.Skeleton level={level} />
-        {level === 0 && (
-          <>
-            <Item.Skeleton level={level} />
-            <Item.Skeleton level={level} />
-          </>
-        )}
-      </>
-    );
-  }
+
   return (
     <>
       <div
@@ -133,12 +121,15 @@ export const DocumentList = ({ workspaceId, level = 0 }: DocumentListProps) => {
           .map(document => (
             <Item
               id={document.id}
-              onClick={() => onRedirect(document.id)}
               label={document.title}
               icon={Folder}
+              type="Folder"
               active={params.documentId === document.id}
               onExpand={() => onExpand(document.id)}
+              expanded={expanded[document.id]}
             />
+            
+                
           ))}
       </Accordion>
     </>
