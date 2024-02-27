@@ -8,10 +8,10 @@ import {
   Select,
   SelectContent,
   SelectItem,
-  SelectTrigger,
+  SelectTrigger, 
   SelectValue,
 } from "@/components/ui/select";
-import { SelectGroup } from "@radix-ui/react-select";
+import { SelectGroup } from "@radix-ui/react-select"; 
 import { User } from "@/Types/userInterface";
 import { Lock, Plus, Share } from "lucide-react";
 import { Button } from "../ui/button";
@@ -106,21 +106,26 @@ const WorkspaceCreator: React.FC<WorkspaceCreatorProps> = ({close}) => {
       if (permissions === "private") {
         const workspace = await createWorkspace(newWorkspace);
         setWorkspace(workspace);
-        toast.success("Workspace Created", {
-          position: "top-center",
-        });
-        if (workspace?.id) router.replace(`/dashboard/${workspace?.id}`);
+        if (workspace?.id) {
+          router.replace(`/dashboard/${workspace?.id}`)
+          toast.success("Workspace Created", {
+            position: "top-center",
+          });
+
+      };
       }
       if (permissions === "shared") {
         const workspace = await createWorkspace(newWorkspace);
         setWorkspace(workspace);
         const ids=collaborators.map(user=>user.id)
         await addCollaborators(ids, workspace.id);
-        if (workspace?.id) router.replace(`/dashboard/${workspace?.id}`);
+        if (workspace?.id) {
+          router.replace(`/dashboard/${workspace?.id}`);
+          toast.success("Workspace Created", {
+            position: "top-center",
+          });
+        }
 
-        toast.success("Workspace Created", {
-          position: "top-center",
-        });
       }
     }
     close()

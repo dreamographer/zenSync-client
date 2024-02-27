@@ -35,6 +35,7 @@ interface ItemProps {
   active?: boolean;
   expanded?: boolean;
   type?: string;
+  onUpdate?:()=>void;
   onExpand?: () => void;
   label: string;
   onClick?: () => void;
@@ -50,12 +51,18 @@ export const Item = ({
   documentIcon,
   type,
   onExpand,
+  onUpdate,
   expanded,
 }: ItemProps) => {
   const [files, setFiles] = useState<fileType[] | []>([]);
   const [isEditing, setIsEditing] = useState(false);
   const ChevronIcon = expanded ? ChevronDown : ChevronRight;
+  const [update,setUpdate]=useState('')
+   const [trigger, setTrigger] = useState(false);
 
+   const handleUpdate = () => {
+     setTrigger(prev => !prev);
+   };
   useEffect(() => {
     const fetchFolderData = async () => {
       try {
@@ -66,7 +73,6 @@ export const Item = ({
           }
         );
         const Files = await response.json();
-        
 
         if (!Files.message) {
           setFiles(Files);
@@ -78,13 +84,14 @@ export const Item = ({
     if (id) {
       fetchFolderData();
     }
-  }, [id]);
+  }, [id, trigger]);
 
   const handleExpand = (
     event: React.MouseEvent<HTMLDivElement, MouseEvent>
   ) => {
     event.stopPropagation();
     onExpand?.();
+    onUpdate?.()
   };
 
   const addNewFile = async () => {
@@ -101,7 +108,8 @@ export const Item = ({
         toast.success("File Created", {
           position: "top-center",
         });
-
+        response.data.id=response.data._id
+        
         setFiles(state => [...state, response.data]);
       }
     } catch (error) {
@@ -114,6 +122,48 @@ export const Item = ({
       } else {
         console.log("An unexpected error occurred:", error);
       }
+    }
+  };
+
+  const handleEdit = async (e: React.FocusEvent<HTMLInputElement, Element>) => {
+    console.log(e.target.value);
+    try {
+      const data = {
+        fileId: id,
+        title: e.target.value,
+      };
+
+      if (type == "File") {
+        const response = await axios.put(`${BASE_URL}/file/${id}`, data, {
+          withCredentials: true,
+        });
+
+        if (response) {
+          toast.success("Name Updated", {
+            position: "top-center",
+          });
+          response.data.id = response.data._id;
+          console.log(response.data);
+          setFiles(state=>{
+            return state.map(file => (file.id === id ? response.data : file));
+          });
+          onUpdate?.()
+          console.log("state fiels",files);
+          
+        }
+      }
+    } catch (error) {
+      console.log(error, "Error");
+      if (axios.isAxiosError(error) && error.response?.data?.message) {
+        toast.error(error.response.data.message, {
+          position: "top-left",
+        });
+        console.log("error in Workspace creation", error.response.data.message);
+      } else {
+        console.log("An unexpected error occurred:", error);
+      }
+    } finally {
+      setIsEditing(false);
     }
   };
 
@@ -143,7 +193,20 @@ export const Item = ({
         ) : (
           <Icon className="shrink-0 h-[18px] w-[18px] mr-2 text-muted-foreground" />
         )}
-        <span className="truncate">{label}</span>
+        {!isEditing ? (
+          <span className="truncate" onDoubleClick={() => setIsEditing(true)}>
+            {label}
+          </span>
+        ) : (
+          <input
+            onBlur={handleEdit}
+            type="text"
+            id={id}
+            defaultValue={label}
+            className="bg-transparent"
+          />
+        )}
+
         {type === "Folder" && (
           <div className="ml-auto ">
             <TooltipComponent message="Delete Folder">
@@ -169,9 +232,17 @@ export const Item = ({
         type === "Folder" &&
         files.length > 0 &&
         files.map(ele => {
+          console.log(ele);
+
           return (
             <div className="w-full">
-              <Item label={ele.title} icon={File} type="File" />
+              <Item
+                label={ele.title}
+                id={ele.id}
+                onUpdate={handleUpdate}
+                icon={File}
+                type="File"
+              />
             </div>
           );
         })}

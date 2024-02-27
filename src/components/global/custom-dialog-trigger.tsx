@@ -14,7 +14,7 @@ interface CustomDialogTriggerProps {
   content?: React.ReactNode;
   children: React.ReactNode;
   description?: string;
-  className?: string;
+  className?: string; 
 }
 
 const CustomDialogTrigger: React.FC<CustomDialogTriggerProps> = ({

@@ -12,7 +12,7 @@ interface WorkspaceDropdownProps {
   privateWorkspaces: Workspace[] | [];
   sharedWorkspaces: Workspace[] | [];
   defaultValue: Workspace ;
-}
+} 
 
 const WorkspaceDropdown: React.FC<WorkspaceDropdownProps> = ({
   close,

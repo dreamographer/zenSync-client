@@ -6,7 +6,7 @@ import {
   Plus,
   PlusCircle,
   Search,
-  Settings,
+  Settings as SetUp,
   Trash,
 } from "lucide-react";
 import { useParams, usePathname, useRouter } from "next/navigation";
@@ -37,6 +37,7 @@ import { DocumentList } from "./documentList";
 import WorkspaceCreator from "./workspace-creator";
 import WorkspaceDropdown from "./workspace-dropDown";
 import { Workspace } from "@/Types/workspaceType";
+import Settings from "../settings/settings";
 const BASE_URL = process.env.NEXT_PUBLIC_SERVER_URL;
 
 export const Navigation = () => {
@@ -54,8 +55,8 @@ export const Navigation = () => {
   const setFolder = useFolderStore(state => state.setFolder);
   let workspaceId = params?.workspaceId as string;
   let allWorkspaces= useWorkspaceStore(state => state.workspace); 
-  let workspace =allWorkspaces?.find(ele=>ele.id==workspaceId)
-  let privateWorkspaces=allWorkspaces?.filter(ele=>ele.workspaceType=='private')
+  let workspace =allWorkspaces?.find(ele=>ele?.id==workspaceId)
+  let privateWorkspaces=allWorkspaces?.filter(ele=>ele?.workspaceType=='private')
   let sharedWorkspaces = allWorkspaces?.filter(
     ele => ele.workspaceType == "shared"
   );
@@ -212,7 +213,7 @@ export const Navigation = () => {
       <aside
         ref={sidebarRef}
         className={cn(
-          "group/sidebar h-full bg-secondary overflow-y-auto relative flex w-60 flex-col z-[99999]",
+          "group/sidebar h-full dark:bg-neutral-800 overflow-y-auto relative flex w-60 flex-col z-[99999]",
           isResetting && "transition-all ease-in-out duration-300",
           isMobile && "w-0"
         )}
@@ -234,14 +235,14 @@ export const Navigation = () => {
           privateWorkspaces={privateWorkspaces as Workspace[]}
           sharedWorkspaces={sharedWorkspaces as Workspace[]}
         />
-        <div>
+        <div onClick={collapse}>
           <UserItem />
-          <Item
-            onClick={handleFolderCreate}
-            label="New Folder"
-            icon={PlusCircle}
-          />
-          <Item label="Settings" icon={Settings} onClick={() => {}} />
+        
+          <div>
+            <Settings>
+              <Item label="Settings" icon={SetUp} onClick={() => {}} />
+            </Settings>
+          </div>
         </div>
         <div className="mt-4">
           <DocumentList workspaceId={workspaceId} />

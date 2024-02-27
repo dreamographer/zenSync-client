@@ -48,7 +48,10 @@ export const useWorkspaceStore = create<workspaceState>(
           return {
             workspace: [...state.workspace, ...newFolders],
           };
-        } else if (workspace !== null) {
+        } else if (workspace) {
+          console.log(workspace);
+          
+
           if (
             !state.workspace.some(
               existingFolder => existingFolder.id === workspace.id
@@ -105,14 +108,19 @@ export const useFolderStore = create<FolderState>(
   
 );
 
-type FileState = {
-  file: File[];
-  setFile: (folder: File[]) => void;
-};
+interface FilesState {
+  files: File[];
+  setFiles: (newFiles: File[]) => void;
+  updateFile: (updatedFile: File) => void;
+}
 
-export const useFileStore = create<FileState>(set => ({
-  file: [],
-  setFile: file => {
-    set({file});
-  },
+export const useFileStore = create<FilesState>(set => ({
+  files: [],
+  setFiles: newFiles => set({ files: newFiles }),
+  updateFile: updatedFile =>
+    set(state => ({
+      files: state.files.map(file =>
+        file.id === updatedFile.id ? updatedFile : file
+      ),
+    })),
 }));

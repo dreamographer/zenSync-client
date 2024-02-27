@@ -10,7 +10,6 @@ import { cn } from "@/lib/utils";
 import { Item } from "./item";
 import { useFolderStore } from "@/store/store";
 import TooltipComponent from "../global/tool-tip";
-import { Accordion } from "../ui/accordion";
 import axios from "axios";
 import { toast } from "sonner";
 const BASE_URL = process.env.NEXT_PUBLIC_SERVER_URL;
@@ -24,8 +23,15 @@ export const DocumentList = ({ workspaceId, level = 0 }: DocumentListProps) => {
   const params = useParams();
   const router = useRouter();
   const [expanded, setExpanded] = useState<Record<string, boolean>>({});
-
+const [update, setUpdate] = useState(false);
+ const onUpdate=()=>{
+  console.log('hello');
+  
+  setUpdate(!update)
+ }
   const onExpand = (documentId: string) => {
+    console.log("hhhhh");
+    
     setExpanded(prevExpanded => ({
       ...prevExpanded,
       [documentId]: !prevExpanded[documentId],
@@ -115,23 +121,20 @@ export const DocumentList = ({ workspaceId, level = 0 }: DocumentListProps) => {
           />
         </TooltipComponent>
       </div>
-      <Accordion type="multiple" defaultValue={[""]} className="pb-20">
-        {documents
-          .filter(folder => !folder.in_trash)
-          .map(document => (
-            <Item
-              id={document.id}
-              label={document.title}
-              icon={Folder}
-              type="Folder"
-              active={params.documentId === document.id}
-              onExpand={() => onExpand(document.id)}
-              expanded={expanded[document.id]}
-            />
-            
-                
-          ))}
-      </Accordion>
+      {documents
+        .filter(folder => !folder.in_trash)
+        .map(document => (
+          <Item
+            id={document.id}
+            label={document.title}
+            icon={Folder}
+            type="Folder"
+            onUpdate={onUpdate}
+            active={params.documentId === document.id}
+            onExpand={() => onExpand(document.id)}
+            expanded={expanded[document.id]}
+          />
+        ))}
     </>
   );
 
