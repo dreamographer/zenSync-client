@@ -2,11 +2,8 @@
 
 import { useParams, useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
-
 import { Folder, File, PlusIcon } from "lucide-react";
-
 import { cn } from "@/lib/utils";
-
 import { Item } from "./item";
 import { useFolderStore } from "@/store/store";
 import TooltipComponent from "../global/tool-tip";
@@ -23,32 +20,41 @@ export const DocumentList = ({ workspaceId, level = 0 }: DocumentListProps) => {
   const params = useParams();
   const router = useRouter();
   const [expanded, setExpanded] = useState<Record<string, boolean>>({});
-const [update, setUpdate] = useState(false);
- const onUpdate=()=>{
-  console.log('hello');
-  
-  setUpdate(!update)
- }
-  const onExpand = (documentId: string) => {
-    console.log("hhhhh");
-    
-    setExpanded(prevExpanded => ({
-      ...prevExpanded,
-      [documentId]: !prevExpanded[documentId],
-    }));
-  };
-    const [folderData, setFolderData] = useState(null);
+  const [trigger, setTrigger] = useState(false);
+
+  const [folderData, setFolderData] = useState(null);
   const allFiles = useFolderStore(state => state.folder);
   const allDocuments = useFolderStore(state => state.folder);
   const documents = allDocuments.filter(ele => ele.workspaceId == workspaceId);
   const setFolder = useFolderStore(state => state.setFolder);
   useEffect(() => {
     setFolder(folderData);
-  }, [folderData]);
-  const onRedirect = (documentId: string) => {
-    router.push(`/documents/${documentId}`);
+  }, [folderData, trigger]);
+  
+  const handleUpdate = (id?: string, data?: { title: string }) => {
+    async function update(){
+      console.log(id, data);
+      const response = await axios.put(`${BASE_URL}/folder/${id}`, data, {
+        withCredentials: true,
+      });
+  
+      if (response) {
+        toast.success("Name Updated", {
+          position: "top-center",
+        });
+        console.log(response.data);
+        setFolderData(response.data);
+      }
+      setTrigger(prev => !prev);
+    }
+    update()
   };
-
+  const onExpand = (documentId: string) => {
+    setExpanded(prevExpanded => ({
+      ...prevExpanded,
+      [documentId]: !prevExpanded[documentId],
+    }));
+  };
   const handleFolderCreate = () => {
     const createfolder = async () => {
       try {
@@ -84,7 +90,6 @@ const [update, setUpdate] = useState(false);
     };
     createfolder();
   };
-
 
   return (
     <>
@@ -129,7 +134,7 @@ const [update, setUpdate] = useState(false);
             label={document.title}
             icon={Folder}
             type="Folder"
-            onUpdate={onUpdate}
+            onUpdate={handleUpdate}
             active={params.documentId === document.id}
             onExpand={() => onExpand(document.id)}
             expanded={expanded[document.id]}

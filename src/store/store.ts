@@ -89,23 +89,25 @@ export const useFolderStore = create<FolderState>(
             return {
               folder: [...state.folder, ...newFolders],
             };
-          } else if (folder !== null) {
-
-            if (
-              !state.folder.some(
-                existingFolder => existingFolder.id === folder.id
-              )
-            ) {
-              return {
-                folder: [...state.folder, folder],
-              };
-            }
-          }
-          return state; 
-        });
-      },
-    }),
+       } else if (folder !== null) {
+          const existingFolderIndex = state.folder.findIndex(existingFolder => existingFolder.id === folder.id);
+          if (existingFolderIndex !== -1) {
+            const updatedFolder = { ...state.folder[existingFolderIndex], ...folder };
+            const updatedFolders = state.folder.map((f, index) => index === existingFolderIndex ? updatedFolder : f);
+            return {
+              folder: updatedFolders,
+            };
+          } else if (folder) {
   
+            return {
+              folder: [...state.folder, folder],
+            };
+          }
+        }
+        return state;
+      });
+    },
+ })
 );
 
 interface FilesState {

@@ -35,7 +35,7 @@ interface ItemProps {
   active?: boolean;
   expanded?: boolean;
   type?: string;
-  onUpdate?:()=>void;
+  onUpdate?:(id?:string,data?:{title:string})=>void;
   onExpand?: () => void;
   label: string;
   onClick?: () => void;
@@ -91,7 +91,6 @@ export const Item = ({
   ) => {
     event.stopPropagation();
     onExpand?.();
-    onUpdate?.()
   };
 
   const addNewFile = async () => {
@@ -129,7 +128,6 @@ export const Item = ({
     console.log(e.target.value);
     try {
       const data = {
-        fileId: id,
         title: e.target.value,
       };
 
@@ -144,13 +142,29 @@ export const Item = ({
           });
           response.data.id = response.data._id;
           console.log(response.data);
-          setFiles(state=>{
+          setFiles(state => {
             return state.map(file => (file.id === id ? response.data : file));
           });
-          onUpdate?.()
-          console.log("state fiels",files);
-          
+          onUpdate?.();
+          console.log("state fiels", files);
         }
+      } else if (type == "Folder") {
+        // const response = await axios.put(`${BASE_URL}/folder/${id}`, data, {
+        //   withCredentials: true,
+        // });
+
+        // if (response) {
+        //   toast.success("Name Updated", {
+        //     position: "top-center",
+        //   });
+        //   response.data.id = response.data._id;
+        //   console.log(response.data);
+        //   setFiles(state => {
+        //     return state.map(file => (file.id === id ? response.data : file));
+        //   });
+        //   console.log("state fiels", files);
+        // }
+          onUpdate?.(id,data);
       }
     } catch (error) {
       console.log(error, "Error");
