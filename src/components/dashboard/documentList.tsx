@@ -25,12 +25,15 @@ export const DocumentList = ({ workspaceId, level = 0 }: DocumentListProps) => {
   const [folderData, setFolderData] = useState(null);
   const allFiles = useFolderStore(state => state.folder);
   const allDocuments = useFolderStore(state => state.folder);
-  const documents = allDocuments.filter(ele => ele.workspaceId == workspaceId);
+  const documents = allDocuments.filter(ele => ele.workspaceId == workspaceId)
   const setFolder = useFolderStore(state => state.setFolder);
+  const deleteFolder = useFolderStore(state => state.deleteFolder);
   useEffect(() => {
+    
     setFolder(folderData);
+    console.log("allDoc",documents);
   }, [folderData, trigger]);
-  
+
   const handleUpdate = (id?: string, data?: { title: string }) => {
     async function update(){
       console.log(id, data);
@@ -44,8 +47,8 @@ export const DocumentList = ({ workspaceId, level = 0 }: DocumentListProps) => {
         });
         console.log(response.data);
         setFolderData(response.data);
+        setTrigger(prev => !prev);
       }
-      setTrigger(prev => !prev);
     }
     update()
   };
@@ -91,6 +94,25 @@ export const DocumentList = ({ workspaceId, level = 0 }: DocumentListProps) => {
     createfolder();
   };
 
+  const handleDelete = (id: string) => {
+    deleteFolder(id)
+    const onDelete = async () => {
+      const response = await axios.delete(`${BASE_URL}/folder/${id}`, {
+        withCredentials: true,
+      });
+      
+      if (response) {
+        console.log("delte REs",response);
+        
+        toast.warning("Folder Deleted", {
+          position: "top-center",
+        });
+        console.log(id);
+      }
+    };
+    onDelete()
+  };
+
   return (
     <>
       <div
@@ -132,6 +154,7 @@ export const DocumentList = ({ workspaceId, level = 0 }: DocumentListProps) => {
           <Item
             id={document.id}
             label={document.title}
+            onDelete={handleDelete}
             icon={Folder}
             type="Folder"
             onUpdate={handleUpdate}

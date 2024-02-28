@@ -30,42 +30,54 @@ export const useUserStore = create<userState>(
 type workspaceState = {
   workspace: Workspace[] | [];
   setWorkspace: (workspace: Workspace[] | null | Workspace) => void;
+  updateWS: (updatedWS: Workspace) => void;
+  deleteWS: (deleteWS: Workspace) => void;
 };
 
 export const useWorkspaceStore = create<workspaceState>(
   persistNSync(
     set => ({
-      workspace: [], 
+      workspace: [],
       setWorkspace: workspace => {
-      set(state => {
-        if (Array.isArray(workspace)) {
-          const newFolders = workspace.filter(
-            f =>
-              !state.workspace.some(
-                existingFolder => existingFolder.id === f.id
-              )
-          );
-          return {
-            workspace: [...state.workspace, ...newFolders],
-          };
-        } else if (workspace) {
-          console.log(workspace);
-          
-
-          if (
-            !state.workspace.some(
-              existingFolder => existingFolder.id === workspace.id
-            )
-          ) {
+        set(state => {
+          if (Array.isArray(workspace)) {
+            const newFolders = workspace.filter(
+              f =>
+                !state.workspace.some(
+                  existingFolder => existingFolder.id === f.id
+                )
+            );
             return {
-              workspace: [...state.workspace, workspace],
-          };
+              workspace: [...state.workspace, ...newFolders],
+            };
+          } else if (workspace) {
+            if (
+              !state.workspace.some(
+                existingFolder => existingFolder.id === workspace.id
+              )
+            ) {
+              return {
+                workspace: [...state.workspace, workspace],
+              };
+            }
           }
-        }
-        return state;
-      });
+          return state;
+        });
       },
+      updateWS: updatedWS =>
+        set(state => ({
+          workspace: state.workspace.map(workspace =>
+            workspace.id === updatedWS.id ? updatedWS : workspace
+          ),
+        })),
+      deleteWS: deleteWS =>
+        set(state => ({
+          workspace: state.workspace.filter(
+            workspace => workspace.id !== deleteWS.id
+          ),
+        })),
     }),
+
     { name: "workspaceInfo", storage: "localStorage" }
   )
 );
@@ -74,6 +86,7 @@ export const useWorkspaceStore = create<workspaceState>(
 type FolderState = {
   folder: Folder[];
   setFolder: (folder: Folder | Folder[]|null) => void;
+  deleteFolder:(folderId:string)=>void
 };
 
 export const useFolderStore = create<FolderState>(
@@ -105,6 +118,19 @@ export const useFolderStore = create<FolderState>(
           }
         }
         return state;
+      });
+    },
+    deleteFolder: folderId => {
+      set(state => {
+        if (state.folder.length ===1) {
+          return { folder: [] };
+        } else {
+          const updatedFolders = state.folder.filter(
+            folder => folder.id !== folderId
+          );
+
+          return { folder: updatedFolders };
+        }
       });
     },
  })

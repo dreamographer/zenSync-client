@@ -173,40 +173,6 @@ export const Navigation = () => {
     }
   };
 
-  const handleFolderCreate = () => {
-    const createfolder = async () => {
-      try {
-        const data = {
-          title: "Untitled",
-          workspaceId: params?.workspaceId,
-        };
-
-        const response = await axios.post(`${BASE_URL}/folder/`, data, {
-          withCredentials: true,
-        });
-        if (response) {
-          toast.success("Folder Created", {
-            position: "top-center",
-          });
-            setFolder(response.data);
-        }
-      } catch (error) {
-        console.log(error, "Error");
-        if (axios.isAxiosError(error) && error.response?.data?.message) {
-          toast.error(error.response.data.message, {
-            position: "top-left",
-          });
-          console.log(
-            "error in Workspace creation",
-            error.response.data.message
-          );
-        } else {
-          console.log("An unexpected error occurred:", error);
-        }
-      }
-    };
-    createfolder();
-  };
 
   return (
     <>

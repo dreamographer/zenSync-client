@@ -49,6 +49,7 @@ const BASE_URL = process.env.NEXT_PUBLIC_SERVER_URL;
 const SettingsForm = () => {
   const user=useUserStore(state=>state.user)
   const workspaces=useWorkspaceStore(state=>state.workspace)
+  const updateWs=useWorkspaceStore(state=>state.updateWS)
   const router = useRouter();
   const params = useParams();
   let workspaceId = params?.workspaceId as string;
@@ -63,11 +64,13 @@ const SettingsForm = () => {
   };
 
 
+  // api calll
   const addCollaborators = async (
     collaborators: string[],
     workspaceId: string
   ) => {
     try {
+      if(collaborators.length<1) return
       const data = {
         collaborators: collaborators,
       };
@@ -79,6 +82,9 @@ const SettingsForm = () => {
         }
       );
       if (response) {
+        console.log("Add collab req", response.data.data);
+          updateWs(response.data.data);
+            console.log("All WS",workspaces);
         return response.data;
       }
     } catch (error) {
@@ -95,50 +101,84 @@ const SettingsForm = () => {
   };
 
 
-    useEffect(() => {
-        const ids = collaborators.map(user => user.id);
-        async function updateCollaborator(){
-            const res=await addCollaborators(ids, workspaceId);
-            if (res) {
-              toast.success("Workspace Updated", {
-                position: "top-center",
-              });
-            }
-        }
-    }, [collaborators]);
+
 
   
 
 
   // api call
-  const removeCollaborators=(user:User[],workspaceId:string)=>{
+  const removeCollaborators=async (userId:string[],workspaceId:string)=>{
+    
+      const response = await axios.delete(
+        `${BASE_URL}/workspace/${workspaceId}/removecollaborators`,
+        {
+          data:{ userIds: userId },
+          withCredentials: true,
+        }
+      );
+      if (response) {
+        console.log("Add collab req", response.data.data);
+        updateWs(response.data.data);
+        console.log("All WS", workspaces);
+        return response.data;
+      }
 
   }
 
-    const removeCollaborator = async (user: User) => {
+  
+
+    const removeCollaborator =  (user: User) => {
+      console.log("The User", user);
+      const userId=user.id
+      console.log("req at col", userId);
       if (!workspaceId) return;
       if (collaborators.length === 1) {
         setPermissions("private");
       }
-      await removeCollaborators([user], workspaceId);
+      
+       removeCollaborators([userId], workspaceId);
       
       setCollaborators(
-        collaborators.filter(collaborator => collaborator.id !== user.id)
+        collaborators.filter(collaborator => collaborator.id !== userId)
       );
       router.refresh();
     };
 
+    useEffect(()=>{
+      const ids = collaborators.map(user => user.id);
+      async function updateCollaborator() {
+        const res = await addCollaborators(ids, workspaceId);
+      }
+      updateCollaborator();
+
+    },[collaborators])
  
   // api call
 
 
   //on change
   const workspaceNameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+
     if (!workspaceId || !e.target.value) return;
-    // { title: e.target.value }, workspaceId 
+    const data={ title: e.target.value }
+    async function updateName(){
+
+      const response = await axios.put(
+        `${BASE_URL}/workspace/${workspaceId}`,data,
+        {
+          withCredentials: true,
+        }
+        );
+        if (response) {
+          console.log("Update Name REq", response.data.data);
+          updateWs(response.data);
+        return response.data;
+      }
+    }
+    
     if (titleTimerRef.current) clearTimeout(titleTimerRef.current);
     titleTimerRef.current = setTimeout(async () => {
-      // await updateWorkspace({ title: e.target.value }, workspaceId);
+      await updateName()
     }, 500);
   };
 
@@ -146,7 +186,8 @@ const SettingsForm = () => {
   const onClickAlertConfirm = async () => {
     if (!workspaceId) return;
     if (collaborators.length > 0) {
-      await removeCollaborators(collaborators, workspaceId);
+      const ids=collaborators.map(ele=>ele.id)
+      await removeCollaborators(ids, workspaceId);
     }
     setPermissions("private");
     setOpenAlertMessage(false);
@@ -158,8 +199,6 @@ const SettingsForm = () => {
     } else setPermissions(val);
   };
 
-  //CHALLENGE fetching avatar details
-  //WIP Payment Portal redirect
 
   useEffect(() => {
     const showingWorkspace = workspaces.find(
@@ -338,12 +377,12 @@ const SettingsForm = () => {
             </div>
           </div>
         )}
-        <Alert variant={"destructive"}>
+        {/* <Alert variant={"destructive"}>
           <AlertDescription>
             Warning! deleting you workspace will permanantly delete all data
             related to this workspace.
           </AlertDescription>
-          {/* <Button
+          <Button
             type="submit"
             size={"sm"}
             variant={"destructive"}
@@ -360,8 +399,8 @@ const SettingsForm = () => {
             }}
           >
             Delete Workspace
-          </Button> */}
-        </Alert>
+          </Button>
+        </Alert> */}
         <p className="flex items-center gap-2 mt-6">
           <UserIcon size={20} /> Profile
         </p>

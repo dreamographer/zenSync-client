@@ -35,8 +35,9 @@ interface ItemProps {
   active?: boolean;
   expanded?: boolean;
   type?: string;
-  onUpdate?:(id?:string,data?:{title:string})=>void;
   onExpand?: () => void;
+  onUpdate?: (id?: string, data?: { title: string }) => void;
+  onDelete?: (id: string) => void;
   label: string;
   onClick?: () => void;
   icon: LucideIcon;
@@ -46,6 +47,7 @@ export const Item = ({
   id,
   label,
   onClick,
+  onDelete,
   icon: Icon,
   active,
   documentIcon,
@@ -57,12 +59,12 @@ export const Item = ({
   const [files, setFiles] = useState<fileType[] | []>([]);
   const [isEditing, setIsEditing] = useState(false);
   const ChevronIcon = expanded ? ChevronDown : ChevronRight;
-  const [update,setUpdate]=useState('')
-   const [trigger, setTrigger] = useState(false);
+  const [update, setUpdate] = useState("");
+  const [trigger, setTrigger] = useState(false);
 
-   const handleUpdate = () => {
-     setTrigger(prev => !prev);
-   };
+  const handleUpdate = () => {
+    setTrigger(prev => !prev);
+  };
   useEffect(() => {
     const fetchFolderData = async () => {
       try {
@@ -107,8 +109,8 @@ export const Item = ({
         toast.success("File Created", {
           position: "top-center",
         });
-        response.data.id=response.data._id
-        
+        response.data.id = response.data._id;
+
         setFiles(state => [...state, response.data]);
       }
     } catch (error) {
@@ -149,22 +151,7 @@ export const Item = ({
           console.log("state fiels", files);
         }
       } else if (type == "Folder") {
-        // const response = await axios.put(`${BASE_URL}/folder/${id}`, data, {
-        //   withCredentials: true,
-        // });
-
-        // if (response) {
-        //   toast.success("Name Updated", {
-        //     position: "top-center",
-        //   });
-        //   response.data.id = response.data._id;
-        //   console.log(response.data);
-        //   setFiles(state => {
-        //     return state.map(file => (file.id === id ? response.data : file));
-        //   });
-        //   console.log("state fiels", files);
-        // }
-          onUpdate?.(id,data);
+        onUpdate?.(id, data);
       }
     } catch (error) {
       console.log(error, "Error");
@@ -178,6 +165,26 @@ export const Item = ({
       }
     } finally {
       setIsEditing(false);
+    }
+  };
+  const moveToTrash = async () => {
+    if (!id) return;
+    if (type == "File") {
+      const response = await axios.delete(`${BASE_URL}/file/${id}`, {
+        withCredentials: true,
+      });
+
+      if (response) {
+        toast.warning("file Deleted", {
+          position: "top-center",
+        });
+
+        console.log(response.data);
+        onUpdate?.();
+        console.log("state fiels", files);
+      }
+    } else if (type == "Folder") {
+      onDelete?.(id);
     }
   };
 
@@ -221,26 +228,35 @@ export const Item = ({
           />
         )}
 
-        {type === "Folder" && (
-          <div className="ml-auto ">
+        <div className="ml-auto ">
+          {type === "Folder" && (
             <TooltipComponent message="Delete Folder">
               <Trash
-                // onClick={moveToTrash}
+                onClick={moveToTrash}
                 size={15}
                 className="hover:dark:text-white hidden   group-hover/delete:block hover dark:text-Neutrals/neutrals-7 transition-colors"
               />
             </TooltipComponent>
-            {type === "Folder" && !isEditing && (
-              <TooltipComponent message="Add File">
-                <PlusIcon
-                  onClick={addNewFile}
-                  size={15}
-                  className="hover:dark:text-white dark:text-Neutrals/neutrals-7 transition-colors"
-                />
-              </TooltipComponent>
-            )}
-          </div>
-        )}
+          )}
+          {type === "File" && (
+            <TooltipComponent message="Delete File">
+              <Trash
+                onClick={moveToTrash}
+                size={15}
+                className="hover:dark:text-white hidden   group-hover/delete:block hover dark:text-Neutrals/neutrals-7 transition-colors"
+              />
+            </TooltipComponent>
+          )}
+          {type === "Folder" && !isEditing && (
+            <TooltipComponent message="Add File">
+              <PlusIcon
+                onClick={addNewFile}
+                size={15}
+                className="hover:dark:text-white dark:text-Neutrals/neutrals-7 transition-colors"
+              />
+            </TooltipComponent>
+          )}
+        </div>
       </div>
       {expanded &&
         type === "Folder" &&

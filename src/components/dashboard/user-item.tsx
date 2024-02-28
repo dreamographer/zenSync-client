@@ -16,13 +16,14 @@ import {
 import { useUserStore, useWorkspaceStore } from "@/store/store";
 import { useRouter } from "next/navigation";
 import Logout from "../global/Logout";
+import { ThemeSwitcher } from "../global/ThemeSwitcher";
 
 export const UserItem = () => {
 
   const user = useUserStore(state => state.user);
 
   return (
-    <DropdownMenu >
+    <DropdownMenu>
       <DropdownMenuTrigger asChild>
         <div
           role="button"
@@ -60,6 +61,7 @@ export const UserItem = () => {
                 {user?.fullname}&apos;s ZenSYnc
               </p>
             </div>
+            <ThemeSwitcher />
           </div>
         </div>
         <DropdownMenuSeparator />
@@ -67,8 +69,7 @@ export const UserItem = () => {
           asChild
           className="w-full cursor-pointer text-muted-foreground"
         >
-            <Logout />
-         
+          <Logout />
         </DropdownMenuItem>
       </DropdownMenuContent>
     </DropdownMenu>
