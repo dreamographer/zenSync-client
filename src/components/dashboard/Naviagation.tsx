@@ -206,7 +206,7 @@ export const Navigation = () => {
         
           <div>
             <Settings>
-              <Item label="Settings" icon={SetUp} onClick={() => {}} />
+              <Item label="Settings" icon={SetUp} />
             </Settings>
           </div>
         </div>
@@ -227,10 +227,6 @@ export const Navigation = () => {
           isMobile && "left-0 w-full"
         )}
       >
-        {/* {!!params.documentId ? (
-          <Navbar isCollapsed={isCollapsed} onResetWidth={resetWidth} />
-        ) : (
-        )} */}
         <nav className="bg-transparent px-3 py-2 w-full">
           {isCollapsed && (
             <MenuIcon

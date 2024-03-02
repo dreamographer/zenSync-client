@@ -1,18 +1,13 @@
 "use client";
-import { Button } from "@/components/ui/button";
 import React, { useEffect, useRef } from "react";
 import { redirect, useRouter } from "next/navigation";
-import axios from "axios";
-import { clearStorage } from "persist-and-sync";
 import { useFolderStore, useUserStore, useWorkspaceStore } from "@/store/store";
-import { useCookies } from "next-client-cookies";
 import DashboardSetup from "@/components/dashboard/dashboardSetup";
 const Dashboard = () => {
   const user = useUserStore(state => state.user);
   const setUser = useUserStore(state => state.setUser);
   const workspace = useWorkspaceStore(state => state.workspace); 
   const setWorkspace = useWorkspaceStore(state => state.setWorkspace);
-  const setFolders = useFolderStore(state => state.setFolder);
     // const setWorkspace = useWorkspaceStore(state => state.setWorkspace);
   // subscription DAta
   useEffect(() => {

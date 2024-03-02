@@ -1,4 +1,3 @@
-import type { Metadata } from "next";
 import { Plus_Jakarta_Sans } from "next/font/google";
 import "./globals.css"
 import { ThemeProvider } from "@/lib/providers/next-theme-provider";
@@ -7,8 +6,10 @@ import { CookiesProvider } from "next-client-cookies/server";
 import { Toaster } from "sonner";
 const JakarthaSans = Plus_Jakarta_Sans({ subsets: ["latin"] });
 
-export const metadata: Metadata = {
-  title: "zenSync",
+export const metadata = {
+  title: {
+    default: "zenSync",
+  },
   description: "Your companion",
 };
 export default function RootLayout({

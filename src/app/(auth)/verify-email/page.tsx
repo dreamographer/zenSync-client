@@ -21,13 +21,17 @@ const EmailVerifiedPage = ({ searchParams }: PageProps) => {
             </div>
             <h3 className="font-semibold text-2xl"> {error}</h3>
             <p className="text-muted-foreground text-center">
-            Try Sigining UP again
+              Try{" "}
+              <Link href={"/signup"} replace>
+                <span className="text-bold text-xl underline">Sigin UP</span>{" "}
+              </Link>
+              again
             </p>
           </div>
         </div>
       ) : (
         <div className="mx-auto flex w-full flex-col justify-center space-y-6 sm:w-[350px]">
-          {token && token.length==36? (
+          {token && token.length == 36 ? (
             <div className="grid gap-6">
               <div className="flex h-full flex-col items-center justify-center space-y-1">
                 <div className="relative mb-4 h-80 w-80 text-muted-foreground">
@@ -41,7 +45,10 @@ const EmailVerifiedPage = ({ searchParams }: PageProps) => {
                 <h3 className="font-semibold text-2xl">Email Verified</h3>
 
                 <p className="text-muted-foreground text-center">
-                  YOU CAn <Link href={"/login"} replace>Login</Link>
+                  YOU CAn{" "}
+                  <Link href={"/login"} replace>
+                  <span className="text-bold text-xl underline">Login</span> 
+                  </Link>
                 </p>
               </div>
             </div>

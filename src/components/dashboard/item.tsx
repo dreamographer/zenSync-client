@@ -39,14 +39,12 @@ interface ItemProps {
   onUpdate?: (id?: string, data?: { title: string }) => void;
   onDelete?: (id: string) => void;
   label: string;
-  onClick?: () => void;
   icon: LucideIcon;
 }
 
 export const Item = ({
   id,
   label,
-  onClick,
   onDelete,
   icon: Icon,
   active,
