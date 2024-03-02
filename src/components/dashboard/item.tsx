@@ -74,8 +74,9 @@ export const Item = ({
         );
         const Files = await response.json();
 
-        if (!Files.message) {
-          setFiles(Files);
+        if (!Files.message ) {
+          const files = Files.filter((ele: fileType) => {return !ele.inTrash});
+          setFiles(files);
         }
       } catch (error) {
         console.log(error);
@@ -165,15 +166,17 @@ export const Item = ({
       setIsEditing(false);
     }
   };
+
+  
   const moveToTrash = async () => {
     if (!id) return;
     if (type == "File") {
-      const response = await axios.delete(`${BASE_URL}/file/${id}`, {
-        withCredentials: true,
-      });
+        const response = await axios.patch(`${BASE_URL}/file/${id}`, {}, {
+          withCredentials: true,
+        });
 
       if (response) {
-        toast.warning("file Deleted", {
+        toast.warning("file Moved To Trash", {
           position: "top-center",
         });
 
@@ -185,6 +188,7 @@ export const Item = ({
       onDelete?.(id);
     }
   };
+
 
   return (
     <>
