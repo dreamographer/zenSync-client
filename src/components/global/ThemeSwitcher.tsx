@@ -15,7 +15,7 @@ export const ThemeSwitcher = () => {
         return null;
     }
 
-    return (
+    return ( 
         <button
             className={` rounded-md hover:scale-110 active:scale-100 duration-200`}
             onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
