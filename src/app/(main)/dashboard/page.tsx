@@ -39,7 +39,10 @@ const Dashboard = () => {
           }
         );
         const workSpace=await response.json()
-        if(!workSpace.error){
+        console.log("data from woedpae", workSpace);
+        
+        if(!workSpace.message){
+          console.log("data from woedpae",workSpace);
 
           setWorkspace(workSpace)
         }
@@ -70,7 +73,9 @@ const Dashboard = () => {
       </div>
     );
   } else {
-    redirect(`/dashboard/${workspace[0].id}`);
+    if(workspace[0].id){
+      redirect(`/dashboard/${workspace[0].id}`);
+    }
   } 
 };
 

@@ -41,7 +41,7 @@ import Settings from "../settings/settings";
 const BASE_URL = process.env.NEXT_PUBLIC_SERVER_URL;
 
 export const Navigation = () => {
-  const user = useUserStore(state => state.user);
+  const user = useUserStore(state => state.user); 
 
   const params = useParams();
   const pathname = usePathname();
@@ -54,9 +54,11 @@ export const Navigation = () => {
   const router = useRouter();
   const setFolder = useFolderStore(state => state.setFolder);
   let workspaceId = params?.workspaceId as string;
-  let allWorkspaces= useWorkspaceStore(state => state.workspace); 
-  let workspace =allWorkspaces?.find(ele=>ele?.id==workspaceId)
-  let privateWorkspaces=allWorkspaces?.filter(ele=>ele?.workspaceType=='private')
+  let allWorkspaces = useWorkspaceStore(state => state.workspace);
+  let workspace = allWorkspaces?.find(ele => ele?.id == workspaceId);
+  let privateWorkspaces = allWorkspaces?.filter(
+    ele => ele?.workspaceType == "private"
+  );
   let sharedWorkspaces = allWorkspaces?.filter(
     ele => ele.workspaceType == "shared"
   );
@@ -67,14 +69,13 @@ export const Navigation = () => {
       ele => ele.workspaceType == "private"
     );
     sharedWorkspaces = allWorkspaces?.filter(
-      ele => ele.workspaceType == "shared" 
+      ele => ele.workspaceType == "shared"
     );
   }, [workspaceId]);
 
-
-  
   useEffect(() => {
     const fetchFolderData = async () => {
+      
       try {
         const response = await fetch(
           `${process.env.NEXT_PUBLIC_SERVER_URL}/folder/${workspaceId}`,
@@ -93,8 +94,6 @@ export const Navigation = () => {
     };
     fetchFolderData();
   }, [workspaceId]);
-
-
 
   useEffect(() => {
     router.replace(`/dashboard/${workspaceId}`);
@@ -161,7 +160,7 @@ export const Navigation = () => {
       setTimeout(() => setIsResetting(false), 300);
     }
   };
- 
+
   const collapse = () => {
     if (sidebarRef.current && navbarRef.current) {
       setIsCollapsed(true);
@@ -172,7 +171,6 @@ export const Navigation = () => {
       setTimeout(() => setIsResetting(false), 300);
     }
   };
-
 
   return (
     <>
@@ -202,8 +200,6 @@ export const Navigation = () => {
           sharedWorkspaces={sharedWorkspaces as Workspace[]}
         />
         <div onClick={collapse}>
-          <UserItem />
-        
           <div>
             <Settings>
               <Item label="Settings" icon={SetUp} />
@@ -218,6 +214,9 @@ export const Navigation = () => {
           onClick={resetWidth}
           className=" group-hover/sidebar:opacity-100 opacity-0 transition cursor-ew-resize absolute h-full w-1 bg-primary/10 right-0 top-0"
         />
+        <div className="mt-auto">
+          <UserItem />
+        </div>
       </aside>
       <div
         ref={navbarRef}

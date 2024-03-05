@@ -50,6 +50,10 @@
     "tailwindcss-animate": "^1.0.7",
     "usehooks-ts": "^2.15.0",
     "uuid": "^9.0.1",
+    "y-partykit": "^0.0.25",
+    "y-presence": "^0.2.3",
+    "y-webrtc": "^10.3.0",
+    "yjs": "^13.6.14",
     "zod": "^3.22.4",
     "zustand": "^4.5.0"
   },

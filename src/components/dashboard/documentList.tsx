@@ -18,7 +18,6 @@ interface DocumentListProps {
 
 export const DocumentList = ({ workspaceId, level = 0 }: DocumentListProps) => {
   const params = useParams();
-  const router = useRouter();
   const [expanded, setExpanded] = useState<Record<string, boolean>>({});
   const [trigger, setTrigger] = useState(false);
 
@@ -155,6 +154,7 @@ export const DocumentList = ({ workspaceId, level = 0 }: DocumentListProps) => {
             id={document.id}
             label={document.title}
             onDelete={handleDelete}
+    
             icon={Folder}
             type="Folder"
             onUpdate={handleUpdate}
@@ -166,27 +166,5 @@ export const DocumentList = ({ workspaceId, level = 0 }: DocumentListProps) => {
     </>
   );
 
-  // return (
-  //   <>
-  //     {documents.map(document => (
-  //       <div key={document.id}>
-  //         <Item
-  //           id={document.id}
-  //           onClick={() => onRedirect(document.id)}
-  //           label={document.title}
-  //           icon={Folder}
-  //           active={params.documentId === document.id}
-  //           onExpand={() => onExpand(document.id)}
-  //         />
-  //         {expanded[document.id] &&  (
-  //           <Item
-  //             label={document.title}
-  //             icon={File}
-  //             type="File"
-  //           />
-  //         )}
-  //       </div>
-  //     ))}
-  //   </>
-  // );
+
 };

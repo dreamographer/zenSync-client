@@ -10,7 +10,8 @@ import {
   File,
   Trash,
 } from "lucide-react";
-import { useRouter } from "next/navigation";
+import { useParams, useRouter } from "next/navigation";
+import { usePathname } from "next/navigation";
 import { toast } from "sonner";
 
 import { cn } from "@/lib/utils";
@@ -57,12 +58,13 @@ export const Item = ({
   const [files, setFiles] = useState<fileType[] | []>([]);
   const [isEditing, setIsEditing] = useState(false);
   const ChevronIcon = expanded ? ChevronDown : ChevronRight;
-  const [update, setUpdate] = useState("");
   const [trigger, setTrigger] = useState(false);
-
+  const router = useRouter();
+    const params = useParams();
   const handleUpdate = () => {
     setTrigger(prev => !prev);
   };
+
   useEffect(() => {
     const fetchFolderData = async () => {
       try {
@@ -74,8 +76,10 @@ export const Item = ({
         );
         const Files = await response.json();
 
-        if (!Files.message ) {
-          const files = Files.filter((ele: fileType) => {return !ele.inTrash});
+        if (!Files.message) {
+          const files = Files.filter((ele: fileType) => {
+            return !ele.inTrash;
+          });
           setFiles(files);
         }
       } catch (error) {
@@ -167,13 +171,16 @@ export const Item = ({
     }
   };
 
-  
   const moveToTrash = async () => {
     if (!id) return;
     if (type == "File") {
-        const response = await axios.patch(`${BASE_URL}/file/${id}`, {}, {
+      const response = await axios.patch(
+        `${BASE_URL}/file/${id}`,
+        {},
+        {
           withCredentials: true,
-        });
+        }
+      );
 
       if (response) {
         toast.warning("file Moved To Trash", {
@@ -189,6 +196,10 @@ export const Item = ({
     }
   };
 
+  const handleOpen = () => {
+     console.log("hande file");
+     router.replace(`/dashboard/${params.workspaceId}/${id}`);
+  };
 
   return (
     <>
@@ -217,7 +228,11 @@ export const Item = ({
           <Icon className="shrink-0 h-[18px] w-[18px] mr-2 text-muted-foreground" />
         )}
         {!isEditing ? (
-          <span className="truncate" onDoubleClick={() => setIsEditing(true)}>
+          <span
+            className="truncate"
+            onClick={type === "File" ? handleOpen : undefined}
+            onDoubleClick={() => setIsEditing(true)}
+          >
             {label}
           </span>
         ) : (
