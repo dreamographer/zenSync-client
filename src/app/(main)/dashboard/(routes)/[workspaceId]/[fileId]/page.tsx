@@ -5,10 +5,9 @@ const Editor = dynamic(() => import("@/components/editor/Editor"), {
 });
 
 const Filepage = ({ params }: { params: { workspaceId :string,fileId:string} }) => {
-  console.log("jek [ara,s", params);
   return (
     <div>
-      <Editor fileId={params.fileId} />;
+      <Editor fileId={params.fileId} />
     </div>
   );
 };

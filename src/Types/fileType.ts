@@ -3,4 +3,5 @@ export type File = {
   title: string;
   workspaceId: string;
   inTrash: boolean;
+  folderId:string;
 };

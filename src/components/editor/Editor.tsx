@@ -78,5 +78,5 @@ const provider = new YPartyKitProvider(
     slashMenuItems: customSlashMenuItemList,
   });
 
-  return <BlockNoteView editor={editor} theme={mode} />;
+  return <BlockNoteView editor={editor} theme={mode} />
 }

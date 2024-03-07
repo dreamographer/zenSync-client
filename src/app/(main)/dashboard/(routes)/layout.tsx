@@ -11,6 +11,7 @@ const DashBoardLayout = async ({ children }: { children: React.ReactNode }) => {
     const user = await getServerSideUser(token);
     if(user){
       return (
+        
         <div className="h-full flex w-full fixed dark:bg-[#1F1F1F]">
           <Navigation />
           <main className="h-full flex-grow  mt-44 p-5 overflow-y-auto">{children}</main>
@@ -19,9 +20,6 @@ const DashBoardLayout = async ({ children }: { children: React.ReactNode }) => {
     }else{
       redirect('/')
     }
-
-
-  
   } else {
     return (
       <main>

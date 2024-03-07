@@ -23,7 +23,7 @@ import {
   DropdownMenuItem,
   DropdownMenuSeparator,
 } from "@/components/ui/dropdown-menu";
-import { useFileStore, useUserStore } from "@/store/store";
+import { useFileStore, useFolderStore, useUserStore } from "@/store/store";
 import TooltipComponent from "../global/tool-tip";
 
 import { useEffect, useState } from "react";
@@ -55,12 +55,15 @@ export const Item = ({
   onUpdate,
   expanded,
 }: ItemProps) => {
+  const setGlobalFiles = useFileStore(state=>state.setFiles)
+  const updateGlobalFiles = useFileStore(state=>state.updateFile)
+  const GlobalFiles = useFileStore(state=>state.files)
   const [files, setFiles] = useState<fileType[] | []>([]);
   const [isEditing, setIsEditing] = useState(false);
   const ChevronIcon = expanded ? ChevronDown : ChevronRight;
   const [trigger, setTrigger] = useState(false);
   const router = useRouter();
-    const params = useParams();
+  const params = useParams();
   const handleUpdate = () => {
     setTrigger(prev => !prev);
   };
@@ -90,6 +93,12 @@ export const Item = ({
       fetchFolderData();
     }
   }, [id, trigger]);
+
+  useEffect(()=>{
+    
+    setGlobalFiles(files);
+
+  },[files])
 
   const handleExpand = (
     event: React.MouseEvent<HTMLDivElement, MouseEvent>
@@ -150,6 +159,7 @@ export const Item = ({
           setFiles(state => {
             return state.map(file => (file.id === id ? response.data : file));
           });
+          updateGlobalFiles(response.data);
           onUpdate?.();
           console.log("state fiels", files);
         }
@@ -183,6 +193,8 @@ export const Item = ({
       );
 
       if (response) {
+        
+        router.push(`/dashboard/${params?.workspaceId}`);
         toast.warning("file Moved To Trash", {
           position: "top-center",
         });
@@ -197,8 +209,8 @@ export const Item = ({
   };
 
   const handleOpen = () => {
-     console.log("hande file");
-     router.replace(`/dashboard/${params.workspaceId}/${id}`);
+    console.log("hande file");
+    router.replace(`/dashboard/${params.workspaceId}/${id}`);
   };
 
   return (
@@ -279,11 +291,10 @@ export const Item = ({
         type === "Folder" &&
         files.length > 0 &&
         files.map(ele => {
-          console.log(ele);
-
           return (
             <div className="w-full">
               <Item
+                key={ele.id}
                 label={ele.title}
                 id={ele.id}
                 onUpdate={handleUpdate}

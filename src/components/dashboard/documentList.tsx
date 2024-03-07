@@ -13,14 +13,14 @@ const BASE_URL = process.env.NEXT_PUBLIC_SERVER_URL;
 interface DocumentListProps {
   workspaceId: string;
   level?: number;
-  data?: string;
+  data?: string; 
 }
 
 export const DocumentList = ({ workspaceId, level = 0 }: DocumentListProps) => {
   const params = useParams();
   const [expanded, setExpanded] = useState<Record<string, boolean>>({});
   const [trigger, setTrigger] = useState(false);
-
+  const router = useRouter();
   const [folderData, setFolderData] = useState(null);
   const allFiles = useFolderStore(state => state.folder);
   const allDocuments = useFolderStore(state => state.folder);
@@ -99,10 +99,11 @@ export const DocumentList = ({ workspaceId, level = 0 }: DocumentListProps) => {
       const response = await axios.delete(`${BASE_URL}/folder/${id}`, {
         withCredentials: true,
       });
+
       
       if (response) {
         console.log("delte REs",response);
-        
+        router.push(`/dashboard/${params?.workspaceId}`);
         toast.warning("Folder Deleted", {
           position: "top-center",
         });
@@ -151,10 +152,10 @@ export const DocumentList = ({ workspaceId, level = 0 }: DocumentListProps) => {
         .filter(folder => !folder.in_trash)
         .map(document => (
           <Item
+            key={document.id}
             id={document.id}
             label={document.title}
             onDelete={handleDelete}
-    
             icon={Folder}
             type="Folder"
             onUpdate={handleUpdate}
