@@ -29,6 +29,7 @@ import TooltipComponent from "../global/tool-tip";
 import { useEffect, useState } from "react";
 import axios from "axios";
 import { File as fileType } from "@/Types/fileType";
+import useFileUpdate from "@/hooks/useFileUpdate";
 const BASE_URL = process.env.NEXT_PUBLIC_SERVER_URL;
 interface ItemProps {
   id?: string;
@@ -55,15 +56,16 @@ export const Item = ({
   onUpdate,
   expanded,
 }: ItemProps) => {
-  const setGlobalFiles = useFileStore(state=>state.setFiles)
-  const updateGlobalFiles = useFileStore(state=>state.updateFile)
-  const GlobalFiles = useFileStore(state=>state.files)
-  const [files, setFiles] = useState<fileType[] | []>([]);
+  const setGlobalFiles = useFileStore(state => state.setFiles);
+  const updateGlobalFiles = useFileStore(state => state.updateFile);
+  const GlobalFiles = useFileStore(state => state.files);
   const [isEditing, setIsEditing] = useState(false);
   const ChevronIcon = expanded ? ChevronDown : ChevronRight;
   const [trigger, setTrigger] = useState(false);
   const router = useRouter();
   const params = useParams();
+  const [files, setFiles] = useState<fileType[] | []>([]);
+  useFileUpdate(setFiles);
   const handleUpdate = () => {
     setTrigger(prev => !prev);
   };
@@ -94,11 +96,9 @@ export const Item = ({
     }
   }, [id, trigger]);
 
-  useEffect(()=>{
-    
+  useEffect(() => {
     setGlobalFiles(files);
-
-  },[files])
+  }, [files]);
 
   const handleExpand = (
     event: React.MouseEvent<HTMLDivElement, MouseEvent>
@@ -122,8 +122,6 @@ export const Item = ({
           position: "top-center",
         });
         response.data.id = response.data._id;
-
-        setFiles(state => [...state, response.data]);
       }
     } catch (error) {
       console.log(error, "Error");
@@ -193,7 +191,6 @@ export const Item = ({
       );
 
       if (response) {
-        
         router.push(`/dashboard/${params?.workspaceId}`);
         toast.warning("file Moved To Trash", {
           position: "top-center",

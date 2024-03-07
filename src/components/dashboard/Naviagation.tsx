@@ -39,11 +39,12 @@ import WorkspaceDropdown from "./workspace-dropDown";
 import { Workspace } from "@/Types/workspaceType";
 import Settings from "../settings/settings";
 import {Navbar} from "./navbar";
+import useRealtimeFolderUpdates from "@/hooks/useFolderUpdate";
 const BASE_URL = process.env.NEXT_PUBLIC_SERVER_URL;
 
 export const Navigation = () => {
   const user = useUserStore(state => state.user); 
-
+  
   const params = useParams();
   const pathname = usePathname();
   const isMobile = useMediaQuery("(max-width: 768px)");
@@ -63,6 +64,7 @@ export const Navigation = () => {
   let sharedWorkspaces = allWorkspaces?.filter(
     ele => ele.workspaceType == "shared"
   );
+  useRealtimeFolderUpdates();
 
   useEffect(() => {
     workspace = allWorkspaces?.find(ele => ele.id == workspaceId);

@@ -7,7 +7,6 @@ import { useUserStore, useWorkspaceStore } from "@/store/store";
 
 // Define the types for the setter functions if needed
 const useDashboardData = () => {
-  const router = useRouter();
   const setUser = useUserStore(state => state.setUser);
   const setWorkspace = useWorkspaceStore(state => state.setWorkspace);
   useEffect(() => {

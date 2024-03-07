@@ -22,7 +22,6 @@ export const DocumentList = ({ workspaceId, level = 0 }: DocumentListProps) => {
   const [trigger, setTrigger] = useState(false);
   const router = useRouter();
   const [folderData, setFolderData] = useState(null);
-  const allFiles = useFolderStore(state => state.folder);
   const allDocuments = useFolderStore(state => state.folder);
   const documents = allDocuments.filter(ele => ele.workspaceId == workspaceId)
   const setFolder = useFolderStore(state => state.setFolder);
