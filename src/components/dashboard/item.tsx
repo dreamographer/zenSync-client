@@ -96,9 +96,6 @@ export const Item = ({
     }
   }, [id, trigger]);
 
-  useEffect(() => {
-    setGlobalFiles(files);
-  }, [files]);
 
   const handleExpand = (
     event: React.MouseEvent<HTMLDivElement, MouseEvent>
@@ -152,12 +149,7 @@ export const Item = ({
           toast.success("Name Updated", {
             position: "top-center",
           });
-          response.data.id = response.data._id;
-          console.log(response.data);
-          setFiles(state => {
-            return state.map(file => (file.id === id ? response.data : file));
-          });
-          updateGlobalFiles(response.data);
+        
           onUpdate?.();
           console.log("state fiels", files);
         }

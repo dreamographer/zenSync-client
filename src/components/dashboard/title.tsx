@@ -11,7 +11,6 @@ interface TitleProps {
 export const Title = ({ initialData }: TitleProps) => {
   const Folders = useFolderStore(state => state.folder);
   const files = useFileStore(state => state.files);
-  console.log("global fiels",files);
   
   const Folder = Folders.find(ele => ele.id == initialData.folderId);
   const file = files.find(ele => ele.id == initialData.id);

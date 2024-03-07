@@ -9,6 +9,7 @@ import { useFolderStore } from "@/store/store";
 import TooltipComponent from "../global/tool-tip";
 import axios from "axios";
 import { toast } from "sonner";
+import useFolderUpdates from "@/hooks/useFolderUpdate";
 const BASE_URL = process.env.NEXT_PUBLIC_SERVER_URL;
 interface DocumentListProps {
   workspaceId: string;
@@ -26,6 +27,7 @@ export const DocumentList = ({ workspaceId, level = 0 }: DocumentListProps) => {
   const documents = allDocuments.filter(ele => ele.workspaceId == workspaceId)
   const setFolder = useFolderStore(state => state.setFolder);
   const deleteFolder = useFolderStore(state => state.deleteFolder);
+  useFolderUpdates(setFolderData);
   useEffect(() => {
     
     setFolder(folderData);
@@ -38,7 +40,7 @@ export const DocumentList = ({ workspaceId, level = 0 }: DocumentListProps) => {
       const response = await axios.put(`${BASE_URL}/folder/${id}`, data, {
         withCredentials: true,
       });
-  
+   
       if (response) {
         toast.success("Name Updated", {
           position: "top-center",
