@@ -40,6 +40,7 @@ import { Workspace } from "@/Types/workspaceType";
 import Settings from "../settings/settings";
 import {Navbar} from "./navbar";
 import useRealtimeFolderUpdates from "@/hooks/useFolderUpdate";
+import { TrashBox } from "./trashBox";
 const BASE_URL = process.env.NEXT_PUBLIC_SERVER_URL;
 
 export const Navigation = () => {
@@ -202,15 +203,28 @@ export const Navigation = () => {
           privateWorkspaces={privateWorkspaces as Workspace[]}
           sharedWorkspaces={sharedWorkspaces as Workspace[]}
         />
-      { workspace?.workspaceOwner==user?.id && (<div onClick={collapse}>
-          <div>
-            <Settings>
-              <Item label="Settings" icon={SetUp} />
-            </Settings>
+        {workspace?.workspaceOwner == user?.id && (
+          <div onClick={collapse}>
+            <div>
+              <Settings>
+                <Item label="Settings" icon={SetUp} />
+              </Settings>
+            </div>
           </div>
-        </div>)}
+        )}
         <div className="mt-4">
           <DocumentList workspaceId={workspaceId} />
+          <Popover>
+            <PopoverTrigger className="w-full mt-4">
+              <Item label="Trash" icon={Trash} />
+            </PopoverTrigger>
+            <PopoverContent
+              className="p-0 w-72"
+              side={isMobile ? "bottom" : "right"}
+            >
+              <TrashBox />
+            </PopoverContent>
+          </Popover>
         </div>
         <div
           onMouseDown={handleMouseDown}
@@ -230,7 +244,11 @@ export const Navigation = () => {
         )}
       >
         {!!params.fileId ? (
-          <Navbar documentId={params.fileId as string} isCollapsed={isCollapsed} onResetWidth={resetWidth} />
+          <Navbar
+            documentId={params.fileId as string}
+            isCollapsed={isCollapsed}
+            onResetWidth={resetWidth}
+          />
         ) : (
           <nav className="bg-transparent px-3 py-2 w-full">
             {isCollapsed && (

@@ -17,14 +17,29 @@ const useFileUpdate =( updateFiles:UpdateFilesFunction)=> {
       updateFiles(state => [...state, file]);
       setGlobalFiles(file)
     });
+
     socket.on("fileUpdated", update => {
-      console.log("file updatein:", update);
       update.id=update._id
-      console.log(update)
-      updateFiles(state => {
-        return state.map(file => (file.id === update.id ? update : file));
+      updateFiles(state => { 
+      const existingFileIndex = state.findIndex(file => file.id === update.id);
+      if (existingFileIndex !== -1) {
+        return state.map((file, index) =>{
+          console.log('updac check',update);
+          
+          return index === existingFileIndex ? update : file}
+        );
+      } else {
+        return [...state, update];
+      }
       });
       updateGlobalFiles(update)
+    });
+
+    socket.on("removedTrash", (update) => {
+      update.id = update._id;
+      updateFiles(state => {
+        return state.filter(file =>file.id != update.id||!update.inTrash);
+      });
     });
 
     return () => {

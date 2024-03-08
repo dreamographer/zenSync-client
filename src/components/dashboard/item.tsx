@@ -280,18 +280,19 @@ export const Item = ({
         type === "Folder" &&
         files.length > 0 &&
         files.map(ele => {
-          return (
-            <div className="w-full">
-              <Item
-                key={ele.id}
-                label={ele.title}
-                id={ele.id}
-                onUpdate={handleUpdate}
-                icon={File}
-                type="File"
-              />
-            </div>
-          );
+          if (ele.inTrash) return 
+            return (
+              <div className="w-full">
+                <Item
+                  key={ele.id}
+                  label={ele.title}
+                  id={ele.id}
+                  onUpdate={handleUpdate}
+                  icon={File}
+                  type="File"
+                />
+              </div>
+            );
         })}
     </>
   );
