@@ -18,6 +18,7 @@ import { WebrtcProvider } from "y-webrtc";  //Production
 import { useParams } from "next/navigation";
 import YPartyKitProvider from "y-partykit/provider";
 import { io } from "socket.io-client";
+import { useUserStore } from "@/store/store";
 const BASE_URL = process.env.NEXT_PUBLIC_SERVER_URL;
 const socket = io(BASE_URL as string, {
   withCredentials: true,
@@ -51,6 +52,7 @@ interface Props{
 
 
 export default function Editor({fileId}:Props) {
+    const user = useUserStore(state => state.user);
 
   const { theme, setTheme } = useTheme();
     let mode: "dark" | "light" = "dark";
@@ -75,7 +77,7 @@ const provider = new YPartyKitProvider(
       fragment: doc.getXmlFragment(),
       // Information (name and color) for this user:
       user: {
-        name: "My Username",
+        name: user?.fullname as string,
         color: "#ff0000",
       },
     },

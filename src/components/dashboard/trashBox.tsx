@@ -13,13 +13,16 @@ import { Input } from "@/components/ui/input";
 import axios from "axios";
 import { File } from "@/Types/fileType";
 import useFileUpdate from "@/hooks/useFileUpdate";
+import { ConfirmModal } from "../global/ConfirmModal";
+import useTrashUpdate from "@/hooks/useTrashUpdate";
 // import { ConfirmModal } from "@/components/modals/confirm-modal";
 const BASE_URL = process.env.NEXT_PUBLIC_SERVER_URL;
 export const TrashBox = () => {
   const router = useRouter();
   const params = useParams();
   const [trashFiles, setTrash] = useState<File[] | []>([]);
-useFileUpdate(setTrash);
+  // useFileUpdate(setTrash)
+useTrashUpdate(setTrash);
   useEffect(() => {
     const fetchTrashData = async () => {
       try {
@@ -61,7 +64,7 @@ useFileUpdate(setTrash);
   };
 
   const onRemove = (documentId:string) => {
-    const promise = axios.delete(`${BASE_URL}/file/documentId`, {
+    const promise = axios.delete(`${BASE_URL}/file/${documentId}`, {
       withCredentials: true,
     });
 
@@ -86,13 +89,16 @@ useFileUpdate(setTrash);
 
   return (
     <div className="text-sm">
+      <div className="flex gap-2 justify-center mt-4">
+        <p>Trash</p>
         <Trash className="h-4 w-4 text-muted-foreground" />
+      </div>
+
       <div className="mt-2 px-1 pb-1">
         <p className="hidden last:block text-xs text-center text-muted-foreground pb-2">
           No documents found.
         </p>
         {trashFiles?.map(document => (
-        
           <div
             key={document.id}
             role="button"
@@ -108,13 +114,14 @@ useFileUpdate(setTrash);
               >
                 <Undo className="h-4 w-4 text-muted-foreground" />
               </div>
-              {/* <ConfirmModal onConfirm={() => onRemove(document.id)}>
+              <ConfirmModal onConfirm={() => onRemove(document.id)}>
                 <div
                   role="button"
                   className="rounded-sm p-2 hover:bg-neutral-200 dark:hover:bg-neutral-600"
                 >
+                  <Trash className="h-4 w-4 text-muted-foreground" />
                 </div>
-              </ConfirmModal> */}
+              </ConfirmModal>
             </div>
           </div>
         ))}

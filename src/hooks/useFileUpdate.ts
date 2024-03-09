@@ -20,14 +20,15 @@ const useFileUpdate =( updateFiles:UpdateFilesFunction)=> {
 
     socket.on("fileUpdated", update => {
       update.id=update._id
+      
       updateFiles(state => { 
-      const existingFileIndex = state.findIndex(file => file.id === update.id);
-      if (existingFileIndex !== -1) {
-        return state.map((file, index) =>{
-          console.log('updac check',update);
-          
-          return index === existingFileIndex ? update : file}
-        );
+        const existingFileIndex = state.findIndex(file => file.id === update.id);
+        if (existingFileIndex !== -1) {
+          return state.map((file, index) =>{
+            console.log('updac check',update);
+            
+            return index === existingFileIndex ? update : file}
+            );
       } else {
         return [...state, update];
       }
@@ -35,12 +36,7 @@ const useFileUpdate =( updateFiles:UpdateFilesFunction)=> {
       updateGlobalFiles(update)
     });
 
-    socket.on("removedTrash", (update) => {
-      update.id = update._id;
-      updateFiles(state => {
-        return state.filter(file =>file.id != update.id||!update.inTrash);
-      });
-    });
+  
 
     return () => {
       socket.disconnect();
