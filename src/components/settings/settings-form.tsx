@@ -48,6 +48,7 @@ import axios from "axios";
 const BASE_URL = process.env.NEXT_PUBLIC_SERVER_URL;
 const SettingsForm = () => {
   const user=useUserStore(state=>state.user)
+  const setUser=useUserStore(state=>state.setUser)
   const workspaces=useWorkspaceStore(state=>state.workspace)
   const updateWs=useWorkspaceStore(state=>state.updateWS)
   const router = useRouter();
@@ -155,6 +156,31 @@ const SettingsForm = () => {
  
   // api call
 
+  const userNameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (!user?.id || !e.target.value) return;
+    const data = { fullname: e.target.value };
+    console.log(data);
+    
+    async function updateName() {
+      const response = await axios.put(
+        `${BASE_URL}/auth/${user?.id}`,
+        data,
+        {
+          withCredentials: true,
+        }
+      );
+      if (response) {
+        console.log("Update Name REq", response.data);
+        setUser(response.data)
+        return response.data;
+      }
+    }
+
+    if (titleTimerRef.current) clearTimeout(titleTimerRef.current);
+    titleTimerRef.current = setTimeout(async () => {
+      await updateName();
+    }, 500);
+  };
 
   //on change
   const workspaceNameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -408,22 +434,24 @@ const SettingsForm = () => {
         <div className="flex items-center">
           <Avatar>
             <AvatarImage src={user?.profile as string} />
-            <AvatarFallback>
-            </AvatarFallback>
+            <AvatarFallback></AvatarFallback>
           </Avatar>
           <div className="flex flex-col ml-6">
-            <h3 className="text-muted-foreground cursor-not-allowed">
-              {user ? user.fullname : ""}
-            </h3>
+            <Label htmlFor="fullname" className="pb-2">prefered Name</Label>
+            <Input
+              type="text"
+              name="fullname"
+              defaultValue={user ? user.fullname : ""}
+              onChange={userNameChange}
+            />
             <small className="text-muted-foreground cursor-not-allowed">
               {user ? user.email : ""}
             </small>
-          
           </div>
         </div>
-          <div className="flex items-center">
-            <LogoutButton />
-          </div>
+        <div className="flex items-center">
+          <LogoutButton />
+        </div>
       </>
       <AlertDialog open={openAlertMessage}>
         <AlertDialogContent>
