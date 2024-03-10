@@ -129,37 +129,53 @@ export const useFolderStore = create<FolderState>(set => ({
   },
 }));
 
+
 interface FilesState {
-  files: File[];
-  setFiles: (newFiles: File | null | File[]) => void;
+  files: Map<string, File[]>;
+  setFiles: (newFiles: { folderId: string; files: File[] } | null) => void;
   updateFile: (updatedFile: File) => void;
 }
 
 export const useFileStore = create<FilesState>(set => ({
-  files: [],
-  setFiles: newFile => {
-    set(state => {
-      if (Array.isArray(newFile)) {
-        const newFiles = newFile.filter(
-          f => !state.files.some(existingFile => existingFile.id === f.id)
-        );
-        return {
-          files: [...state.files, ...newFiles],
-        };
-      } else if (newFile !== null) {
-        if (newFile) {
-          return {
-            files: [...state.files, newFile],
-          };
+  files: new Map(),
+  setFiles: newFileData => {
+    if (newFileData) {
+      const { folderId, files } = newFileData;
+      set(state => {
+        if (state.files.get(folderId)) {
+          state.files.set(folderId, [
+            ...(state.files.get(folderId) || []),
+            ...files.filter(file => {
+              const existingFiles = state.files.get(folderId) || [];
+              return !existingFiles.some(
+                existingFile => existingFile.id === file.id
+              );
+            }),
+          ]);
+        } else {
+          state.files.set(
+            folderId,
+            files.filter(file => {
+              const existingFiles = state.files.get(folderId) || [];
+              return !existingFiles.some(
+                existingFile => existingFile.id === file.id
+              );
+            })
+          );
         }
-      }
-      return state;
-    });
+        return { ...state }; // Spread operator for immutability
+      });
+    } else {
+      set(state => ({ ...state })); // Reset to empty state if data is null
+    }
   },
   updateFile: updatedFile =>
     set(state => ({
-      files: state.files.map(file =>
-        file.id === updatedFile.id ? updatedFile : file
+      files: new Map(
+        Array.from(state.files.entries()).map(([folderId, files]) => [
+          folderId,
+          files.map(file => (file.id === updatedFile.id ? updatedFile : file)),
+        ])
       ),
     })),
 }));

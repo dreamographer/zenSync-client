@@ -65,11 +65,15 @@ export const Item = ({
   const router = useRouter();
   const params = useParams();
   const [files, setFiles] = useState<fileType[] | []>([]);
-  useFileUpdate(setFiles);
+  useFileUpdate(setTrigger);
   const handleUpdate = () => {
     setTrigger(prev => !prev);
   };
-
+useEffect(() => {
+  setFiles(GlobalFiles.get(id as string) || []);
+  console.log(GlobalFiles);
+  
+}, [GlobalFiles]);
   useEffect(() => {
     const fetchFolderData = async () => {
       try {
@@ -85,6 +89,7 @@ export const Item = ({
           const files = Files.filter((ele: fileType) => {
             return !ele.inTrash;
           });
+          setGlobalFiles({ folderId: id as string, files: files });
           setFiles(files);
         }
       } catch (error) {

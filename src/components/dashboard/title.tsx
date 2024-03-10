@@ -13,7 +13,7 @@ export const Title = ({ initialData }: TitleProps) => {
   const files = useFileStore(state => state.files);
   
   const Folder = Folders.find(ele => ele.id == initialData.folderId);
-  const file = files.find(ele => ele.id == initialData.id);
+  const file = files.get(Folder?.id as string)?.find(ele => ele.id == initialData.id);
   return (
     <div className="flex items-center gap-x-1">
       {/* {!!initialData.icon && <p>{initialData.icon}</p>} */}

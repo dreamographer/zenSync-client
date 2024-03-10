@@ -1,6 +1,6 @@
 "use client";
 import { BlockNoteEditor } from "@blocknote/core"; 
-import {
+import { 
   BlockNoteView,
   getDefaultReactSlashMenuItems,
   ReactSlashMenuItem,
@@ -74,7 +74,7 @@ const provider = new YPartyKitProvider(
       // The Yjs Provider responsible for transporting updates:
       provider,
       // Where to store BlockNote data in the Y.Doc:
-      fragment: doc.getXmlFragment(),
+      fragment: doc.getXmlFragment("my-document"),
       // Information (name and color) for this user:
       user: {
         name: user?.fullname as string,
