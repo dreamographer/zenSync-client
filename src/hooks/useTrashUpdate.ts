@@ -15,16 +15,19 @@ const useTrashUpdate = (updateFiles: UpdateFilesFunction) => {
         return [...state,update]
       });
     });
+
     socket.on("removedTrash", update => {
-      if (update.id) {
+      console.log("update",update);
+       
+      if (update._id) {
+        update.id = update._id;
         updateFiles(state => {
           return state.filter(file => file.id != update.id);
         });
         return;
       }
-      update.id = update._id;
       updateFiles(state => {
-        return state.filter(file => file.id != update.id);
+        return state.filter(file => file.id != update);
       });
     });
 

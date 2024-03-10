@@ -71,8 +71,6 @@ export const Item = ({
   };
 useEffect(() => {
   setFiles(GlobalFiles.get(id as string) || []);
-  console.log(GlobalFiles);
-  
 }, [GlobalFiles]);
   useEffect(() => {
     const fetchFolderData = async () => {
