@@ -2,11 +2,11 @@
 
 import { useParams, useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
-import { Folder, File, PlusIcon } from "lucide-react";
+import { Folder, File, PlusIcon } from "lucide-react"; 
 import { cn } from "@/lib/utils";
 import { Item } from "./item";
 import { useFolderStore } from "@/store/store";
-import TooltipComponent from "../global/tool-tip";
+import { TooltipComponent } from "../global/tool-tip";
 import axios from "axios";
 import { toast } from "sonner";
 import useFolderUpdates from "@/hooks/useFolderUpdate";
@@ -136,7 +136,7 @@ export const DocumentList = ({ workspaceId, level = 0 }: DocumentListProps) => {
         text-xs"
         >
           FOLDERS
-        </span>
+        </span> 
         <TooltipComponent message="Create Folder">
           <PlusIcon
             onClick={handleFolderCreate}
