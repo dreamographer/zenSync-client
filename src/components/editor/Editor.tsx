@@ -8,12 +8,12 @@ import {
 } from "@blocknote/react";
 import "@blocknote/react/style.css";
 import { useTheme } from "next-themes";
+
 import { ImMagicWand } from "react-icons/im";
-
-
 // collaboration
-
 import * as Y from "yjs";
+import LiveblocksProvider from "@liveblocks/yjs";
+// import { useRoom } from "../liveblocks.config";
 import { WebrtcProvider } from "y-webrtc";  //Production
 import { useParams } from "next/navigation";
 import YPartyKitProvider from "y-partykit/provider";
