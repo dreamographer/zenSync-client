@@ -1,15 +1,19 @@
-import React from "react";
-import dynamic from "next/dynamic";
-const Editor = dynamic(() => import("@/components/editor/Editor"), {
-  ssr: false,
-});
+"use client";
 
-const Filepage = ({ params }: { params: { workspaceId :string,fileId:string} }) => {
+import { RoomProvider } from "@/liveblocks.config";
+import { Editor } from "@/components/editor/Editor";
+import { ClientSideSuspense } from "@liveblocks/react";
+
+export default function Page({
+  params,
+}: {
+  params: { workspaceId: string; fileId: string };
+}) {
   return (
-    <div>
-      <Editor fileId={params.fileId} />
-    </div>
+    <RoomProvider id={params.workspaceId} initialPresence={{}}>
+      <ClientSideSuspense fallback="Loading…">
+        {() => <Editor fileId={params.fileId}/>}
+      </ClientSideSuspense>
+    </RoomProvider>
   );
-};
-
-export default Filepage;
+}

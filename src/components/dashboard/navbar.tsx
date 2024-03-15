@@ -52,7 +52,7 @@ export const Navbar = ({ isCollapsed, onResetWidth, documentId }: NavbarProps) =
             className="h-6 w-6 text-muted-foreground"
           />
         )}
-        <div className="flex items-center justify-between w-full">
+        <div className="flex items-center justify-between w-fit">
           <Title initialData={document} />
           <div className="flex items-center gap-x-2">
           </div>

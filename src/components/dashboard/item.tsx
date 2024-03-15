@@ -24,7 +24,7 @@ import {
   DropdownMenuSeparator,
 } from "@/components/ui/dropdown-menu";
 import { useFileStore, useFolderStore, useUserStore } from "@/store/store";
-import TooltipComponent from "../global/tool-tip";
+import {TooltipComponent} from "../global/tool-tip";
 
 import { useEffect, useState } from "react";
 import axios from "axios";
@@ -249,7 +249,7 @@ useEffect(() => {
           />
         )}
 
-        <div className="ml-auto ">
+        <div className="ml-auto flex ">
           {type === "Folder" && (
             <TooltipComponent message="Delete Folder">
               <Trash

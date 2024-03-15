@@ -9,16 +9,20 @@ const DashBoardLayout = async ({ children }: { children: React.ReactNode }) => {
   const token = nextCookies.get("jwt")?.value;
   if (token) {
     const user = await getServerSideUser(token);
-    if(user){
+    if (user) {
       return (
-        
         <div className="h-full flex w-full fixed dark:bg-[#1F1F1F]">
           <Navigation />
-          <main className="h-full flex-grow  mt-44 p-5 overflow-y-auto">{children}</main>
+          <div className="flex-grow">
+            <div>Bnwner</div>
+            <main className="h-full   mt-44 p-5 overflow-y-auto">
+              {children}
+            </main>
+          </div>
         </div>
       );
-    }else{
-      redirect('/')
+    } else {
+      redirect("/");
     }
   } else {
     return (

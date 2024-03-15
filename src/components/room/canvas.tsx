@@ -12,7 +12,7 @@ import {
   useStorage,
   useOthersMapped,
   useSelf,
-} from "../../../liveblocks.config";
+} from "../../liveblocks.config";
 import {
   colorToCss,
   connectionIdToColor,

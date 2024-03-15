@@ -2,8 +2,8 @@ import { createClient } from "@liveblocks/client";
 import { createRoomContext, createLiveblocksContext } from "@liveblocks/react";
 const API_KEY = process.env.NEXT_PUBLIC_LIVEBLOCK_API_KEY;
 const client = createClient({
-  // publicApiKey: `${API_KEY}`,
-  authEndpoint: "/api/liveblocks-auth",
+  publicApiKey: `${API_KEY}`,
+  // authEndpoint: "/api/liveblocks-auth",
   // throttle: 100,
   async resolveUsers({ userIds }) {
     // Used only for Comments and Notifications. Return a list of user information
