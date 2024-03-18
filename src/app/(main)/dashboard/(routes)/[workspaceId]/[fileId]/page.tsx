@@ -10,9 +10,12 @@ export default function Page({
   params: { workspaceId: string; fileId: string };
 }) {
   return (
-    <RoomProvider id={params.workspaceId} initialPresence={{}}>
+    <RoomProvider
+      id={params.workspaceId}
+      initialPresence={{ cursor: { x: 0, y: 0 } }}
+    >
       <ClientSideSuspense fallback="Loading…">
-        {() => <Editor fileId={params.fileId}/>}
+        {() => <Editor fileId={params.fileId} />}
       </ClientSideSuspense>
     </RoomProvider>
   );

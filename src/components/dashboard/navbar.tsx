@@ -7,6 +7,7 @@ import { Title } from "./title";
 import axios from "axios";
 import { useEffect, useState } from "react";
 import { File } from "@/Types/fileType";
+import { Banner } from "./banner";
 const BASE_URL = process.env.NEXT_PUBLIC_SERVER_URL;
 interface NavbarProps {
   isCollapsed: boolean;
@@ -58,6 +59,7 @@ export const Navbar = ({ isCollapsed, onResetWidth, documentId }: NavbarProps) =
           </div>
         </div>
       </nav>
+      {document.inTrash && <Banner documentId={document.id} />}
     </>
   );
 };

@@ -9,7 +9,7 @@ import {
   Undo2,
 } from "lucide-react";
 
-import { CanvasMode, CanvasState, LayerType } from "@/types/canvas";
+import { CanvasMode, CanvasState, LayerType } from "@/Types/canvas";
 
 import { ToolButton } from "./tool-button";
 

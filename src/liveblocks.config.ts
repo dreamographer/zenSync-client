@@ -4,7 +4,7 @@ const API_KEY = process.env.NEXT_PUBLIC_LIVEBLOCK_API_KEY;
 const client = createClient({
   publicApiKey: `${API_KEY}`,
   // authEndpoint: "/api/liveblocks-auth",
-  // throttle: 100,
+  throttle: 16,
   async resolveUsers({ userIds }) {
     // Used only for Comments and Notifications. Return a list of user information
     // retrieved from `userIds`. This info is used in comments, mentions etc.
@@ -51,7 +51,8 @@ const client = createClient({
 // and that will automatically be kept in sync. Accessible through the
 // `user.presence` property. Must be JSON-serializable.
 type Presence = {
-  // cursor: { x: number, y: number } | null,
+    [x: string]: any;
+  cursor: { x: number, y: number } | null,
   // ...
 };
 

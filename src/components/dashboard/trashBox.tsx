@@ -18,7 +18,7 @@ import useTrashUpdate from "@/hooks/useTrashUpdate";
 // import { ConfirmModal } from "@/components/modals/confirm-modal";
 const BASE_URL = process.env.NEXT_PUBLIC_SERVER_URL;
 export const TrashBox = () => {
-  const router = useRouter();
+  const router = useRouter(); 
   const params = useParams();
   const [trashFiles, setTrash] = useState<File[] | []>([]);
   // useFileUpdate(setTrash)

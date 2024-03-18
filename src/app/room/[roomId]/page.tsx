@@ -5,14 +5,14 @@ import { Loading } from "@/components/room/loading";
 
 interface BoardIdPageProps {
   params: {
-    workspaceId: string;
+    roomId: string;
   };
 }
 
 const BoardIdPage = ({ params }: BoardIdPageProps) => {
   return (
-    <Room roomId={params.workspaceId} fallback={<Loading />}>
-      <Canvas boardId={params.workspaceId} />
+    <Room roomId={params.roomId} fallback={<Loading />}>
+      <Canvas boardId={params.roomId} />
     </Room>
   );
 };

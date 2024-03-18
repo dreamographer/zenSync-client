@@ -2,7 +2,7 @@
 import { File } from "@/Types/fileType";
 import { useFileStore } from "@/store/store";
 import { Dispatch, SetStateAction, useEffect } from "react";
-import { io } from "socket.io-client";
+import { io } from "socket.io-client"; 
 type UpdateFilesFunction = Dispatch<SetStateAction<[] | File[]>>;
 const useFileUpdate = (updateFiles: Dispatch<SetStateAction<boolean>>) => {
   const setGlobalFiles = useFileStore(state => state.setFiles);
