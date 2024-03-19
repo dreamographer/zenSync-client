@@ -44,7 +44,7 @@ useTrashUpdate(setTrash);
 
  
   const onClick = (documentId: string) => {
-    router.push(`/documents/${documentId}`);
+    router.push(`/dashboard/${params.workspaceId}/${documentId}`);
   };
 
   const onRestore = (
@@ -74,8 +74,8 @@ useTrashUpdate(setTrash);
       error: " Failed to delete note.",
     });
 
-    if (params.documentId === documentId) {
-      router.push("/documents");
+    if (params.fileId === documentId) {
+      router.push(`/dashboard/${params.workspaceId}`);
     }
   };
 

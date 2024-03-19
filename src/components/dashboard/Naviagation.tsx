@@ -68,6 +68,8 @@ export const Navigation = () => {
   useRealtimeFolderUpdates();
 
   useEffect(() => {
+    console.log('update');
+    
     workspace = allWorkspaces?.find(ele => ele.id == workspaceId);
     privateWorkspaces = allWorkspaces?.filter(
       ele => ele.workspaceType == "private"
@@ -75,7 +77,7 @@ export const Navigation = () => {
     sharedWorkspaces = allWorkspaces?.filter(
       ele => ele.workspaceType == "shared"
     );
-  }, [workspaceId]);
+  }, [workspaceId, allWorkspaces]);
 
   useEffect(() => {
     const fetchFolderData = async () => {
@@ -197,7 +199,7 @@ export const Navigation = () => {
           <ChevronsLeft className="h-6 w-6 " />
         </div>
 
-        <WorkspaceDropdown
+        <WorkspaceDropdown 
           close={collapse}
           defaultValue={workspace as Workspace}
           privateWorkspaces={privateWorkspaces as Workspace[]}

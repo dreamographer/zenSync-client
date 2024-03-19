@@ -1,9 +1,9 @@
 import { useFolderStore, useWorkspaceStore } from "@/store/store";
-import { useEffect } from "react";
+import { Dispatch, SetStateAction, useEffect } from "react";
 import { io } from "socket.io-client";
-
-const useWorkspaceUpdate = () => {
-    const setWorkspace = useWorkspaceStore(state => state.setWorkspace);
+type UpdateWSFunction = Dispatch<SetStateAction<null>>;
+const useWorkspaceUpdate = (updateWS: UpdateWSFunction) => {
+  const setWorkspace = useWorkspaceStore(state => state.setWorkspace);
   useEffect(() => {
     const socket = io("http://localhost:5000", {
       withCredentials: true,

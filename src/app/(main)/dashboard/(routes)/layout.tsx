@@ -13,16 +13,13 @@ const DashBoardLayout = async ({ children }: { children: React.ReactNode }) => {
       return (
         <div className="h-full flex w-full fixed dark:bg-[#1F1F1F]">
           <Navigation />
-          <div className="flex-grow">
-            <div>Bnwner</div>
-            <main className="h-full   mt-44 p-5 overflow-y-auto">
+            <main className="h-full flex-1 mt-44 m-10 p-5 overflow-y-auto">
               {children}
             </main>
-          </div>
         </div>
       );
     } else {
-      redirect("/");
+      redirect("/"); 
     }
   } else {
     return (

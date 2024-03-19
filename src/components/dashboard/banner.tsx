@@ -1,6 +1,6 @@
 "use client";
 
-import { useRouter } from "next/navigation";
+import { useParams, useRouter } from "next/navigation";
 import { toast } from "sonner";
 
 import { Button } from "@/components/ui/button";
@@ -13,7 +13,7 @@ interface BannerProps {
 
 export const Banner = ({ documentId }: BannerProps) => {
   const router = useRouter();
-
+  const params = useParams();
 
     const onRemove = () => {
       const promise = axios.delete(`${BASE_URL}/file/${documentId}`, {
@@ -26,7 +26,8 @@ export const Banner = ({ documentId }: BannerProps) => {
         error: " Failed to delete note.",
       });
 
-      router.push("/documents");
+        router.push(`/dashboard/${params.workspaceId}`);
+      
     };
 
 const onRestore = () => {
@@ -49,6 +50,7 @@ const onRestore = () => {
         success: "Note restored!",
         error: " Failed to restore note.",
       });
+      router.push(`/dashboard/${params.workspaceId}`);
     };
   return (
     <div className="w-full bg-rose-500 text-center text-sm p-2 text-white flex items-center gap-x-2 justify-center">

@@ -8,6 +8,7 @@ import axios from "axios";
 import { useEffect, useState } from "react";
 import { File } from "@/Types/fileType";
 import { Banner } from "./banner";
+import useTrashUpdate from "@/hooks/useTrashUpdate";
 const BASE_URL = process.env.NEXT_PUBLIC_SERVER_URL;
 interface NavbarProps {
   isCollapsed: boolean;

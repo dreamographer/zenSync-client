@@ -9,11 +9,9 @@ const useFolderUpdates = (update?: UpdateFolderFunction) => {
       withCredentials: true,
     });
     socket.on("folderCreated", folder => {
-      console.log("New folder created:", folder);
       updateFolder(folder);
     });
     socket.on("folderUpdated", folder => {
-      console.log("New update:", folder);
       update?.(folder);
     });
 

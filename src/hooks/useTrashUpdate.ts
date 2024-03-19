@@ -7,7 +7,7 @@ const useTrashUpdate = (updateFiles: UpdateFilesFunction) => {
   useEffect(() => {
     const socket = io("http://localhost:5000", {
       withCredentials: true,
-    });
+    }); 
 
     socket.on("addToTrash", update => {
       update.id = update._id;
