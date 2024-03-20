@@ -1,4 +1,5 @@
 import { Plus_Jakarta_Sans } from "next/font/google";
+import { EdgeStoreProvider } from "../lib/providers/edgestore";
 import "./globals.css"
 import { ThemeProvider } from "@/lib/providers/next-theme-provider";
 import { twMerge } from "tailwind-merge";
@@ -20,10 +21,12 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={twMerge("bg-background", JakarthaSans.className)}>
-        <ThemeProvider attribute="class" defaultTheme="dark" enableSystem>
-          <Toaster richColors />
-          <CookiesProvider>{children}</CookiesProvider>
-        </ThemeProvider>
+        <EdgeStoreProvider>
+          <ThemeProvider attribute="class" defaultTheme="dark" enableSystem>
+            <Toaster richColors />
+            <CookiesProvider>{children}</CookiesProvider>
+          </ThemeProvider>
+        </EdgeStoreProvider>
       </body>
     </html>
   );

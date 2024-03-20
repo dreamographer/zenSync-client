@@ -5,12 +5,15 @@ import { useParams } from "next/navigation";
 
 import { Dialog, DialogContent, DialogHeader } from "@/components/ui/dialog";
 import { useCoverImage } from "@/store/store";
-import { SingleImageDropzone } from "@/components/single-image-dropzone";
-
+import { SingleImageDropzone } from "./SingleImageDropzone";
+import { useEdgeStore } from "@/lib/providers/edgestore";
+import axios from "axios";
+import { toast } from "sonner";
+const BASE_URL = process.env.NEXT_PUBLIC_SERVER_URL;
 
 export const CoverImageModal = () => {
   const params = useParams();
-  const update = useMutation(api.documents.update);
+
   const coverImage = useCoverImage();
   const { edgestore } = useEdgeStore();
 
@@ -34,10 +37,18 @@ export const CoverImageModal = () => {
           replaceTargetUrl: coverImage.url,
         },
       });
+      const response = axios.put(
+        `${BASE_URL}/file/${params.fileId}`,
+        { coverImage: res.url },
+        {
+          withCredentials: true,
+        }
+      );
 
-      await update({
-        id: params.documentId as Id<"documents">,
-        coverImage: res.url,
+      toast.promise(response, {
+        loading: "uploading Cover",
+        success: "Cover Uploaded!",
+        error: " Failed to Upload Cover.",
       });
 
       onClose();

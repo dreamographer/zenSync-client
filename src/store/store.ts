@@ -134,7 +134,7 @@ interface FilesState {
   files: Map<string, File[]>;
   setFiles: (newFiles: { folderId: string; files: File[] } | null) => void;
   updateFile: (updatedFile: File) => void;
-}
+} 
 
 export const useFileStore = create<FilesState>(set => ({
   files: new Map(),
