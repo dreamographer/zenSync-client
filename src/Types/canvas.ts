@@ -87,7 +87,7 @@ export enum Side {
   Right = 8,
 }
 
-export type CanvasState =
+export type CanvasState = 
   | {
       mode: CanvasMode.None;
     }

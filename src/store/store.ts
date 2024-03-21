@@ -134,7 +134,7 @@ interface FilesState {
   files: Map<string, File[]>;
   setFiles: (newFiles: { folderId: string; files: File[] } | null) => void;
   updateFile: (updatedFile: File) => void;
-}
+} 
 
 export const useFileStore = create<FilesState>(set => ({
   files: new Map(),
@@ -178,4 +178,21 @@ export const useFileStore = create<FilesState>(set => ({
         ])
       ),
     })),
+}));
+
+
+type CoverImageStore = {
+  url?: string;
+  isOpen: boolean;
+  onOpen: () => void;
+  onClose: () => void;
+  onReplace: (url: string) => void;
+};
+
+export const useCoverImage = create<CoverImageStore>(set => ({
+  url: undefined,
+  isOpen: false,
+  onOpen: () => set({ isOpen: true, url: undefined }),
+  onClose: () => set({ isOpen: false, url: undefined }),
+  onReplace: (url: string) => set({ isOpen: true, url }),
 }));

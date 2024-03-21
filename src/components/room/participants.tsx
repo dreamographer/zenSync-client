@@ -3,7 +3,7 @@
 import { connectionIdToColor } from "@/lib/utils";
 import { useOthers, useSelf } from "../../liveblocks.config";
 
-import { UserAvatar } from "./user-avatar";
+import { UserAvatar } from "./user-avatar";  
 
 const MAX_SHOWN_USERS = 2;
 

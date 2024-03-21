@@ -18,7 +18,7 @@ import useTrashUpdate from "@/hooks/useTrashUpdate";
 // import { ConfirmModal } from "@/components/modals/confirm-modal";
 const BASE_URL = process.env.NEXT_PUBLIC_SERVER_URL;
 export const TrashBox = () => {
-  const router = useRouter();
+  const router = useRouter(); 
   const params = useParams();
   const [trashFiles, setTrash] = useState<File[] | []>([]);
   // useFileUpdate(setTrash)
@@ -44,7 +44,7 @@ useTrashUpdate(setTrash);
 
  
   const onClick = (documentId: string) => {
-    router.push(`/documents/${documentId}`);
+    router.push(`/dashboard/${params.workspaceId}/${documentId}`);
   };
 
   const onRestore = (
@@ -74,8 +74,8 @@ useTrashUpdate(setTrash);
       error: " Failed to delete note.",
     });
 
-    if (params.documentId === documentId) {
-      router.push("/documents");
+    if (params.fileId === documentId) {
+      router.push(`/dashboard/${params.workspaceId}`);
     }
   };
 

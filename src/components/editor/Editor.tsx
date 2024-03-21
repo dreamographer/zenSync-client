@@ -1,62 +1,56 @@
 "use client";
 import { useEffect, useState } from "react";
 import { connectionIdToColor } from "@/lib/utils";
-import { BlockNoteEditor } from "@blocknote/core";
 import {
-  BlockNoteView,
-  ReactSlashMenuItem,
+  BlockNoteEditor,
+  PartialBlock,
+  filterSuggestionItems,
+} from "@blocknote/core";
+import {
+  useCreateBlockNote,
+  SuggestionMenuController,
   getDefaultReactSlashMenuItems,
-  useBlockNote,
+  BlockNoteView,
+  DefaultReactSuggestionItem,
 } from "@blocknote/react";
 import * as Y from "yjs";
+import { Editor as TEditor } from "@tiptap/core";
 import "@blocknote/react/style.css";
 import { useTheme } from "next-themes";
-
 import { ImMagicWand } from "react-icons/im";
 import LiveblocksProvider from "@liveblocks/yjs";
-import { useRoom } from "../../liveblocks.config";
+import { useRoom, useUpdateMyPresence } from "../../liveblocks.config";
 import { io } from "socket.io-client";
 import { useUserStore } from "@/store/store";
+import { Cursor } from "../room/cursor";
+import { CursorsPresence } from "../room/cursors-presence";
+import { group } from "console";
+import { useCompletion } from "ai/react";
 const BASE_URL = process.env.NEXT_PUBLIC_SERVER_URL;
 const socket = io(BASE_URL as string, {
   withCredentials: true,
 });
+
 type EditorProps = {
   doc: Y.Doc;
   provider: any; 
   fileId: string;
 };
+
 interface Props {
   fileId: string;
 }
 
-const insertMagicAi = (editor: BlockNoteEditor) => {
-  console.log("Magic AI insertion incoming!");
-};
-  const insertMagicItem: ReactSlashMenuItem = {
-    name: "Continue with AI",
-    execute: insertMagicAi,
-    aliases: ["ai", "magic"],
-    group: "Magic",
-    icon: <ImMagicWand size={18} />,
-    hint: "Continue your idea with some extra inspiration!",
-  };
+interface GetPrevTextOptions {
+  chars: number;
+  offset: number;
+}
 
-  const customSlashMenuItemList = [
-    insertMagicItem,
-    ...getDefaultReactSlashMenuItems(),
-  ];
 export function Editor({ fileId }: Props) {
-  const insertMagicAi = (editor: BlockNoteEditor) => {
-    console.log("Magic AI insertion incoming!");
-  };
-
-
   const room = useRoom();
   const [doc, setDoc] = useState<Y.Doc>();
   const [provider, setProvider] = useState<any>();
 
-  // Set up Liveblocks Yjs provider
   useEffect(() => {
     const yDoc = new Y.Doc();
     const yProvider = new LiveblocksProvider(room, yDoc);
@@ -73,7 +67,7 @@ export function Editor({ fileId }: Props) {
     return null;
   }
 
-  return <BlockNote doc={doc} provider={provider} fileId ={fileId}/>;
+  return <BlockNote doc={doc} provider={provider} fileId={fileId} />;
 }
 
 function BlockNote({ doc, provider, fileId }: EditorProps) {
@@ -154,20 +148,17 @@ function BlockNote({ doc, provider, fileId }: EditorProps) {
   const user = useUserStore(state => state.user);
   const { theme, setTheme } = useTheme();
   let mode: "dark" | "light" = "dark";
-  if (theme == "light") {
+  if (theme === "light") {
     mode = "light";
   }
-  const editor: BlockNoteEditor = useBlockNote({
+
+  const editor = useCreateBlockNote({
     collaboration: {
       provider,
-
-      // Where to store BlockNote data in the Y.Doc:
       fragment: doc.getXmlFragment(fileId),
-
-      // Information for this user:
       user: {
         name: user?.fullname as string,
-        color:connectionIdToColor(doc.clientID),
+        color: connectionIdToColor(doc.clientID),
       },
     },
   });
