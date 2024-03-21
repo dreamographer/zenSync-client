@@ -19,13 +19,19 @@ import "@blocknote/react/style.css";
 import { useTheme } from "next-themes";
 import { ImMagicWand } from "react-icons/im";
 import LiveblocksProvider from "@liveblocks/yjs";
-import { useRoom, useUpdateMyPresence } from "../../liveblocks.config";
+import {
+  useMutation,
+  useRoom,
+  useSelf,
+  useUpdateMyPresence,
+} from "../../liveblocks.config";
 import { io } from "socket.io-client";
 import { useUserStore } from "@/store/store";
 import { Cursor } from "../room/cursor";
 import { CursorsPresence } from "../room/cursors-presence";
 import { group } from "console";
 import { useCompletion } from "ai/react";
+import Presence from "./Presence";
 const BASE_URL = process.env.NEXT_PUBLIC_SERVER_URL;
 const socket = io(BASE_URL as string, {
   withCredentials: true,
@@ -33,7 +39,7 @@ const socket = io(BASE_URL as string, {
 
 type EditorProps = {
   doc: Y.Doc;
-  provider: any; 
+  provider: any;
   fileId: string;
 };
 
@@ -67,10 +73,16 @@ export function Editor({ fileId }: Props) {
     return null;
   }
 
-  return <BlockNote doc={doc} provider={provider} fileId={fileId} />;
+  return (
+    <>
+      <BlockNote doc={doc} provider={provider} fileId={fileId} />;
+    
+    </>
+  );
 }
 
 function BlockNote({ doc, provider, fileId }: EditorProps) {
+  const currentUser = useSelf();
   const { complete } = useCompletion({
     id: "hackathon_starter",
     api: "/api/generate",
@@ -158,29 +170,33 @@ function BlockNote({ doc, provider, fileId }: EditorProps) {
       fragment: doc.getXmlFragment(fileId),
       user: {
         name: user?.fullname as string,
-        color: connectionIdToColor(doc.clientID),
+        color: connectionIdToColor(currentUser.connectionId),
       },
     },
   });
 
-  const updateMyPresence = useUpdateMyPresence();
+  const onPointerMove = useMutation(
+    ({ setMyPresence }, e: React.PointerEvent) => {
+      e.preventDefault();
+
+      const current = {
+        x: Math.round(e.clientX),
+        y: Math.round(e.clientY), 
+      };
+      
+      setMyPresence({ cursor: current });
+    },
+    []
+  );
+
+  const onPointerLeave = useMutation(({ setMyPresence }) => {
+    setMyPresence({ cursor: null });
+  }, []);
 
   return (
     <div
-      onPointerMove={event => {
-        
-        updateMyPresence({
-          cursor: {
-            x: Math.round(event.clientX),
-            y: Math.round(event.clientY),
-          },
-        });
-      }}
-      onPointerLeave={() =>
-        updateMyPresence({
-          cursor: null,
-        })
-      }
+      onPointerMove={onPointerMove}
+      onPointerLeave={onPointerLeave}
       className="w-full h-full"
     >
       <BlockNoteView editor={editor} theme={mode} slashMenu={false}>
@@ -191,7 +207,7 @@ function BlockNote({ doc, provider, fileId }: EditorProps) {
           }
         />
       </BlockNoteView>
-          <CursorsPresence />
-   </div>
+      
+    </div>
   );
 }
