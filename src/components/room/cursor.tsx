@@ -6,7 +6,7 @@ import { MousePointer2 } from "lucide-react";
 import { useOther } from "@/liveblocks.config";
 import { connectionIdToColor } from "@/lib/utils";
 
-interface CursorProps {
+interface CursorProps { 
   connectionId: number;
 };
 

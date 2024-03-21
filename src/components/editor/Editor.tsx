@@ -33,7 +33,7 @@ const socket = io(BASE_URL as string, {
 
 type EditorProps = {
   doc: Y.Doc;
-  provider: any;
+  provider: any; 
   fileId: string;
 };
 
@@ -123,7 +123,7 @@ function BlockNote({ doc, provider, fileId }: EditorProps) {
   const insertMagicItem = (
     editor: BlockNoteEditor
   ): DefaultReactSuggestionItem => ({
-    title: "Insert Hello World",
+    title: "Continue with AI",
     onItemClick: () => {
       complete(
         getPrevText(editor, {
@@ -168,6 +168,7 @@ function BlockNote({ doc, provider, fileId }: EditorProps) {
   return (
     <div
       onPointerMove={event => {
+        
         updateMyPresence({
           cursor: {
             x: Math.round(event.clientX),
@@ -180,6 +181,7 @@ function BlockNote({ doc, provider, fileId }: EditorProps) {
           cursor: null,
         })
       }
+      className="w-full h-full"
     >
       <BlockNoteView editor={editor} theme={mode} slashMenu={false}>
         <SuggestionMenuController
@@ -189,7 +191,7 @@ function BlockNote({ doc, provider, fileId }: EditorProps) {
           }
         />
       </BlockNoteView>
-      <CursorsPresence />
-    </div>
+          <CursorsPresence />
+   </div>
   );
 }

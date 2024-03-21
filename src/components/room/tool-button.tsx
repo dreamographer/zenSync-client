@@ -21,7 +21,7 @@ export const ToolButton = ({
   isDisabled,
 }: ToolButtonProps) => {
   return (
-    <TooltipComponent message={label} side="right" sideOffset={14}>
+    <TooltipComponent  message={label} side="right" sideOffset={14}>
       <Button
         disabled={isDisabled}
         onClick={onClick}

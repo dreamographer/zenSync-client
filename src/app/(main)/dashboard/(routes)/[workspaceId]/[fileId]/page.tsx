@@ -40,13 +40,14 @@ const files = useFileStore(state => state.files);
   return (
     <RoomProvider
       id={params.workspaceId}
-      initialPresence={{ cursor: { x: 0, y: 0 } }}
+      initialPresence={{ cursor: null }}
     >
       <Cover url={file?.coverImage} />
       <Toolbar initialData={file} />
       <ClientSideSuspense fallback="Loading…">
         {() => <Editor fileId={params.fileId} />}
       </ClientSideSuspense>
+      
     </RoomProvider>
   );
 }

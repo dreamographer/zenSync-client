@@ -1,10 +1,17 @@
-import { createClient } from "@liveblocks/client";
-import { createRoomContext, createLiveblocksContext } from "@liveblocks/react";
+import {
+  createClient,
+  LiveList,
+  LiveMap,
+  LiveObject,
+} from "@liveblocks/client";
+import { createLiveblocksContext, createRoomContext } from "@liveblocks/react";
 const API_KEY = process.env.NEXT_PUBLIC_LIVEBLOCK_API_KEY;
+import { Layer, Color } from "@/Types/canvas";
+
 const client = createClient({
   publicApiKey: `${API_KEY}`,
-  // authEndpoint: "/api/liveblocks-auth",
   throttle: 16,
+  // authEndpoint: "/api/liveblocks-auth",
   async resolveUsers({ userIds }) {
     // Used only for Comments and Notifications. Return a list of user information
     // retrieved from `userIds`. This info is used in comments, mentions etc.
@@ -51,9 +58,10 @@ const client = createClient({
 // and that will automatically be kept in sync. Accessible through the
 // `user.presence` property. Must be JSON-serializable.
 type Presence = {
-    [x: string]: any;
-  cursor: { x: number, y: number } | null,
-  // ...
+  cursor: { x: number; y: number } | null;
+  selection: string[];
+  pencilDraft: [x: number, y: number, pressure: number][] | null;
+  penColor: Color | null;
 };
 
 // Optionally, Storage represents the shared document that persists in the
@@ -61,19 +69,19 @@ type Presence = {
 // LiveList, LiveMap, LiveObject instances, for which updates are
 // automatically persisted and synced to all connected clients.
 type Storage = {
-  // author: LiveObject<{ firstName: string, lastName: string }>,
-  // ...
+  layers: LiveMap<string, LiveObject<Layer>>;
+  layerIds: LiveList<string>;
 };
 
 // Optionally, UserMeta represents static/readonly metadata on each user, as
 // provided by your own custom auth back end (if used). Useful for data that
 // will not change during a session, like a user's name or avatar.
 type UserMeta = {
-  id?: string,  // Accessible through `user.id`
+  id?: string;
   info?: {
-  name?:string;
-  picture?:string;
-  },  // Accessible through `user.info`
+    name?: string;
+    picture?: string;
+  };
 };
 
 // Optionally, the type of custom events broadcast and listened to in this
@@ -91,7 +99,6 @@ export type ThreadMetadata = {
   // time: number;
 };
 
-// Room-level hooks, use inside `RoomProvider`
 export const {
   suspense: {
     RoomProvider,
@@ -101,7 +108,6 @@ export const {
     useSelf,
     useOthers,
     useOthersMapped,
-    useOthersListener,
     useOthersConnectionIds,
     useOther,
     useBroadcastEvent,
@@ -128,17 +134,10 @@ export const {
     useDeleteComment,
     useAddReaction,
     useRemoveReaction,
-    useThreadSubscription,
-    useMarkThreadAsRead,
-    useRoomNotificationSettings,
-    useUpdateRoomNotificationSettings,
-  
-    // These hooks can be exported from either context
-    // useUser,
-    // useRoomInfo
-  }
-} = createRoomContext<Presence, Storage, UserMeta, RoomEvent, ThreadMetadata>(client);
-
+  },
+} = createRoomContext<Presence, Storage, UserMeta, RoomEvent, ThreadMetadata>(
+  client
+);
 // Project-level hooks, use inside `LiveblocksProvider`
 export const {
   suspense: {

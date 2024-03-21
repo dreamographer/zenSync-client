@@ -31,26 +31,28 @@ export const CoverImageModal = () => {
       setIsSubmitting(true);
       setFile(file);
 
-      const res = await edgestore.publicFiles.upload({
+      const res =  edgestore.publicFiles.upload({
         file,
         options: {
           replaceTargetUrl: coverImage.url,
         },
       });
+        toast.promise(res, {
+          loading: "uploading Cover",
+          success: "Cover Uploaded!",
+          error: " Failed to Upload Cover.",
+        });
+
+      const url=await res
       const response = axios.put(
         `${BASE_URL}/file/${params.fileId}`,
-        { coverImage: res.url },
+        { coverImage: url.url },
         {
           withCredentials: true,
         }
       );
 
-      toast.promise(response, {
-        loading: "uploading Cover",
-        success: "Cover Uploaded!",
-        error: " Failed to Upload Cover.",
-      });
-
+    
       onClose();
     }
   };

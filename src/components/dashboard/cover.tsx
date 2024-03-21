@@ -49,10 +49,10 @@ export const Cover = ({ url, preview }: CoverImageProps) => {
       className={cn(
         "relative w-full h-[35vh] group",
         !url && "h-[20vh]",
-        url && "bg-muted"
+        url && "bg-neutral-100"
       )}
     >
-      {!!url && <Image src={url} fill alt="Cover" className="object-cover" />}
+      {!!url && <Image src={url} fill alt="Cover" className="object-left object-cover" />}
       {url && !preview && (
         <div className=" absolute bottom-2 left-5 flex items-center gap-x-2">
           <Button
@@ -80,5 +80,5 @@ export const Cover = ({ url, preview }: CoverImageProps) => {
 };
 
 Cover.Skeleton = function CoverSkeleton() {
-  return <Skeleton className="w-full h-[12vh]" />;
+  return <Skeleton className="w-full h-[12vh] bg-neutral-50" />;
 };
