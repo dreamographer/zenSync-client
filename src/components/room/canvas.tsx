@@ -38,10 +38,13 @@ import { Info } from "./info";
 import { Path } from "./path";
 import { Toolbar } from "./toolbar";
 import { Participants } from "./participants";
-import { LayerPreview } from "./layer-preview";
+// import { useDisableScrollBounce } from "@/hooks/use-disable-scroll-bounce";
+// import { useDeleteLayers } from "@/hooks/use-delete-layers";
+// import { Path } from "./path";
 import { SelectionBox } from "./selection-box";
-import { SelectionTools } from "./selection-tools";
+// import { SelectionTools } from "./selection-tools";
 import { CursorsPresence } from "./cursors-presence";
+import { LayerPreview } from "./layer-preview";
 
 const MAX_LAYERS = 100;
 

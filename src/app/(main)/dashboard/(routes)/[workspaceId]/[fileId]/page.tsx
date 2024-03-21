@@ -10,10 +10,16 @@ export default function Page({
   params: { workspaceId: string; fileId: string };
 }) {
   return (
-    <RoomProvider id={params.workspaceId} initialPresence={{}}>
+    <RoomProvider
+      id={params.workspaceId}
+      initialPresence={{ cursor: null }}
+    >
+      <Cover url={file?.coverImage} />
+      <Toolbar initialData={file} />
       <ClientSideSuspense fallback="Loading…">
         {() => <Editor fileId={params.fileId}/>}
       </ClientSideSuspense>
+      
     </RoomProvider>
   );
 }
