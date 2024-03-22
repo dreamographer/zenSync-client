@@ -13,6 +13,7 @@ const BoardIdPage = ({ params }: BoardIdPageProps) => {
   return (
     <Room roomId={params.roomId} fallback={<Loading />}>
       <Canvas boardId={params.roomId} />
+      
     </Room>
   );
 };

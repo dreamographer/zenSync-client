@@ -8,6 +8,9 @@ import { useFileStore } from "@/store/store";
 import { useEffect, useState } from "react"; // Import useState
 import { File } from "@/Types/fileType";
 import { Cover } from "@/components/dashboard/cover";
+import { Room } from "@/components/room/room";
+import Loading from "../../../loading";
+import Presence from "@/components/editor/Presence";
 
 export default function Page({
   params,
@@ -38,16 +41,13 @@ const files = useFileStore(state => state.files);
   }, [params.fileId, files]);
 
   return (
-    <RoomProvider
-      id={params.workspaceId}
-      initialPresence={{ cursor: null }}
-    >
+    <Room roomId={params.workspaceId} fallback='Loading=...'>
       <Cover url={file?.coverImage} />
       <Toolbar initialData={file} />
       <ClientSideSuspense fallback="Loading…">
         {() => <Editor fileId={params.fileId} />}
       </ClientSideSuspense>
-      
-    </RoomProvider>
+      <Presence />
+    </Room>
   );
 }

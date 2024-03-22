@@ -23,7 +23,7 @@ interface ToolbarProps {
 }
 
 export const Toolbar = ({
-  canvasState,
+  canvasState, 
   setCanvasState,
   undo,
   redo,
