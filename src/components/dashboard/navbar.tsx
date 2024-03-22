@@ -9,6 +9,7 @@ import { useEffect, useState } from "react";
 import { File } from "@/Types/fileType";
 import { Banner } from "./banner";
 import useTrashUpdate from "@/hooks/useTrashUpdate";
+import { Publish } from "./publish";
 const BASE_URL = process.env.NEXT_PUBLIC_SERVER_URL;
 interface NavbarProps {
   isCollapsed: boolean;
@@ -57,6 +58,7 @@ export const Navbar = ({ isCollapsed, onResetWidth, documentId }: NavbarProps) =
         <div className="flex items-center justify-between w-fit">
           <Title initialData={document} />
           <div className="flex items-center gap-x-2">
+          <Publish initialData={{id:document.id,isPublished:document.isPublished as boolean }} />
           </div>
         </div>
       </nav>

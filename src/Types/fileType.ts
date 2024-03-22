@@ -5,4 +5,6 @@ export type File = {
   inTrash: boolean;
   folderId: string;
   coverImage?: string;
+  isPublished?: boolean;
+  content?:string;
 };

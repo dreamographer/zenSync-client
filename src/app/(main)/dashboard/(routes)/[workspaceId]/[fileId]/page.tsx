@@ -8,7 +8,7 @@ import { useFileStore } from "@/store/store";
 import { useEffect, useState } from "react"; // Import useState
 import { File } from "@/Types/fileType";
 import { Cover } from "@/components/dashboard/cover";
-import { Room } from "@/components/room/room";
+import { Room } from "@/components/room/room"; 
 import Loading from "../../../loading";
 import Presence from "@/components/editor/Presence";
 
@@ -20,7 +20,7 @@ export default function Page({
   const [file, setFile] = useState<File | null>(null); // Use state to update file
 const files = useFileStore(state => state.files);
   useEffect(() => {
-    const fetchFolderData = async () => {
+    const fetchFileData = async () => {
       try {
         const response = await fetch(
           `${process.env.NEXT_PUBLIC_SERVER_URL}/file/${params.fileId}`,
@@ -36,7 +36,7 @@ const files = useFileStore(state => state.files);
       }
     };
     if (params.fileId) {
-      fetchFolderData();
+      fetchFileData();
     }
   }, [params.fileId, files]);
 

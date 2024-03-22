@@ -1,7 +1,7 @@
 "use client";
 
 import { connectionIdToColor } from "@/lib/utils";
-import { useOthers, useSelf } from "../../liveblocks.config";
+import { useOthers, useOthersMapped, useSelf } from "../../liveblocks.config";
 
 import { UserAvatar } from "./user-avatar";  
 

@@ -13,6 +13,7 @@ import {
   BlockNoteView,
   DefaultReactSuggestionItem,
 } from "@blocknote/react";
+import { useEdgeStore } from "@/lib/providers/edgestore";
 import * as Y from "yjs";
 import { Editor as TEditor } from "@tiptap/core";
 import "@blocknote/react/style.css";
@@ -82,6 +83,7 @@ export function Editor({ fileId }: Props) {
 }
 
 function BlockNote({ doc, provider, fileId }: EditorProps) {
+  const {edgestore} =useEdgeStore()
   const currentUser = useSelf();
   const { complete } = useCompletion({
     id: "hackathon_starter",
@@ -131,7 +133,13 @@ function BlockNote({ doc, provider, fileId }: EditorProps) {
 
     return prevText;
   };
+ const handleUpload = async (file: File) => {
+   const response = await edgestore.publicFiles.upload({
+     file,
+   });
 
+   return response.url;
+ };
   const insertMagicItem = (
     editor: BlockNoteEditor
   ): DefaultReactSuggestionItem => ({
@@ -157,7 +165,7 @@ function BlockNote({ doc, provider, fileId }: EditorProps) {
     ...getDefaultReactSlashMenuItems(editor),
   ];
 
-  const user = useUserStore(state => state.user);
+  const user = useUserStore(state => state.user); 
   const { theme, setTheme } = useTheme();
   let mode: "dark" | "light" = "dark";
   if (theme === "light") {
@@ -173,6 +181,15 @@ function BlockNote({ doc, provider, fileId }: EditorProps) {
         color: connectionIdToColor(currentUser.connectionId),
       },
     },
+    uploadFile:handleUpload,
+    
+  });
+doc.on("update", (update, origin, doc) => {
+    const data = {
+      id: fileId,
+      content:JSON.stringify(editor.document)
+    };
+    socket.emit("updateContent", data);
   });
 
   const onPointerMove = useMutation(
