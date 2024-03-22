@@ -268,9 +268,11 @@ export const Canvas = ({ boardId }: CanvasProps) => {
   );
 
   const onWheel = useCallback((e: React.WheelEvent) => {
-    setCamera(camera => ({
-      x: camera.x - e.deltaX,
-      y: camera.y - e.deltaY,
+    e.preventDefault();
+    const isShiftPressed = e.shiftKey;
+    setCamera(prevCamera => ({
+      x: isShiftPressed ? prevCamera.x - e.deltaY : prevCamera.x - e.deltaX,
+      y: isShiftPressed ? prevCamera.y - e.deltaX : prevCamera.y - e.deltaY,
     }));
   }, []);
 
