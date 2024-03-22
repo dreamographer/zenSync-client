@@ -7,12 +7,10 @@ import { useOthersConnectionIds, useOthersMapped } from "@/liveblocks.config";
 import { colorToCss } from "@/lib/utils";
 
 import { Cursor } from "./cursor";
-// import { Path } from "./path";
+import { Path } from "./path";
 
 const Cursors = () => {
   const ids = useOthersConnectionIds();
-  console.log(ids);
-  
 
   return (
     <>
@@ -37,14 +35,13 @@ const Drafts = () => {
       {others.map(([key, other]) => {
         if (other.pencilDraft) {
           return (
-            <p>ehlo</p>
-            // <Path
-            //   key={key}
-            //   x={0}
-            //   y={0}
-            //   points={other.pencilDraft}
-            //   fill={other.penColor ? colorToCss(other.penColor) : "#000"}
-            // />
+            <Path
+              key={key}
+              x={0}
+              y={0}
+              points={other.pencilDraft}
+              fill={other.penColor ? colorToCss(other.penColor) : "#000"}
+            />
           );
         }
 

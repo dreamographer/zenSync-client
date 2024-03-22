@@ -7,7 +7,7 @@ import { TooltipComponent  as Hint} from "../global/tool-tip";
 import { Camera, Color } from "@/Types/canvas";
 import { Button } from "@/components/ui/button";
 import { useMutation, useSelf } from "@/liveblocks.config";
-// import { useDeleteLayers } from "@/hooks/use-delete-layers";
+import { useDeleteLayers } from "@/hooks/useDeleteLayers";
 import { useSelectionBounds } from "@/hooks/useSelectionBonds";
 
 import { ColorPicker } from "./color-picker";
@@ -76,7 +76,7 @@ export const SelectionTools = memo(
       [selection, setLastUsedColor]
     );
 
-    // const deleteLayers = useDeleteLayers();
+    const deleteLayers = useDeleteLayers();
 
     const selectionBounds = useSelectionBounds();
 
