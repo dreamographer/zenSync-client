@@ -4,6 +4,7 @@ import axios from "axios";
 import { clearStorage } from "persist-and-sync";
 import { useRouter } from "next/navigation";
 import { useFolderStore, useUserStore, useWorkspaceStore } from "@/store/store";
+import { LogOut } from "lucide-react";
 const LogoutButton = () => {
   const router = useRouter();
   const setUser = useUserStore(state => state.setUser);
@@ -28,7 +29,11 @@ const LogoutButton = () => {
       router.replace("/login");
     }
   };
-  return <Button onClick={logout}>LOGOUT</Button>;
+  return (
+    <Button className="bg-transparent hover:bg-transparent " onClick={logout}>
+      <LogOut className="dark:text-white text-black" />
+    </Button>
+  );
 };
 
 export default LogoutButton;

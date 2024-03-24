@@ -113,7 +113,7 @@ export const SelectionTools = memo(
         <div className="flex items-center pl-2 ml-2 border-l border-neutral-200">
           <Hint message="Delete">
             <Button variant="board" size="icon" 
-            // onClick={deleteLayers}
+            onClick={deleteLayers}
             >
               <Trash2 />
             </Button>

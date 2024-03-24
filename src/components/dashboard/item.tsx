@@ -201,7 +201,6 @@ useEffect(() => {
   };
 
   const handleOpen = () => {
-    console.log("hande file");
     router.replace(`/dashboard/${params.workspaceId}/${id}`);
   };
 

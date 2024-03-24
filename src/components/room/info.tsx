@@ -6,7 +6,9 @@ import { Menu } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { TooltipComponent } from "../global/tool-tip";
 import { Button } from "@/components/ui/button";
-;
+import { useWorkspaceStore } from "@/store/store";
+import { useRouter } from "next/navigation";
+
 
 interface InfoProps {
   boardId: string;
@@ -17,8 +19,12 @@ const TabSeparator = () => {
 };
 
 export const Info = ({ boardId }: InfoProps) => {
-  const data = {title:"Dummy"};  //get the workspace name
-
+  const workspace=useWorkspaceStore(state=>state.workspace)
+  const data = workspace.find(ele=>ele.id==boardId)  //get the workspace name
+  const router = useRouter();
+  const onClick = () => {
+    router.push(`/dashboard/${boardId}`);
+  };
   if (!data) return <InfoSkeleton />;
 
   return (
@@ -39,10 +45,13 @@ export const Info = ({ boardId }: InfoProps) => {
         </Button>
       </TooltipComponent>
       <TabSeparator />
-      <Button variant="board" className="text-base font-normal px-2">
+      <Button
+        variant="board"
+        onClick={onClick}
+        className="text-base font-normal px-2"
+      >
         {data.title}
       </Button>
-
     </div>
   );
 };

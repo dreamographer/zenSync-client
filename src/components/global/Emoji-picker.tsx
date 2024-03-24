@@ -4,7 +4,7 @@ import { useRouter } from "next/navigation";
 import React from "react";
 
 import {
-  Popover,
+  Popover, 
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover";
@@ -15,7 +15,6 @@ interface EmojiPickerProps {
 }
 
 export const EmojiPicker: React.FC<EmojiPickerProps> = ({ children, getValue }) => {
-  const route = useRouter();
   const  Picker = dynamic(() => import("emoji-picker-react"));
   const onClick = (selectedEmoji: any) => {
     if (getValue) getValue(selectedEmoji.emoji);

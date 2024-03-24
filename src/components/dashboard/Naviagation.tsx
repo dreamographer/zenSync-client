@@ -41,6 +41,7 @@ import Settings from "../settings/settings";
 import {Navbar} from "./navbar";
 import useRealtimeFolderUpdates from "@/hooks/useFolderUpdate";
 import { TrashBox } from "./trashBox";
+import PresentationRoomToggle from "./PresentationRoomToggle";
 const BASE_URL = process.env.NEXT_PUBLIC_SERVER_URL;
 
 export const Navigation = () => {
@@ -199,7 +200,7 @@ export const Navigation = () => {
           <ChevronsLeft className="h-6 w-6 " />
         </div>
 
-        <WorkspaceDropdown 
+        <WorkspaceDropdown
           close={collapse}
           defaultValue={workspace as Workspace}
           privateWorkspaces={privateWorkspaces as Workspace[]}
@@ -234,6 +235,7 @@ export const Navigation = () => {
           className=" group-hover/sidebar:opacity-100 opacity-0 transition cursor-ew-resize absolute h-full w-1 bg-primary/10 right-0 top-0"
         />
         <div className="mt-auto">
+          <PresentationRoomToggle />
           <UserItem />
         </div>
       </aside>

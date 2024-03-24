@@ -1,15 +1,15 @@
 "use client";
-import React, { useEffect, useRef } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { redirect, useRouter } from "next/navigation";
 import { useFolderStore, useUserStore, useWorkspaceStore } from "@/store/store";
 import DashboardSetup from "@/components/dashboard/dashboardSetup";
 import useDashboardData from "@/hooks/useWorkspaceUpdate";
 import useWorkspaceUpdate from "@/hooks/useWorkspaceUpdate";
+import { Loader } from "lucide-react";
 const Dashboard = () => {
-
   const user = useUserStore(state => state.user);
   const workspace = useWorkspaceStore(state => state.workspace);
-  // const [loading,isLoading]=useState()
+  const [loading, isLoading] = useState(true);
   // const setWorkspace = useWorkspaceStore(state => state.setWorkspace);
   // subscription DAta
 
@@ -50,6 +50,8 @@ const Dashboard = () => {
         }
       } catch (error) {
         console.log(error);
+      } finally {
+        isLoading(false);
       }
     };
 
@@ -59,13 +61,15 @@ const Dashboard = () => {
       redirect(`/login`);
     }
   }, [setUser, setWorkspace]);
-  
-  if (!user) {
-    return null
-  }
-  
 
-  if (workspace.length == 0 || !workspace[0].id) {
+  if (!user) {
+    return null;
+  }
+  if (loading) {
+    <Loader />
+  }
+
+  if (workspace.length == 0 || !workspace[0].id ) {
     return (
       <div className="w-full h-screen flex justify-center items-center">
         <DashboardSetup subscription={""} user={user} />
