@@ -54,7 +54,7 @@ const DocumentIdPage = ({ params }: DocumentIdPageProps) => {
     );
   }
 
-  if (file === null) {
+  if (!file.isPublished) {
     return <div>Not found</div>;
   }
 

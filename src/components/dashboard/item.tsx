@@ -61,10 +61,10 @@ export const Item = ({
   const GlobalFiles = useFileStore(state => state.files);
   const [isEditing, setIsEditing] = useState(false);
   const ChevronIcon = expanded ? ChevronDown : ChevronRight;
-  const [trigger, setTrigger] = useState(false);
   const router = useRouter();
   const params = useParams();
   const [files, setFiles] = useState<fileType[] | []>([]);
+  const [trigger, setTrigger] = useState(false);
   useFileUpdate(setTrigger);
   const handleUpdate = () => {
     setTrigger(prev => !prev);

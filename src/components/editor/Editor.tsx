@@ -15,7 +15,6 @@ import {
 } from "@blocknote/react";
 import { useEdgeStore } from "@/lib/providers/edgestore";
 import * as Y from "yjs";
-import { Editor as TEditor } from "@tiptap/core";
 import "@blocknote/react/style.css";
 import { useTheme } from "next-themes";
 import { ImMagicWand } from "react-icons/im";

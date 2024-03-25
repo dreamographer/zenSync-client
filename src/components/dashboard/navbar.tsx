@@ -10,6 +10,7 @@ import { File } from "@/Types/fileType";
 import { Banner } from "./banner";
 import useTrashUpdate from "@/hooks/useTrashUpdate";
 import { Publish } from "./publish";
+import useFileUpdate from "@/hooks/useFileUpdate";
 const BASE_URL = process.env.NEXT_PUBLIC_SERVER_URL;
 interface NavbarProps {
   isCollapsed: boolean;
@@ -19,7 +20,10 @@ interface NavbarProps {
 
 export const Navbar = ({ isCollapsed, onResetWidth, documentId }: NavbarProps) => {
   const [document, setDocument] = useState<File>();
-
+  const [trigger, setTrigger] = useState(false);
+  useFileUpdate(setTrigger);
+  console.log("trigger",trigger);
+  
   useEffect(() => {
     const getFIleInfo = async () => {
       const response = await axios.get(`${BASE_URL}/file/${documentId}`, {
@@ -29,7 +33,7 @@ export const Navbar = ({ isCollapsed, onResetWidth, documentId }: NavbarProps) =
     };
     getFIleInfo();
     return ()=> setDocument(undefined)
-  }, [documentId]);
+  }, [documentId,trigger]);
 
   if (document === undefined) {
     return (

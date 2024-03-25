@@ -1,7 +1,11 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { LiveKitRoom, VideoConference } from "@livekit/components-react";
+import {
+  LiveKitRoom,
+  PreJoin,
+  VideoConference,
+} from "@livekit/components-react";
 import "@livekit/components-styles";
 import { Loader2 } from "lucide-react";
 import { useUserStore } from "@/store/store";
@@ -19,7 +23,6 @@ export const MediaRoom = ({
   video,
   audio,
   isMinimized,
-  
 }: MediaRoomProps) => {
   const user = useUserStore(state => state.user);
   const [token, setToken] = useState("");
@@ -46,26 +49,26 @@ export const MediaRoom = ({
     return (
       <div className="flex flex-col flex-1 justify-center items-center">
         <Loader2 className="h-7 w-7 text-zinc-500 animate-spin my-4" />
-        <p className="text-xs text-zinc-500 dark:text-zinc-400">Loading...</p>
+        <p className="text-xs text-zinc-500 dark:text-zinc-400">
+          Connecting...
+        </p>
       </div>
     );
   }
 
   return (
     <>
-        <LiveKitRoom
-        className={cn(isMinimized?"hidden":"block")}
-          data-lk-theme="default"
-          serverUrl={process.env.NEXT_PUBLIC_LIVEKIT_URL}
-          token={token}
-          connect={true}
-          video={video}
-          audio={audio}
-          >
-          {!isMinimized && (
-          <VideoConference />
-          )}
-        </LiveKitRoom>
+      <LiveKitRoom
+        className={cn(isMinimized ? "hidden" : "block")}
+        data-lk-theme="default"
+        serverUrl={process.env.NEXT_PUBLIC_LIVEKIT_URL}
+        token={token}
+        connect={true}
+        video={video}
+        audio={audio}
+      >
+        <VideoConference />
+      </LiveKitRoom>
     </>
   );
 };

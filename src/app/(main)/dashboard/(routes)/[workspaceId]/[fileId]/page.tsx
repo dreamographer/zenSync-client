@@ -20,7 +20,7 @@ export default function Page({
   const [file, setFile] = useState<File | null>(null); // Use state to update file
 const files = useFileStore(state => state.files);
   useEffect(() => {
-    const fetchFileData = async () => {
+    const fetchFileData = async () => { 
       try {
         const response = await fetch(
           `${process.env.NEXT_PUBLIC_SERVER_URL}/file/${params.fileId}`,
@@ -30,7 +30,6 @@ const files = useFileStore(state => state.files);
         );
         const fileData = await response.json();
         setFile(fileData);
-        console.log(fileData);
       } catch (error) {
         console.log(error);
       }

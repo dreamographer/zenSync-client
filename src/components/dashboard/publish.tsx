@@ -57,7 +57,7 @@ async function update() {
   const response = axios
     .put(
       `${BASE_URL}/file/${initialData.id}/publish`,
-      { isPublished: true },
+      { isPublished: false },
       {
         withCredentials: true,
       }
