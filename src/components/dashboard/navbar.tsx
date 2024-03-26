@@ -22,8 +22,6 @@ export const Navbar = ({ isCollapsed, onResetWidth, documentId }: NavbarProps) =
   const [document, setDocument] = useState<File>();
   const [trigger, setTrigger] = useState(false);
   useFileUpdate(setTrigger);
-  console.log("trigger",trigger);
-  
   useEffect(() => {
     const getFIleInfo = async () => {
       const response = await axios.get(`${BASE_URL}/file/${documentId}`, {

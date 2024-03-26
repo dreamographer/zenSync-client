@@ -431,13 +431,34 @@ const SettingsForm = () => {
           <UserIcon size={20} /> Profile
         </p>
         <Separator />
-        <div className="flex items-center">
+        <div className="flex w-full items-center justify-center">
           <Avatar>
-            <AvatarImage src={user?.profile as string} />
-            <AvatarFallback></AvatarFallback>
+            {user?.profile ? (
+              <AvatarImage src={user?.profile as string} />
+            ) : (
+              <svg
+                width="24"
+                height="24"
+                viewBox="0 0 24 24"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <circle cx="12" cy="6" r="4" fill="#1C274C" />
+                <ellipse
+                  opacity="0.5"
+                  cx="12"
+                  cy="17"
+                  rx="7"
+                  ry="4"
+                  fill="#1C274C"
+                />
+              </svg>
+            )}
           </Avatar>
           <div className="flex flex-col ml-6">
-            <Label htmlFor="fullname" className="pb-2">prefered Name</Label>
+            <Label htmlFor="fullname" className="pb-2">
+              prefered Name
+            </Label>
             <Input
               type="text"
               name="fullname"
@@ -448,9 +469,9 @@ const SettingsForm = () => {
               {user ? user.email : ""}
             </small>
           </div>
-        </div>
-        <div className="flex items-center">
-          <LogoutButton />
+          <div className="p-3 items-center flex">
+            <LogoutButton />
+          </div>
         </div>
       </>
       <AlertDialog open={openAlertMessage}>

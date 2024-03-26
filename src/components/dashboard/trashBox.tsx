@@ -21,25 +21,23 @@ export const TrashBox = () => {
   const router = useRouter(); 
   const params = useParams();
   const [trashFiles, setTrash] = useState<File[] | []>([]);
-  // useFileUpdate(setTrash)
 useTrashUpdate(setTrash);
   useEffect(() => {
     const fetchTrashData = async () => {
       try {
-        const response = await axios.get(`${BASE_URL}/file/trash/`, {
+        const response = await axios.get(`${BASE_URL}/file/trash`, {
           withCredentials: true,
         });
-        const TrashFiles = response.data
+        const TrashFiles = response.data;
 
         if (!TrashFiles.message) {
-          
           setTrash(TrashFiles);
         }
       } catch (error) {
         console.log(error);
       }
     };
-      fetchTrashData();
+    fetchTrashData();
   }, []);
 
  

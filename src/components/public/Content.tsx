@@ -9,7 +9,7 @@ interface Props {
 }
 
 export default function Content({ fileId, initialContent }: Props) {
-  // Creates a new editor instance.
+
   let content 
   if (initialContent) {
     content = JSON.parse(initialContent) as PartialBlock[];
@@ -20,6 +20,5 @@ export default function Content({ fileId, initialContent }: Props) {
     
   }); 
 
-  // Renders the editor instance using a React component.
   return <BlockNoteView editable={false} editor={editor} />;
 }

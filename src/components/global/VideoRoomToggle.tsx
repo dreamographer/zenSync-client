@@ -2,10 +2,9 @@
 import { Airplay } from 'lucide-react';
 import React, { useEffect, useState } from 'react'
 import { MediaRoom } from '../videoRoom/media-room';
-import { useRoomContext } from "@livekit/components-react";
-import { useConnectionState } from "@livekit/components-react";
 import { cn } from '@/lib/utils';
 import { useParams } from 'next/navigation';
+import { TooltipComponent } from "../global/tool-tip";
 
 const VideoRoomToggle = () => {
   const params = useParams();
@@ -23,13 +22,15 @@ const VideoRoomToggle = () => {
       },[params.workspaceId])
   return (
     <>
-      <div
-        onClick={toggleModal}
-        className="p-5 z-50 items-center justify-center inline-flex border cursor-pointer overflow-hidden  absolute bottom-10 bg-brand/brand-WashedBlue tracking-tighter group right-10 rounded-full rounded-br-none w-fit "
-      >
-        <span className="absolute w-0 z-0 h-0 p-0 transition-all duration-200 ease-out bg-yellow-300 rounded-full group-hover:w-full group-hover:h-full"></span>
-        <Airplay className="z-50 text-white" />
-      </div>
+      <TooltipComponent message="Join Call">
+        <div
+          onClick={toggleModal}
+          className="p-5 z-50 items-center justify-center inline-flex  cursor-pointer overflow-hidden  absolute bottom-10 bg-brand/brand-WashedBlue tracking-tighter group right-10 rounded-full rounded-br-none w-fit "
+        >
+          <span className="absolute w-0 z-0 h-0 p-0 transition-all duration-200 ease-out bg-brand/brand-Dark rounded-full group-hover:w-24 group-hover:h-24"></span>
+          <Airplay className="z-50 text-white" />
+        </div>
+      </TooltipComponent>
       {isOpen && (
         <div
           className={cn(

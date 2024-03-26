@@ -9,7 +9,10 @@ const PresentationRoomToggle = () => {
     router.push(`/room/${params.workspaceId}`);
   }
   return (
-    <div onClick={onClick} className="p-3 cursor-pointer border rounded-xl mx-2 dark:bg-gray-700  flex gap-3  ">
+    <div
+      onClick={onClick}
+      className="p-3 cursor-pointer hover:bg-primary/5  rounded-xl mx-2   flex gap-3  "
+    >
       <Presentation />
       <p>Meeting Room</p>
     </div>

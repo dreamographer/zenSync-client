@@ -20,7 +20,7 @@ export const ThemeSwitcher = () => {
             className={` rounded-md hover:scale-110 active:scale-100 duration-200`}
             onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
         >
-            {theme === "light" ? <Image src="/Vector (Stroke).png" width={30} height={20} alt="ThemeSwitch" /> : <Image src="/Sun_duotone.png" width={30} height={30} alt="ThemeSwitch" />}
+            {theme === "light" ? <Image src="/Vector (Stroke).png" width={30} height={20} alt="ThemeSwitch" /> : <Image src="/Sun_duotone.png" width={35} height={35} alt="ThemeSwitch" />}
         </button>
     );
 };
