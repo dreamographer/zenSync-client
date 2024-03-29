@@ -18,5 +18,5 @@ CMD [ "npm","run","start" ]
 # FROM nginx:1.23-alpine
 # WORKDIR /usr/share/nginx/html
 # RUN rm -rf *
-# COPY --from=builder /app/.next ./.next
+# COPY --from=builder /app/.next .
 # ENTRYPOINT [ "nginx","-g","daemon off;" ]

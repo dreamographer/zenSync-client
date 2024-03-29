@@ -2,10 +2,12 @@
 import { File } from "@/Types/fileType";
 import { Dispatch, SetStateAction, useEffect } from "react";
 import { io } from "socket.io-client";
+const BASE_URL = process.env.NEXT_PUBLIC_SERVER_URL;
+
 type UpdateFilesFunction = Dispatch<SetStateAction<[] | File[]>>;
 const useTrashUpdate = (updateFiles: UpdateFilesFunction) => {
   useEffect(() => {
-    const socket = io("http://localhost:5000", {
+    const socket = io(`${BASE_URL}`, {
       withCredentials: true,
     });  
 
