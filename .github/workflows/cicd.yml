@@ -28,4 +28,4 @@ jobs:
         run: docker rm -f frontend-container  
       - name: Run Docker Container
         run: |
-          docker run -d -p 3000:80 --name frontend-container dreamographer/zensync-client
+          docker run -d -p 3000:3000 --name frontend-container dreamographer/zensync-client

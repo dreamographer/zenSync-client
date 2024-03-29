@@ -11,10 +11,12 @@ COPY . .
 
 RUN npm run build
 
+EXPOSE 3000
+
+CMD [ "npm","run","start" ]
 # Serve nginx
-FROM nginx:1.23-alpine
-WORKDIR /usr/share/nginx/html
-RUN rm -rf *
-COPY --from=builder /app/.next ./.next
-EXPOSE 80
-ENTRYPOINT [ "nginx","-g","daemon off;" ]
+# FROM nginx:1.23-alpine
+# WORKDIR /usr/share/nginx/html
+# RUN rm -rf *
+# COPY --from=builder /app/.next ./.next
+# ENTRYPOINT [ "nginx","-g","daemon off;" ]
