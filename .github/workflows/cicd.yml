@@ -22,10 +22,10 @@ jobs:
     needs: build 
     runs-on: self-hosted 
     steps: 
-      - name: Pull image from Docker Hub
-        run: docker pull dreamographer/zensync-client:latest
       - name: Delete old container
         run: docker rm -f frontend-container  
+      - name: Pull image from Docker Hub
+        run: docker pull dreamographer/zensync-client:latest
       - name: Run Docker Container
         run: |
           docker run -d -p 3000:3000 --name frontend-container dreamographer/zensync-client
