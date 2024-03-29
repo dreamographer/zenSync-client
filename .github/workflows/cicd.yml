@@ -1,4 +1,4 @@
-name: Deploy Next Application
+name: Deploy Next.js Application
 on:
  push:
     branches:
@@ -10,10 +10,12 @@ jobs:
     steps: 
       - name: Checkout Source
         uses: actions/checkout@v4
+      - name: Create .env
+        run: echo "NEXT_PUBLIC_SERVER_URL=${{ secrets.NEXT_PUBLIC_SERVER_URL }}" >>.env && echo "NEXT_PUBLIC_LIVEBLOCK_API_KEY=${{ secrets.NEXT_PUBLIC_LIVEBLOCK_API_KEY }}" >>.env && echo "OPENAI_API_KEY=${{ secrets.OPENAI_API_KEY }}" >>.env && echo "EDGE_STORE_ACCESS_KEY=${{ secrets.EDGE_STORE_ACCESS_KEY }}" >>.env && echo "EDGE_STORE_SECRET_KEY=${{ secrets.EDGE_STORE_SECRET_KEY }}" >>.env && echo "NEXT_PUBLIC_LIVEKIT_URL=${{ secrets.NEXT_PUBLIC_LIVEKIT_URL }}" >>.env && echo "LIVEKIT_API_KEY=${{ secrets.LIVEKIT_API_KEY }}" >>.env && echo "LIVEKIT_API_SECRET=${{ secrets.LIVEKIT_API_SECRET }}" >>.env 
       - name: Login to Docker Hub
         run: echo ${{ secrets.DOCKER_PASSWORD }} | docker login -u ${{ secrets.DOCKER_USERNAME }} --password-stdin
       - name: Build Docker Image
-        run: docker build -t dreamographer/zensync-client --build-arg NEXT_PUBLIC_SERVER_URL='${{ secrets.NEXT_PUBLIC_SERVER_URL }}' --build-arg NEXT_PUBLIC_LIVEBLOCK_API_KEY='${{ secrets.NEXT_PUBLIC_LIVEBLOCK_API_KEY }}' --build-arg OPENAI_API_KEY='${{ secrets.OPENAI_API_KEY }}' --build-arg EDGE_STORE_ACCESS_KEY='${{ secrets.EDGE_STORE_ACCESS_KEY }}' --build-arg EDGE_STORE_SECRET_KEY='${{ secrets.EDGE_STORE_SECRET_KEY }}' --build-arg NEXT_PUBLIC_LIVEKIT_URL='${{ secrets.NEXT_PUBLIC_LIVEKIT_URL }}' --build-arg LIVEKIT_API_KEY='${{ secrets.LIVEKIT_API_KEY }}' --build-arg LIVEKIT_API_SECRET='${{ secrets.LIVEKIT_API_SECRET }}'   .
+        run: docker build -t dreamographer/zensync-client  .
       - name: Publish Image to Docker Hub
         run: docker push dreamographer/zensync-client:latest
  deploy:
