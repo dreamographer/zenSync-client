@@ -40,5 +40,3 @@ COPY --from=build /app/.next ./.next
 
 EXPOSE 80
 ENTRYPOINT [ "nginx","-g","daemon off;" ]
-
-CMD [ "npm" ,"run","start" ]
