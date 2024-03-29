@@ -3,7 +3,6 @@ import { useEffect, useState } from "react";
 import { connectionIdToColor } from "@/lib/utils";
 import {
   BlockNoteEditor,
-  PartialBlock,
   filterSuggestionItems,
 } from "@blocknote/core";
 import {
@@ -23,15 +22,10 @@ import {
   useMutation,
   useRoom,
   useSelf,
-  useUpdateMyPresence,
 } from "../../liveblocks.config";
 import { io } from "socket.io-client";
 import { useUserStore } from "@/store/store";
-import { Cursor } from "../room/cursor";
-import { CursorsPresence } from "../room/cursors-presence";
-import { group } from "console";
 import { useCompletion } from "ai/react";
-import Presence from "./Presence";
 const BASE_URL = process.env.NEXT_PUBLIC_SERVER_URL;
 const socket = io(BASE_URL as string, {
   withCredentials: true,
@@ -47,10 +41,6 @@ interface Props {
   fileId: string;
 }
 
-interface GetPrevTextOptions {
-  chars: number;
-  offset: number;
-}
 
 export function Editor({ fileId }: Props) {
   const room = useRoom();

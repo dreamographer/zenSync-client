@@ -1,10 +1,8 @@
 "use client";
 import React, { useEffect, useRef, useState } from "react";
-import { redirect, useRouter } from "next/navigation";
-import { useFolderStore, useUserStore, useWorkspaceStore } from "@/store/store";
+import { redirect } from "next/navigation";
+import {  useUserStore, useWorkspaceStore } from "@/store/store";
 import DashboardSetup from "@/components/dashboard/dashboardSetup";
-import useDashboardData from "@/hooks/useWorkspaceUpdate";
-import useWorkspaceUpdate from "@/hooks/useWorkspaceUpdate";
 import { Loader } from "lucide-react";
 const Dashboard = () => {
   const user = useUserStore(state => state.user);
@@ -60,7 +58,7 @@ const Dashboard = () => {
     if (!user) {
       redirect(`/login`);
     }
-  }, [setUser, setWorkspace]);
+  }, []);
 
   if (!user) {
     return null;

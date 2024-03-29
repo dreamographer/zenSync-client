@@ -1,52 +1,30 @@
 "use client";
 
-import {
-  ChevronsLeft,
-  MenuIcon,
-  Plus,
-  PlusCircle,
-  Search,
-  Settings as SetUp,
-  Trash,
-} from "lucide-react";
+import { ChevronsLeft, MenuIcon, Settings as SetUp, Trash } from "lucide-react";
 import { useParams, usePathname, useRouter } from "next/navigation";
-import { ElementRef, use, useEffect, useRef, useState } from "react";
+import { ElementRef, useEffect, useRef, useState } from "react";
 import { useMediaQuery } from "usehooks-ts";
-
 import { cn } from "@/lib/utils";
 import {
   Popover,
   PopoverTrigger,
   PopoverContent,
 } from "@/components/ui/popover";
-import { Button } from "../ui/button";
-import axios from "axios";
-import { clearStorage } from "persist-and-sync";
 import { useFolderStore, useUserStore, useWorkspaceStore } from "@/store/store";
-
 import { UserItem } from "./user-item";
-import { toast } from "sonner";
-import DashboardSetup from "./dashboardSetup";
-import { User } from "@/Types/userInterface";
 import { Item } from "./item";
-
-import { SubmitHandler } from "react-hook-form";
-import { CreateWorkspaceFormSchema } from "@/Types/Schema";
-import { z } from "zod";
 import { DocumentList } from "./documentList";
-import WorkspaceCreator from "./workspace-creator";
 import WorkspaceDropdown from "./workspace-dropDown";
 import { Workspace } from "@/Types/workspaceType";
 import Settings from "../settings/settings";
-import {Navbar} from "./navbar";
+import { Navbar } from "./navbar";
 import useRealtimeFolderUpdates from "@/hooks/useFolderUpdate";
 import { TrashBox } from "./trashBox";
 import PresentationRoomToggle from "./PresentationRoomToggle";
-const BASE_URL = process.env.NEXT_PUBLIC_SERVER_URL;
-
+import DriverJs from "@/lib/providers/DriverjsProvider";
 export const Navigation = () => {
-  const user = useUserStore(state => state.user); 
-  
+  const user = useUserStore(state => state.user);
+
   const params = useParams();
   const pathname = usePathname();
   const isMobile = useMediaQuery("(max-width: 768px)");
@@ -69,8 +47,8 @@ export const Navigation = () => {
   useRealtimeFolderUpdates();
 
   useEffect(() => {
-    console.log('update');
-    
+    console.log("update");
+
     workspace = allWorkspaces?.find(ele => ele.id == workspaceId);
     privateWorkspaces = allWorkspaces?.filter(
       ele => ele.workspaceType == "private"
@@ -82,7 +60,6 @@ export const Navigation = () => {
 
   useEffect(() => {
     const fetchFolderData = async () => {
-      
       try {
         const response = await fetch(
           `${process.env.NEXT_PUBLIC_SERVER_URL}/folder/${workspaceId}`,
@@ -101,6 +78,7 @@ export const Navigation = () => {
     };
     fetchFolderData();
   }, [workspaceId]);
+
 
   useEffect(() => {
     router.replace(`/dashboard/${workspaceId}`);
@@ -180,7 +158,11 @@ export const Navigation = () => {
   };
 
   return (
-    <>
+    <>{
+allWorkspaces.length==1&&
+      <DriverJs />
+    }
+
       <aside
         ref={sidebarRef}
         className={cn(
@@ -199,13 +181,14 @@ export const Navigation = () => {
         >
           <ChevronsLeft className="h-6 w-6 " />
         </div>
-
-        <WorkspaceDropdown
-          close={collapse}
-          defaultValue={workspace as Workspace}
-          privateWorkspaces={privateWorkspaces as Workspace[]}
-          sharedWorkspaces={sharedWorkspaces as Workspace[]}
-        />
+        <div id="workspace" className="h-12 relative w-full">
+          <WorkspaceDropdown
+            close={collapse}
+            defaultValue={workspace as Workspace}
+            privateWorkspaces={privateWorkspaces as Workspace[]}
+            sharedWorkspaces={sharedWorkspaces as Workspace[]}
+          />
+        </div>
         {workspace?.workspaceOwner == user?.id && (
           <div onClick={collapse}>
             <div>
@@ -217,6 +200,7 @@ export const Navigation = () => {
         )}
         <div className="mt-4">
           <DocumentList workspaceId={workspaceId} />
+
           <Popover>
             <PopoverTrigger className="w-full mt-4">
               <Item label="Trash" icon={Trash} />

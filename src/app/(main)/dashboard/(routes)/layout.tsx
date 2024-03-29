@@ -13,6 +13,7 @@ const DashBoardLayout = async ({ children }: { children: React.ReactNode }) => {
     if (user) {
       return (
         <div className="h-full flex w-full fixed dark:bg-[#1F1F1F]">
+
           <CoverImageModal />
           <Navigation />
           <main className="h-full flex-1 overflow-y-auto">

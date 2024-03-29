@@ -4,28 +4,15 @@ import {
   ChevronDown,
   ChevronRight,
   LucideIcon,
-  MoreHorizontal,
-  Plus,
   PlusIcon,
   File,
   Trash,
 } from "lucide-react";
 import { useParams, useRouter } from "next/navigation";
-import { usePathname } from "next/navigation";
 import { toast } from "sonner";
-
 import { cn } from "@/lib/utils";
-import { Skeleton } from "@/components/ui/skeleton";
-import {
-  DropdownMenu,
-  DropdownMenuTrigger,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuSeparator,
-} from "@/components/ui/dropdown-menu";
-import { useFileStore, useFolderStore, useUserStore } from "@/store/store";
+import { useFileStore } from "@/store/store";
 import {TooltipComponent} from "../global/tool-tip";
-
 import { useEffect, useState } from "react";
 import axios from "axios";
 import { File as fileType } from "@/Types/fileType";
@@ -272,7 +259,7 @@ useEffect(() => {
               <PlusIcon
                 onClick={addNewFile}
                 size={15}
-                className="hover:dark:text-white dark:text-Neutrals/neutrals-7 transition-colors"
+                className="hover:dark:text-white addFile dark:text-Neutrals/neutrals-7 transition-colors"
               />
             </TooltipComponent>
           )}
@@ -282,19 +269,19 @@ useEffect(() => {
         type === "Folder" &&
         files.length > 0 &&
         files.map(ele => {
-          if (ele.inTrash) return 
-            return (
-              <div className="w-full">
-                <Item
-                  key={ele.id}
-                  label={ele.title}
-                  id={ele.id}
-                  onUpdate={handleUpdate}
-                  icon={File}
-                  type="File"
-                />
-              </div>
-            );
+          if (ele.inTrash) return;
+          return (
+            <div key={ele.id} className="w-full">
+              <Item
+                key={ele.id}
+                label={ele.title}
+                id={ele.id}
+                onUpdate={handleUpdate}
+                icon={File}
+                type="File"
+              />
+            </div>
+          );
         })}
     </>
   );

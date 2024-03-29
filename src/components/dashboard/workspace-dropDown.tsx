@@ -38,7 +38,7 @@ const WorkspaceDropdown: React.FC<WorkspaceDropdownProps> = ({
   "
     >
       <div>
-        <span onClick={() => setIsOpen(!isOpen)}>
+        <span  onClick={() => setIsOpen(!isOpen)}>
           {selectedOption ? (
             <SelectedWorkspace workspace={selectedOption} />
           ) : (

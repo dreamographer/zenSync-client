@@ -1,5 +1,4 @@
 "use client"
-import { ThemeSwitcher } from "@/components/global/ThemeSwitcher";
 import TitleSection from "@/components/landing-page/title-section";
 import FeatureSection from "@/components/landing-page/feature-section";
 import Footer from "@/components/landing-page/Footer";

@@ -1,6 +1,5 @@
 import { Skeleton } from "@/components/ui/skeleton";
 import { useFileStore, useFolderStore } from "@/store/store";
-import { useParams } from "next/navigation";
 interface TitleProps {
   initialData: {
     title: string;
@@ -16,7 +15,6 @@ export const Title = ({ initialData }: TitleProps) => {
   const file = files.get(Folder?.id as string)?.find(ele => ele.id == initialData.id);
   return (
     <div className="flex w-fit  items-center gap-x-1">
-      {/* {!!initialData.icon && <p>{initialData.icon}</p>} */}
       <span className="cursor-default truncate">
         {Folder?.title}/{file?.title}
       </span>

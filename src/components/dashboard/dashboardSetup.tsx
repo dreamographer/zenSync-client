@@ -11,13 +11,11 @@ import {
 import { EmojiPicker } from "../global/Emoji-picker";
 import { Label } from "../ui/label";
 import { Input } from "../ui/input";
-import { FieldValue, SubmitHandler, useForm } from "react-hook-form";
+import { SubmitHandler, useForm } from "react-hook-form";
 import { z } from "zod";
 import { CreateWorkspaceFormSchema } from "@/Types/Schema";
-import { Button } from "../ui/button";
 import Loader from "../global/Loader";
 import { useRouter } from "next/navigation";
-import { v4 } from "uuid";
 import axios from "axios";
 import { toast } from "sonner";
 import {  useWorkspaceStore } from "@/store/store";
@@ -32,8 +30,8 @@ const DashboardSetup: React.FC<DashboardSetupProps> = ({
   user,
 }) => {
   const workspace = useWorkspaceStore(state => state.workspace);
-  const setWorkspace = useWorkspaceStore(state => state.setWorkspace);
   const [workspaceData,setWorkspaceData]=useState(null)
+    const setWorkspace = useWorkspaceStore(state => state.setWorkspace);
 
   const router = useRouter();
   const [selectedEmoji, setSelectedEmoji] = useState("💼");
@@ -51,10 +49,10 @@ const DashboardSetup: React.FC<DashboardSetupProps> = ({
     },
   });
 
-  useEffect(()=>{
-      setWorkspace(workspaceData);
-      if (workspace.length!=0) router.replace(`/dashboard/${workspace[0]?.id}`);
-  },[workspaceData])
+  useEffect(() => {
+    setWorkspace(workspaceData);
+    if (workspace.length != 0) router.replace(`/dashboard/${workspace[0]?.id}`);
+  }, [workspaceData]);
   const onSubmit: SubmitHandler<
     z.infer<typeof CreateWorkspaceFormSchema>
   > = async value => {

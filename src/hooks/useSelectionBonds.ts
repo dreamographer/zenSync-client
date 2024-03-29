@@ -1,5 +1,4 @@
 import { shallow } from "@liveblocks/react";
-
 import { Layer, XYWH } from "@/Types/canvas";
 import { useStorage, useSelf } from "@/liveblocks.config";
 

@@ -2,20 +2,13 @@
 
 import { useEffect, useState } from "react";
 import { useParams, useRouter } from "next/navigation";
-// import { useQuery, useMutation } from "convex/react";
 import { Search, Trash, Undo } from "lucide-react";
 import { toast } from "sonner";
 
-// import { api } from "@/convex/_generated/api";
-// import { Id } from "@/convex/_generated/dataModel";
-// import { Spinner } from "@/components/spinner";
-import { Input } from "@/components/ui/input";
 import axios from "axios";
 import { File } from "@/Types/fileType";
-import useFileUpdate from "@/hooks/useFileUpdate";
 import { ConfirmModal } from "../global/ConfirmModal";
 import useTrashUpdate from "@/hooks/useTrashUpdate";
-// import { ConfirmModal } from "@/components/modals/confirm-modal";
 const BASE_URL = process.env.NEXT_PUBLIC_SERVER_URL;
 export const TrashBox = () => {
   const router = useRouter(); 

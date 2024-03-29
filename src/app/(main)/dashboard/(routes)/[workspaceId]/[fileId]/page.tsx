@@ -1,6 +1,4 @@
 "use client";
-
-import { RoomProvider } from "@/liveblocks.config";
 import { Editor } from "@/components/editor/Editor";
 import { ClientSideSuspense } from "@liveblocks/react";
 import { Toolbar } from "@/components/dashboard/toolbar";
@@ -9,7 +7,6 @@ import { useEffect, useState } from "react"; // Import useState
 import { File } from "@/Types/fileType";
 import { Cover } from "@/components/dashboard/cover";
 import { Room } from "@/components/room/room"; 
-import Loading from "../../../loading";
 import Presence from "@/components/editor/Presence";
 
 export default function Page({

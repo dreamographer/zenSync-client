@@ -1,6 +1,4 @@
 "use client";
-
-import { ElementRef, useRef, useState } from "react";
 import { ImageIcon, Smile, X } from "lucide-react";
 
 import { useCoverImage } from "@/store/store";

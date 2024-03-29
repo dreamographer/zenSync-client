@@ -1,12 +1,9 @@
 "use client";
-
-import dynamic from "next/dynamic";
 import { useEffect, useMemo, useState } from "react";
 import { File } from "@/Types/fileType";
 import { Toolbar } from "@/components/dashboard/toolbar";
 import { Cover } from "@/components/dashboard/cover";
 import { Skeleton } from "@/components/ui/skeleton";
-import { Editor } from "@/components/editor/Editor";
 import Content from "@/components/public/Content";
 interface DocumentIdPageProps {
   params: {
@@ -21,7 +18,7 @@ const DocumentIdPage = ({ params }: DocumentIdPageProps) => {
     const fetchFileData = async () => {
       try {
         const response = await fetch(
-          `${process.env.NEXT_PUBLIC_SERVER_URL}/file/${params.documentId}`,
+          `${process.env.NEXT_PUBLIC_SERVER_URL}/file/public/${params.documentId}`,
           {
             credentials: "include",
           }

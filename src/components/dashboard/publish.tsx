@@ -11,7 +11,6 @@ import {
 } from "@/components/ui/popover";
 import { useOrigin } from "@/hooks/useOrigin";
 import { Button } from "@/components/ui/button";
-import { File } from "@/Types/fileType";
 import axios from "axios";
 const BASE_URL = process.env.NEXT_PUBLIC_SERVER_URL;
 interface PublishProps {

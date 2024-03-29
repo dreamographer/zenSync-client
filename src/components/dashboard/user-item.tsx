@@ -1,20 +1,7 @@
 "use client";
-
-import { ChevronsLeftRight, UserRound } from "lucide-react";
-
-
 import { Avatar, AvatarImage } from "@/components/ui/avatar";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
+import { useUserStore } from "@/store/store";
 
-import { useUserStore, useWorkspaceStore } from "@/store/store";
-import { useRouter } from "next/navigation";
 import Logout from "../global/Logout";
 import { ThemeSwitcher } from "../global/ThemeSwitcher";
 

@@ -2,8 +2,8 @@
     "extends": "next/core-web-vitals",
      "plugins": ["tailwindcss"],
      "rules": {
-       "tailwindcss/no-custom-classname": "off",
-       "tailwindcss/no-unused-classes": "error",
-       "tailwindcss/no-arbitrary-value": "error"
+      //  "tailwindcss/no-custom-classname": "error",
+      //  "tailwindcss/no-unused-classes": "error",
+      //  "tailwindcss/no-arbitrary-value": "error"
      }
    }

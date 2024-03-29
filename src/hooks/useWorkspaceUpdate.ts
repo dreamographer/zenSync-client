@@ -1,4 +1,4 @@
-import { useFolderStore, useWorkspaceStore } from "@/store/store";
+import { useWorkspaceStore } from "@/store/store";
 import { Dispatch, SetStateAction, useEffect } from "react";
 import { io } from "socket.io-client";
 type UpdateWSFunction = Dispatch<SetStateAction<null>>;

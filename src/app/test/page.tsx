@@ -1,36 +1,40 @@
-"use client";
-import VideoRoomToggle from "@/components/global/VideoRoomToggle";
-import { MediaRoom } from "@/components/videoRoom/media-room";
-import { Presentation } from "lucide-react";
-import React, { useState } from "react";
+"use client"
+import React, { useEffect } from "react";
+import {driver} from "driver.js";
 
-const Page = () => {
-  const [isOpen, setIsOpen] = useState(false);
-  const [isMinimized, setIsMinimized] = useState(false);
-  const toggleModal = () => {
-    setIsOpen(true);
-    setIsMinimized(!isMinimized);
-  };
+const MyComponent = () => {
+  useEffect(() => {
+  const driverObj = driver({
+    showProgress: true,
+    steps: [
+      {
+        element: "#element-of-mystery",
+        popover: { title: "Title", description: "Description" },
+      },
+      {
+        element: ".top-nav",
+        popover: { title: "Title", description: "Description" },
+      },
+      {
+        element: ".sidebar",
+        popover: { title: "Title", description: "Description" },
+      },
+      {
+        element: ".footer",
+        popover: { title: "Title", description: "Description" },
+      },
+    ],
+  });
+
+  driverObj.drive();// Start the tour
+  }, []);
 
   return (
-    <>
-      <VideoRoomToggle />
-      {/* <button
-        className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
-        onClick={toggleModal}
-      >
-        Toggle Modal
-      </button>
-
-      {isOpen&&(<div className="bg-white px-4 pt-5 pb-4 sm:p-6 sm:pb-4">
-        <MediaRoom
-          isMinimized={isMinimized}
-          audio={true}
-          chatId="123"
-          video={true}
-        />
-      </div>)} */}
-    </>
+    <div>
+      {/* Your component content */}
+      <div id="element-of-mystery">This is the element of mystery.</div>
+    </div>
   );
 };
-export default Page;
+
+export default MyComponent;

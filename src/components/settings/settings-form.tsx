@@ -6,10 +6,7 @@ import { Workspace } from "@/Types/workspaceType";
 import { useParams, useRouter } from "next/navigation";
 import {
   Briefcase,
-  CreditCard,
-  ExternalLink,
   Lock,
-  LogOut,
   Plus,
   Share,
   User as UserIcon,
@@ -30,18 +27,16 @@ import {
   AlertDialogAction,
   AlertDialogCancel,
   AlertDialogContent,
-  AlertDialogDescription,
   AlertDialogFooter,
   AlertDialogHeader,
   AlertDialogTitle,
-  AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
 
 import CollaboratorSearch from "../dashboard/collaborator-search";
 import { Button } from "../ui/button";
 import { ScrollArea } from "../ui/scroll-area";
 import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
-import { Alert, AlertDescription } from "../ui/alert";
+import {  AlertDescription } from "../ui/alert";
 import LogoutButton from "../global/Logout";
 import { useUserStore, useWorkspaceStore } from "@/store/store";
 import axios from "axios";

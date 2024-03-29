@@ -2,8 +2,7 @@
 
 import { useParams, useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
-import { Folder, File, PlusIcon } from "lucide-react"; 
-import { cn } from "@/lib/utils";
+import { Folder, PlusIcon } from "lucide-react"; 
 import { Item } from "./item";
 import { useFolderStore } from "@/store/store";
 import { TooltipComponent } from "../global/tool-tip";
@@ -32,7 +31,7 @@ export const DocumentList = ({ workspaceId, level = 0 }: DocumentListProps) => {
     
     setFolder(folderData);
     console.log("allDoc",documents);
-  }, [folderData, trigger]);
+  }, [ trigger]);
 
   const handleUpdate = (id?: string, data?: { title: string }) => {
     async function update(){
@@ -142,7 +141,7 @@ export const DocumentList = ({ workspaceId, level = 0 }: DocumentListProps) => {
             onClick={handleFolderCreate}
             size={16}
             className="group-hover/title:inline-block
-            hidden 
+            addFolder
             cursor-pointer
             hover:dark:text-white
           "

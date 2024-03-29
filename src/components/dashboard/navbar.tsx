@@ -1,6 +1,4 @@
 "use client";
-
-import { useParams } from "next/navigation";
 import { MenuIcon } from "lucide-react";
 
 import { Title } from "./title";
@@ -8,7 +6,6 @@ import axios from "axios";
 import { useEffect, useState } from "react";
 import { File } from "@/Types/fileType";
 import { Banner } from "./banner";
-import useTrashUpdate from "@/hooks/useTrashUpdate";
 import { Publish } from "./publish";
 import useFileUpdate from "@/hooks/useFileUpdate";
 const BASE_URL = process.env.NEXT_PUBLIC_SERVER_URL;
