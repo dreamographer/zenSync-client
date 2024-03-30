@@ -8,12 +8,13 @@ import { CoverImageModal } from "@/components/dashboard/cover-image-modal";
 const DashBoardLayout = async ({ children }: { children: React.ReactNode }) => {
   const nextCookies = cookies();
   const token = nextCookies.get("jwt")?.value;
-  if (token) {
-    const user = await getServerSideUser(token);
+  const refreshToken = nextCookies.get("refreshToken")?.value;
+  
+  if (token && refreshToken) {
+    const user = await getServerSideUser(token, refreshToken);
     if (user) {
       return (
         <div className="h-full flex w-full fixed dark:bg-[#1F1F1F]">
-
           <CoverImageModal />
           <Navigation />
           <main className="h-full flex-1 overflow-y-auto">

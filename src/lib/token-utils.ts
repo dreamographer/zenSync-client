@@ -2,17 +2,21 @@ import { ReadonlyRequestCookies } from "next/dist/server/web/spec-extension/adap
 import { NextRequest } from "next/server";
 import { User } from "@/Types/userInterface";
 export const getServerSideUser = async (
-  token: string 
+  token: string ,
+  refresh: string 
 ) => {
   try {
+    console.log("server tokebn",refresh);
+    
     const response = await fetch(
       `${process.env.NEXT_PUBLIC_SERVER_URL}/auth/users/me`,
       {
         headers: {
-          Authorization: `Bearer ${token}`,
+          Authorization: `Bearer ${token} Refresh ${refresh}`,
         },
-        //  cache: 'force-cache' 
-      },
+        credentials: "include",
+        //  cache: 'force-cache'
+      }
     );
       
     if (!response.ok) {

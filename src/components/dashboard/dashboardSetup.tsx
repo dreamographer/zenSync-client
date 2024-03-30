@@ -65,7 +65,7 @@ const DashboardSetup: React.FC<DashboardSetupProps> = ({
         
         toast.success("Workspace Created", {
           position: "top-center",
-        });
+        }); 
 
         setWorkspaceData(response.data);
       }
