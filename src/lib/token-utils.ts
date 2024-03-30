@@ -6,7 +6,6 @@ export const getServerSideUser = async (
   refresh: string 
 ) => {
   try {
-    console.log("server tokebn",refresh);
     
     const response = await fetch(
       `${process.env.NEXT_PUBLIC_SERVER_URL}/auth/users/me`,
