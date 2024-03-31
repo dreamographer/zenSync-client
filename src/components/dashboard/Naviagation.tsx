@@ -196,7 +196,7 @@ allWorkspaces.length==1&&
         </div>
         {workspace?.workspaceOwner == user?.id && (
           <div onClick={collapse}>
-            <div>
+            <div className="settings">
               <Settings>
                 <Item label="Settings" icon={SetUp} />
               </Settings>

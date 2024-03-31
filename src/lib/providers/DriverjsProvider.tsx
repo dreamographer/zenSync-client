@@ -11,29 +11,9 @@ const DriverJs = () => {
         {
           element: "#tour-example",
           popover: {
-            title: "Let's have a Quick walkthrough",
+            title: "Welcome to ZenSync !",
             description:
-              "Some of the Main features of ZenSync.",
-            side: "left",
-            align: "start",
-          },
-        },
-        {
-          element: ".addFolder",
-          popover: {
-            title: "Animated Tour Example",
-            description:
-              "Here is the code example showing animated tour. Let's walk you through it.",
-            side: "left",
-            align: "start",
-          },
-        },
-        {
-          element: ".addFile",
-          popover: {
-            title: "Animated Tour Example",
-            description:
-              "Here is the code example showing animated tour. Let's walk you through it.",
+              "Let's take a quick walkthrough some of the key features and functionalities.",
             side: "left",
             align: "start",
           },
@@ -41,18 +21,48 @@ const DriverJs = () => {
         {
           element: "#workspace",
           popover: {
-            title: "Animated Tour Example",
+            title: "Workspace's",
             description:
-              "Here is the code example showing animated tour. Let's walk you through it.",
+              "Expand your horizons! Use this button to create a new workspace or switch between existing ones effortlessly.",
             side: "left",
+          },
+        },
+        {
+          element: ".addFolder",
+          popover: {
+            title: "Create Folder",
+            description:
+              "Stay organized! Hit this button to create folders within your workspace ",
+            side: "left",
+            align: "start",
+          },
+        },
+        {
+          element: ".addFile",
+          popover: {
+            title: "Create File",
+            description:
+              "Use this button to add files to your Folder and share important documents with your team",
+            side: "left",
+            align: "start",
+          },
+        },
+        {
+          element: ".settings",
+          popover: {
+            title: "Settings",
+            description:
+              "Fine-tune your collaboration! Access settings to manage team members, add new collaborators, and streamline your workspace for seamless teamwork.",
+            side: "left",
+            align: "start",
           },
         },
         {
           element: "#MeetingRoom",
           popover: {
-            title: "Import the Library",
+            title: "Meeting Room",
             description:
-              "It works the same in vanilla JavaScript as well as frameworks.",
+              "Step into the meeting room to connect with your team, discuss ideas with the white board, and drive progress together.",
             side: "left",
             align: "end",
           },
@@ -60,9 +70,9 @@ const DriverJs = () => {
         {
           element: "#Conference",
           popover: {
-            title: "Importing CSS",
+            title: "Conference",
             description:
-              "Import the CSS which gives you the default styling for popover and overlay.",
+              "Instant connection! Tap here to start a call and collaborate in real-time with your team members, no matter where they are.",
             side: "bottom",
             align: "start",
           },

@@ -136,15 +136,13 @@ body,
   position: fixed;
   top: 0;
   right: 0;
-  background-color: #6889ff;
+  background-color: #103783;
 }
 
-.driver-popover * {
-  font-family: Helvetica Neue, Inter, ui-sans-serif, "Apple Color Emoji", Helvetica, Arial, sans-serif
-}
+
 
 .driver-popover-title {
-  font: 19px/normal sans-serif;
+  font: 19px;
   font-weight: 700;
   display: block;
   position: relative;
@@ -180,7 +178,7 @@ body,
 
 .driver-popover-description {
   margin-bottom: 0;
-  font: 14px/normal sans-serif;
+  font: 14px;
   line-height: 1.5;
   font-weight: 400;
   zoom: 1
@@ -211,7 +209,7 @@ body,
   text-shadow: 1px 1px 0 #fff;
   background-color: #fff;
   color: #2d2d2d;
-  font: 12px/normal sans-serif;
+  font: 12px;
   cursor: pointer;
   outline: 0;
   zoom: 1;
@@ -328,8 +326,8 @@ body,
 }
 
 .driver-popover.driverjs-theme {
-  background-color: #b5b2ff;
-  color: #000;
+  background-color: #020817;
+  color: #ffffff !important;
 }
 
 .driver-popover.driverjs-theme .driver-popover-title {
@@ -339,13 +337,13 @@ body,
 .driver-popover.driverjs-theme .driver-popover-title,
 .driver-popover.driverjs-theme .driver-popover-description,
 .driver-popover.driverjs-theme .driver-popover-progress-text {
-  color: #000;
+  color: antiquewhite;
 }
 
 .driver-popover.driverjs-theme button {
   flex: 1;
   text-align: center;
-  background-color: #292636;
+  background-color: #39048b;
   color: #ffffff;
   border: 2px solid #000;
   text-shadow: none;
@@ -355,7 +353,7 @@ body,
 }
 
 .driver-popover.driverjs-theme button:hover {
-  background-color: #000;
+  background-color: #51278f;
   color: #ffffff;
 }
 
