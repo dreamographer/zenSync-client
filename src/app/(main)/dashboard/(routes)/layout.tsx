@@ -9,6 +9,7 @@ const DashBoardLayout = async ({ children }: { children: React.ReactNode }) => {
   const nextCookies = cookies();
   const token = nextCookies.get("jwt")?.value;
   const refreshToken = nextCookies.get("refreshToken")?.value;
+  console.log("Token and refresh Tokern",token,refreshToken);
   
   if (token && refreshToken) {
     const user = await getServerSideUser(token, refreshToken);

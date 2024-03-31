@@ -47,7 +47,6 @@ export const Navigation = () => {
   useRealtimeFolderUpdates();
 
   useEffect(() => {
-    console.log("update");
 
     workspace = allWorkspaces?.find(ele => ele.id == workspaceId);
     privateWorkspaces = allWorkspaces?.filter(
@@ -59,7 +58,13 @@ export const Navigation = () => {
   }, [workspaceId, allWorkspaces]);
 
   useEffect(() => {
+    if(!allWorkspaces.find(ele=>ele.id==workspaceId)){
+      console.log("invalide workspcaer")
+      router.replace(`/dashboard`);
+      return
+    }
     const fetchFolderData = async () => {
+  
       try {
         const response = await fetch(
           `${process.env.NEXT_PUBLIC_SERVER_URL}/folder/${workspaceId}`,
