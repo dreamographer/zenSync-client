@@ -25,10 +25,10 @@ jobs:
       - name: Delete old container
         run: docker rm -f frontend-container  
       - name: Delete Used Docker Objects
-        run: y | docker system prune  
+        run: docker system prune  -f
       - name: Remove all unused images (both dangling and unreferenced)
-        run: docker image prune -a 
-      - name: y | Pull image from Docker Hub
+        run: docker image prune -a -f
+      - name: Pull image from Docker Hub
         run: docker pull dreamographer/zensync-client:latest
       - name: Run Docker Container
         run: |
