@@ -10,6 +10,7 @@ const Dashboard = () => {
   const [loading, isLoading] = useState(true);
   // const setWorkspace = useWorkspaceStore(state => state.setWorkspace);
   // subscription DAta
+console.log("hello");
 
   const setUser = useUserStore(state => state.setUser);
   const setWorkspace = useWorkspaceStore(state => state.setWorkspace);
