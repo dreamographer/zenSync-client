@@ -66,6 +66,7 @@
     "sharp": "^0.33.3",
     "socket.io-client": "^4.7.4",
     "sonner": "^1.4.0",
+    "swr": "^2.2.5",
     "tailwind-merge": "^2.2.2",
     "tailwindcss-animate": "^1.0.7",
     "usehooks-ts": "^2.15.0",
