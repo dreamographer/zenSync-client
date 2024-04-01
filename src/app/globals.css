@@ -92,6 +92,21 @@ body,
 }
 
 
+.bn-slash-menu{
+  /* display: flex;
+  justify-content: space-between;
+  flex-direction: column; */
+  width: 100%;
+
+}
+.bn-slash-menu .mantine-Menu-item {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+gap: 10px;
+    width: 100%;
+}
+
 .driver-active .driver-overlay,
 .driver-active * {
   pointer-events: none

@@ -10,7 +10,7 @@
   },
   "dependencies": {
     "@blocknote/core": "^0.12.1",
-    "@blocknote/react": "^0.12.2",
+    "@blocknote/react": "^0.12.3",
     "@edgestore/react": "^0.1.6",
     "@edgestore/server": "^0.1.6",
     "@hookform/resolvers": "^3.3.4",
@@ -66,7 +66,6 @@
     "sharp": "^0.33.3",
     "socket.io-client": "^4.7.4",
     "sonner": "^1.4.0",
-    "swr": "^2.2.5",
     "tailwind-merge": "^2.2.2",
     "tailwindcss-animate": "^1.0.7",
     "usehooks-ts": "^2.15.0",

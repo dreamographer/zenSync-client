@@ -65,7 +65,7 @@ export function Editor({ fileId }: Props) {
 
   return (
     <>
-      <BlockNote doc={doc} provider={provider} fileId={fileId} />;
+      <BlockNote doc={doc} provider={provider} fileId={fileId} />
     
     </>
   );

@@ -2,8 +2,6 @@
 import dynamic from "next/dynamic";
 import React, { useEffect, useState } from "react";
 import Link from "next/link";
-import axios from "axios";
-import { User } from "@/Types/userInterface";
 import { Loader, Loader2 } from "lucide-react";
 import { redirect } from "next/navigation";
 import { useUserStore, useWorkspaceStore } from "@/store/store";
@@ -64,6 +62,7 @@ const MainLayout = ({ children }: { children: React.ReactNode }) => {
         redirect(`/login`);
       }
     }, []);
+
 if(loading){
   return (
     <>
