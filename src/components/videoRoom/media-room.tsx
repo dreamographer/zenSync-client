@@ -10,6 +10,7 @@ import "@livekit/components-styles";
 import { Loader2 } from "lucide-react";
 import { useUserStore } from "@/store/store";
 import { cn } from "@/lib/utils";
+import { useRouter } from "next/navigation";
 
 interface MediaRoomProps {
   chatId: string;
@@ -24,6 +25,7 @@ export const MediaRoom = ({
   audio,
   isMinimized,
 }: MediaRoomProps) => {
+  const route=useRouter()
   const user = useUserStore(state => state.user);
   const [token, setToken] = useState("");
 
@@ -55,7 +57,10 @@ export const MediaRoom = ({
       </div>
     );
   }
+const handleDisconnect=()=>{
+route.refresh()
 
+}
   return (
     <>
       <LiveKitRoom
@@ -66,6 +71,7 @@ export const MediaRoom = ({
         connect={true}
         video={video}
         audio={audio}
+        onDisconnected={handleDisconnect}
       >
         <VideoConference />
       </LiveKitRoom>
