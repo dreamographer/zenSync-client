@@ -36,7 +36,7 @@ export default function Home() {
   return (
     <section>
       <div className=" overflow-hidden px-4 sm:px-6 mt-4 sm:flex sm:flex-col gap-4 md:justify-center md:items-center">
-        <Image className="mb-2" src={Logo} alt="ZensyncLogo" width={70} />
+        <Image className="mb-2 hidden md:block" src={Logo} alt="ZensyncLogo" width={70} />
         <div className="sm:w-3/5">
           <TitleSection
             pill="✨Your workspace perfected"

@@ -400,3 +400,21 @@ gap: 10px;
 .driver-popover.driverjs-theme .driver-popover-arrow-side-bottom.driver-popover-arrow {
   border-bottom-color: #b5b2ff;
 }
+
+ @keyframes scaleUp {
+   0% {
+     transform: scale(1);
+   }
+
+   100% {
+     transform: scale(1.05);
+   }
+ }
+
+ .animate-circle1 {
+   animation: scaleUp 1s infinite alternate;
+ }
+
+ .animate-circle2 {
+   animation: scaleUp 1s infinite alternate-reverse;
+ }
