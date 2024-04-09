@@ -59,6 +59,7 @@ export const useWorkspaceStore = create<workspaceState>(set => ({
       return state;
     });
   },
+  
   updateWS: updatedWS =>
     set(state => ({
       workspace: state.workspace.map(workspace =>

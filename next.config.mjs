@@ -7,6 +7,11 @@ const nextConfig = {
         hostname: "files.edgestore.dev",
         pathname: "**",
       },
+      {
+        protocol: "https",
+        hostname: "i.ibb.co",
+        pathname: "**",
+      },
     ],
   },
   output: "standalone",
