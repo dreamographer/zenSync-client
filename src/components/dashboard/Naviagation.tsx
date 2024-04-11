@@ -35,11 +35,12 @@ export const Navigation = () => {
   const [isCollapsed, setIsCollapsed] = useState(isMobile);
   const router = useRouter();
   const setFolder = useFolderStore(state => state.setFolder);
+  const Folders = useFolderStore(state => state.folder);
   let workspaceId = params?.workspaceId as string;
   let allWorkspaces = useWorkspaceStore(state => state.workspace);
   let workspace = allWorkspaces?.find(ele => ele?.id == workspaceId);
   let privateWorkspaces = allWorkspaces?.filter(
-    ele => ele?.workspaceType == "private"
+    ele => ele?.workspaceType == "private" 
   );
   let sharedWorkspaces = allWorkspaces?.filter(
     ele => ele.workspaceType == "shared"
@@ -161,7 +162,7 @@ export const Navigation = () => {
 
   return (
     <>
-      {allWorkspaces.length == 1 && <DriverJs />}
+    
 
       <aside
         ref={sidebarRef}

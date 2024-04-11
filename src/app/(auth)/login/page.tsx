@@ -1,4 +1,4 @@
-"use client"
+"use client";
 import React, { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
@@ -10,7 +10,7 @@ import GithubDark from "../../../../public/other/githubDark.png";
 import Google from "../../../../public/other/google.png";
 import axios from "axios";
 import Link from "next/link";
-import Saly from "../../../../public/other/Saly-14.png"
+import Saly from "../../../../public/other/Saly-14.png";
 import { Button } from "@/components/ui/button";
 import {
   Form,
@@ -37,43 +37,43 @@ const handleGithubSignIn = () => {
 const LoginPage = () => {
   const router = useRouter();
   const setUser = useUserStore(state => state.setUser);
-  
+
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
-    defaultValues: { 
+    defaultValues: {
       email: "",
-      password:''
+      password: "",
     },
   });
 
-  async  function onSubmit(values: z.infer<typeof formSchema>) {
+  async function onSubmit(values: z.infer<typeof formSchema>) {
     try {
-      
       const response = await axios.post(`${BASE_URL}/auth/login`, values, {
         withCredentials: true,
       });
-      const user = {
-        id: response.data.user.id,
-      fullname: response.data.user.fullname,
-      email: response.data.user.email,
-      profile: response.data.user.profile??null,
-      verified: response.data.user.verified,
-      };
-      
-      
       if (response) {
+        const { accessToken, refreshToken } = response.data;
+        const user = {
+          id: response.data.user.id,
+          fullname: response.data.user.fullname,
+          email: response.data.user.email,
+          profile: response.data.user.profile ?? null,
+          verified: response.data.user.verified,
+        };
+        document.cookie = `refreshToken=${refreshToken}; Secure; HttpOnly; SameSite=None; Max-Age=${
+          24 * 60 * 60
+        }; Path=/`;
+        localStorage.setItem("jwt", accessToken);
         toast.success("Login successful!", {
-          position:"top-center"
+          position: "top-center",
         });
         setTimeout(() => {
-          setUser(user)
+          setUser(user);
         }, 1000);
         setTimeout(() => {
           router.push("/dashboard");
         }, 2000);
       }
-      
-      
     } catch (error) {
       if (axios.isAxiosError(error) && error.response?.data) {
         toast.error(error.response.data.error, { position: "top-left" });
@@ -82,17 +82,16 @@ const LoginPage = () => {
       }
     }
   }
-    const { theme, setTheme } = useTheme();
-    const [mounted, setMounted] = useState(false);
-    useEffect(() => {
-      setMounted(true);
-    }, []);
-    if (!mounted) {
-      return null;
-    }
-    const Logo = theme === "light" ? LogoLight : LogoDark;
-      const Github = theme === "light" ? GithubLight : GithubDark;
-
+  const { theme, setTheme } = useTheme();
+  const [mounted, setMounted] = useState(false);
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+  if (!mounted) {
+    return null;
+  }
+  const Logo = theme === "light" ? LogoLight : LogoDark;
+  const Github = theme === "light" ? GithubLight : GithubDark;
 
   return (
     <section className="sm:flex justify-center fixed h-screen  overflow-hidden w-full">

@@ -2,44 +2,51 @@
 
 import { useParams, useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
-import { Folder, PlusIcon } from "lucide-react"; 
+import { Folder, PlusIcon } from "lucide-react";
 import { Item } from "./item";
 import { useFolderStore } from "@/store/store";
 import { TooltipComponent } from "../global/tool-tip";
 import axios from "axios";
 import { toast } from "sonner";
 import useFolderUpdates from "@/hooks/useFolderUpdate";
+import DriverJs from "@/lib/providers/DriverjsProvider";
 const BASE_URL = process.env.NEXT_PUBLIC_SERVER_URL;
 interface DocumentListProps {
   workspaceId: string;
   level?: number;
-  data?: string; 
+  data?: string;
 }
 
 export const DocumentList = ({ workspaceId, level = 0 }: DocumentListProps) => {
   const params = useParams();
   const [expanded, setExpanded] = useState<Record<string, boolean>>({});
   const [trigger, setTrigger] = useState(false);
+  const [showDriver, setDriver] = useState(false);
   const router = useRouter();
   const [folderData, setFolderData] = useState(null);
   const allDocuments = useFolderStore(state => state.folder);
-  const documents = allDocuments.filter(ele => ele.workspaceId == workspaceId)
+  const documents = allDocuments.filter(ele => ele.workspaceId == workspaceId);
   const setFolder = useFolderStore(state => state.setFolder);
   const deleteFolder = useFolderStore(state => state.deleteFolder);
   useFolderUpdates(setFolderData);
   useEffect(() => {
-    
-    setFolder(folderData);
-    console.log("allDoc",documents);
-  }, [ trigger]);
+      if (allDocuments.length == 0) {
+        setDriver(true);
+      }else{
+        setDriver(false);
+      }
+  }, [allDocuments]);
 
+  useEffect(() => {
+    setFolder(folderData);
+  }, [trigger]);
   const handleUpdate = (id?: string, data?: { title: string }) => {
-    async function update(){
+    async function update() {
       console.log(id, data);
       const response = await axios.put(`${BASE_URL}/folder/${id}`, data, {
         withCredentials: true,
       });
-   
+
       if (response) {
         toast.success("Name Updated", {
           position: "top-center",
@@ -49,7 +56,7 @@ export const DocumentList = ({ workspaceId, level = 0 }: DocumentListProps) => {
         setTrigger(prev => !prev);
       }
     }
-    update()
+    update();
   };
   const onExpand = (documentId: string) => {
     setExpanded(prevExpanded => ({
@@ -94,15 +101,14 @@ export const DocumentList = ({ workspaceId, level = 0 }: DocumentListProps) => {
   };
 
   const handleDelete = (id: string) => {
-    deleteFolder(id)
+    deleteFolder(id);
     const onDelete = async () => {
       const response = await axios.delete(`${BASE_URL}/folder/${id}`, {
         withCredentials: true,
       });
 
-      
       if (response) {
-        console.log("delte REs",response);
+        console.log("delte REs", response);
         router.push(`/dashboard/${params?.workspaceId}`);
         toast.warning("Folder Deleted", {
           position: "top-center",
@@ -110,11 +116,12 @@ export const DocumentList = ({ workspaceId, level = 0 }: DocumentListProps) => {
         console.log(id);
       }
     };
-    onDelete()
+    onDelete();
   };
 
   return (
     <>
+      {showDriver && <DriverJs />}
       <div
         className="flex
         sticky 
@@ -135,7 +142,7 @@ export const DocumentList = ({ workspaceId, level = 0 }: DocumentListProps) => {
         text-xs"
         >
           FOLDERS
-        </span> 
+        </span>
         <TooltipComponent message="Create Folder">
           <PlusIcon
             onClick={handleFolderCreate}
@@ -166,6 +173,4 @@ export const DocumentList = ({ workspaceId, level = 0 }: DocumentListProps) => {
         ))}
     </>
   );
-
-
 };
