@@ -9,11 +9,13 @@ import axios from "axios";
 import { File } from "@/Types/fileType";
 import { ConfirmModal } from "../global/ConfirmModal";
 import useTrashUpdate from "@/hooks/useTrashUpdate";
+import { useFolderStore } from "@/store/store";
 const BASE_URL = process.env.NEXT_PUBLIC_SERVER_URL;
 export const TrashBox = () => {
   const router = useRouter(); 
   const params = useParams();
   const [trashFiles, setTrash] = useState<File[] | []>([]);
+    const allDocuments = useFolderStore(state => state.folder);
 useTrashUpdate(setTrash);
   useEffect(() => {
     const fetchTrashData = async () => {
@@ -21,8 +23,19 @@ useTrashUpdate(setTrash);
         const response = await axios.get(`${BASE_URL}/file/trash`, {
           withCredentials: true,
         });
-        const TrashFiles = response.data;
+        const TrashFiles = response.data.filter((file: File) =>
+          allDocuments.some(folder=>folder.id===file.folderId)
+          );
+      
+          // folder.id==file.folderId
 
+        // const TrashFiles = response.data.map((file:File)=>{ 
+        //   return files
+        // });
+        console.log(TrashFiles);
+        
+        
+        
         if (!TrashFiles.message) {
           setTrash(TrashFiles);
         }
