@@ -12,7 +12,7 @@ import { useParams, useRouter } from "next/navigation";
 import { toast } from "sonner";
 import { cn } from "@/lib/utils";
 import { useFileStore } from "@/store/store";
-import {TooltipComponent} from "../global/tool-tip";
+import { TooltipComponent } from "../global/tool-tip";
 import { useEffect, useState } from "react";
 import axios from "axios";
 import { File as fileType } from "@/Types/fileType";
@@ -56,9 +56,9 @@ export const Item = ({
   const handleUpdate = () => {
     setTrigger(prev => !prev);
   };
-useEffect(() => {
-  setFiles(GlobalFiles.get(id as string) || []);
-}, [GlobalFiles]);
+  useEffect(() => {
+    setFiles(GlobalFiles.get(id as string) || []);
+  }, [GlobalFiles]);
   useEffect(() => {
     const fetchFolderData = async () => {
       try {
@@ -86,7 +86,6 @@ useEffect(() => {
     }
   }, [id, trigger]);
 
-
   const handleExpand = (
     event: React.MouseEvent<HTMLDivElement, MouseEvent>
   ) => {
@@ -105,6 +104,9 @@ useEffect(() => {
         withCredentials: true,
       });
       if (response) {
+        if (onExpand) {
+          onExpand();
+        }
         toast.success("File Created", {
           position: "top-center",
         });
@@ -139,7 +141,7 @@ useEffect(() => {
           toast.success("Name Updated", {
             position: "top-center",
           });
-        
+
           onUpdate?.();
           console.log("state fiels", files);
         }

@@ -36,7 +36,7 @@ export const signUpSchema = z
         "Password must have at least 8 characters with alphanumber combination"
       )
       .refine(password => /[A-Za-z][0-9]/.test(password), {
-        message: "Password must contain at least one letter",
+        message: "Password must contain at least one letter and number",
       }),
     confirmPassword: z.string(),
   })

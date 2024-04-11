@@ -47,7 +47,6 @@ export const Navigation = () => {
   useRealtimeFolderUpdates();
 
   useEffect(() => {
-
     workspace = allWorkspaces?.find(ele => ele.id == workspaceId);
     privateWorkspaces = allWorkspaces?.filter(
       ele => ele.workspaceType == "private"
@@ -58,13 +57,12 @@ export const Navigation = () => {
   }, [workspaceId, allWorkspaces]);
 
   useEffect(() => {
-    if(!allWorkspaces.find(ele=>ele.id==workspaceId)){
-      console.log("invalide workspcaer")
+    if (!allWorkspaces.find(ele => ele.id == workspaceId)) {
+      console.log("invalide workspcaer");
       router.replace(`/dashboard`);
-      return
+      return;
     }
     const fetchFolderData = async () => {
-  
       try {
         const response = await fetch(
           `${process.env.NEXT_PUBLIC_SERVER_URL}/folder/${workspaceId}`,
@@ -83,7 +81,6 @@ export const Navigation = () => {
     };
     fetchFolderData();
   }, [workspaceId]);
-
 
   useEffect(() => {
     router.replace(`/dashboard/${workspaceId}`);
@@ -163,15 +160,13 @@ export const Navigation = () => {
   };
 
   return (
-    <>{
-allWorkspaces.length==1&&
-      <DriverJs />
-    }
+    <>
+      {allWorkspaces.length == 1 && <DriverJs />}
 
       <aside
         ref={sidebarRef}
         className={cn(
-          "group/sidebar h-full dark:bg-neutral-800 bg-slate-100 overflow-y-auto relative flex w-60 flex-col ",
+          "group/sidebar z-50 h-full dark:bg-neutral-800 bg-slate-100 overflow-y-auto relative flex w-60 flex-col ",
           isResetting && "transition-all ease-in-out duration-300",
           isMobile && "w-0"
         )}
@@ -223,8 +218,10 @@ allWorkspaces.length==1&&
           onClick={resetWidth}
           className=" group-hover/sidebar:opacity-100 opacity-0 transition cursor-ew-resize absolute h-full w-1 bg-primary/10 right-0 top-0"
         />
-        <div className="mt-auto">
-          <PresentationRoomToggle />
+        <div className="mt-auto  ">
+          <div className="hidden md:block">
+            <PresentationRoomToggle />
+          </div>
           <UserItem />
         </div>
       </aside>

@@ -27,25 +27,21 @@ const VideoRoomToggle = () => {
           onClick={toggleModal}
           className={cn(
             isMinimized ? "animate-circle1" : "",
-            "p-5 z-50  flex h-24 w-24 bg-blue-700   items-center justify-center  cursor-pointer overflow-hidden  absolute bottom-10 tracking-tighter group right-10 rounded-full  "
-          )}
-          // className="flex h-56 w-56 items-center justify-center rounded-full bg-blue-700 animate-circle1"
-        >
+            "p-1 flex h-16 w-16 bg-blue-700   items-center justify-center  cursor-pointer overflow-hidden z-10 absolute bottom-10 tracking-tighter group right-10 rounded-full  "
+          )}>
           <div
             className={cn(
               isMinimized ? "animate-circle1" : "",
-              "flex h-14 w-24 items-center justify-center rounded-full bg-blue-600 "
-            )}
-          >
+              "flex h-12 w-12 items-center justify-center rounded-full bg-blue-600 "
+            )}>
             <div
               className={cn(
                 isMinimized ? "animate-circle1" : "",
-                "flex h-8 w-8 items-center justify-center rounded-full bg-blue-500 "
-              )}
-            >
+                "flex h-9 w-9 p-2 items-center justify-center rounded-full bg-blue-500 "
+              )}>
               <svg
                 viewBox="0 0 24 24"
-                className="h-7 w-7"
+                className="h-6 w-6"
                 fill="none"
                 xmlns="http://www.w3.org/2000/svg"
               >
