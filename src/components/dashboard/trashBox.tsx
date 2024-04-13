@@ -32,7 +32,6 @@ useTrashUpdate(setTrash);
         // const TrashFiles = response.data.map((file:File)=>{ 
         //   return files
         // });
-        console.log(TrashFiles);
         
         
         

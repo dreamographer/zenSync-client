@@ -40,7 +40,7 @@ export default function Home() {
         <div className="sm:w-3/5">
           <TitleSection
             pill="✨Your workspace perfected"
-            title="All-In-One collaboration and productivity platform Ashwin kv"
+            title="All-In-One collaboration and productivity platform"
             subheading="Where Teamwork Gets Zen"
           />
         </div>
